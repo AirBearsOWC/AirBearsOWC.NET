@@ -37,6 +37,7 @@ TestResult.xml
 [Dd]ebugPS/
 [Rr]eleasePS/
 dlldata.c
+wwwroot/lib/*
 
 # DNX
 project.lock.json
