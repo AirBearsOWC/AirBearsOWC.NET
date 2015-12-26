@@ -16,11 +16,6 @@
                 controller: "ShellController as vm",
                 abstract: true
             })
-            .state("login", {
-                url: "/login",
-                templateUrl: "app/auth/login.html",
-                controller: "LoginController as vm"
-            })
             .state("root.home", {
                 url: "/",
                 templateUrl: "app/dashboard/home.html",
