@@ -8,7 +8,7 @@ using AirBears.Web.Models;
 
 namespace AirBears.Web.Models
 {
-    public class ApplicationDbContext : IdentityDbContext<User>
+    public class DbContext : IdentityDbContext<User>
     {
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -18,6 +18,12 @@ namespace AirBears.Web.Models
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
-        //public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<TeeShirtSize> TeeShirtSizes { get; set; }
+
+        public DbSet<Country> Countries { get; set; }
+
+        public DbSet<State> States { get; set; }
+
+        public DbSet<City> Cities { get; set; }
     }
 }

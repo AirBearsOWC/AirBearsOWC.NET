@@ -35,7 +35,7 @@
                 animation: true,
                 templateUrl: "app/auth/login-modal.html",
                 controller: "LoginModalController as vm",
-                size: "md"
+                size: "sm"
             });
 
             modalInstance.result.then(function (result) {
