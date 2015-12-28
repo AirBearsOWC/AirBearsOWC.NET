@@ -1,0 +1,27 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" ng-click="vm.cancel()">&times;</button>
+    <h4 class="modal-title">Login</h4>
+</div>
+<div class="modal-body">
+    <form ng-submit="vm.login()">
+        <div class="alert alert-warning fadein" ng-show="vm.message">
+            <a href="#" class="close" ng-click="vm.clear()">&times;</a>
+            {{ vm.message }}
+        </div>
+        <div class="form-group">
+            <input type="email" class="form-control" placeholder="Email" ng-model="vm.loginData.userName" autofocus>
+        </div>
+        <div class="form-group">
+            <input type="password" class="form-control" placeholder="Password" ng-model="vm.loginData.password">
+        </div>
+        <!--<div class="checkbox">
+            <label>
+                <input type="checkbox">
+                Remember Me
+                <span class="glyphicon glyphicon-question-sign" tooltip-placement="right" uib-tooltip="Leaguestone will remember you for 5 days on this device."></span>
+            </label>
+        </div>-->
+        <button type="submit" class="btn btn-primary" ng-disabled="vm.isLoggingIn">Log In</button>
+        <a href="" class="pointer" style="margin-left: 10px;" ng-click="vm.openResetPassword()">Forgot Password?</a>
+    </form>
+</div>
