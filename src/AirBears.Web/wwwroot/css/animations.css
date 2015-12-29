@@ -7,12 +7,7 @@
   padding-right: 15px;*/
 }
 
-.reveal-animation.ng-enter, .reveal-animation.ng-leave {
-  -webkit-transition: 0.3s linear all;
-  transition: 0.3s linear all;
-}
-
-.reveal-animation.ng-leave {
+/*.reveal-animation.ng-enter, .reveal-animation.ng-leave {
   -webkit-transition: 0.3s linear all;
   transition: 0.3s linear all;
 }
@@ -31,4 +26,4 @@
 
 .reveal-animation.ng-leave.ng-leave-active {
   opacity: 0;
-}
+}*/

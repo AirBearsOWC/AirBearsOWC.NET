@@ -8,6 +8,10 @@
     padding-right: 15px;
 }
 
+input, select, textarea {
+     max-width: 100% !important; 
+}
+
 .navbar-inverse {
     background-color: rgba(60,60,60,0.8);
     border-bottom: #555;

@@ -1,6 +1,4 @@
-﻿<h2>Home</h2>
-
-<video autoplay="autoplay" loop="loop" src="/videos/airbears-header-vid.mp4"></video>
+﻿<video autoplay="autoplay" loop="loop" class="bg-vid" src="/videos/airbears-header-vid.mp4"></video>
 
 <div class="jumbotron">
     <div class="container">
@@ -55,20 +53,20 @@
         left: 0;
     }
 
-    video {
+    video.bg-vid {
         position: absolute;
         top: 0;
         left: 0;
-        right: 0;
-        bottom: 0;
-        max-width: 100%;
+        width: 100%;
         z-index: 0;
     }
 
     .jumbotron {
+        margin-top: 50px;
         position: relative;
         z-index: 10;
         background: rgba(30,30,30,0.6);
         color: #fff;
-    }   
+        text-shadow: 1px 2px #000;
+    } 
 </style>

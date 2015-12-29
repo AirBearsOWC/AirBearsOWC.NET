@@ -1,1 +1,151 @@
-﻿<h2>Register Pilot</h2>
+﻿<div class="bg-img"></div>
+
+<!--<div class="row header" style="padding-top: 175px">
+    <div class="col-sm-12">
+        <h1>Pilot Registration</h1>
+        <h2>Help Us Make a Difference, Together</h2>
+    </div>
+</div>-->
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Pilot Registration</h1>
+                <h2>Help Us Make a Difference, Together</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 190px;">
+    <div class="col-sm-4">
+        <h3>Requirments &amp; Considerations</h3>
+        <p>
+            To qualify, you must be at least 16 yrs old, and have an airframe capable of taking pictures/videos,
+            either in real time or recorded. At the discretion of the event organizer, you may be required to forfiet
+            your footage due to its sensitivity to the friends and families involved.
+        </p>
+    </div>
+    <div class="col-sm-8">
+        <form role="form">
+            <h3>Pilot Info</h3>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input id="firstName" type="text" class="form-control" ng-model="vm.user.firstName" autofocus="true" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input id="lastName" type="text" class="form-control" ng-model="vm.user.lastName" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input id="email" type="email" class="form-control" ng-model="vm.user.email" />
+                    </div>
+                </div>
+            </div>   
+            
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input id="phone" type="text" class="form-control" ng-model="vm.user.phone" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" type="password" class="form-control" ng-model="vm.user.password" />
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="confirmedPassword">Password Confirmed</label>
+                        <input id="confirmedPassword" type="password" class="form-control" ng-model="vm.user.passwordConfirmed" />
+                    </div>
+                </div>
+            </div>
+            
+            <h3>Address <small class="glyphicon glyphicon-question-sign" uib-tooltip="Your address will be used for Air Bears mail and to help authorities locate the nearest pilot in case of an emergency."></small></h3>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="street1">Street</label>
+                        <input id="street1" type="text" class="form-control" placeholder="Street Line 1" ng-model="vm.user.street1" />
+                    </div>
+                    <div class="form-group">
+                        <input id="street2" type="text" class="form-control" placeholder="Street Line 2" ng-model="vm.user.street2" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input id="city" type="text" class="form-control" ng-model="vm.user.city" />
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="state">State</label>
+                        <input id="state" type="text" class="form-control" ng-model="vm.user.state" />
+                    </div>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="zip">Zip Code</label>
+                        <input id="zip" type="text" class="form-control" ng-model="vm.user.zip" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">             
+                <input type="submit" class="form-control btn btn-success" value="Register" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    .bg-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 0;
+        background: url('/images/large-bg.png');
+        height: 500px;
+        background-position: 0px -254px;
+    }
+
+    /*.header{
+        color: #fff;
+        text-shadow: 1px 2px #000;
+    }*/
+
+    .jumbotron {
+        margin-top: 50px;
+        position: relative;
+        z-index: 10;
+        background: rgba(30,30,30,0.6);
+        color: #fff;
+        text-shadow: 1px 2px #000;
+    } 
+</style>

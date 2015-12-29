@@ -10,14 +10,14 @@
     function RegisterOptionsModalController($uibModalInstance, $state) {
         var vm = this;
 
-        vm.navigatTo = navigatTo;
+        vm.navigateTo = navigateTo;
         vm.cancel = cancel;
 
         activate();
 
         function activate() { }
 
-        function navigatTo(state) {
+        function navigateTo(state) {
             $state.go(state);
             $uibModalInstance.dismiss("cancel");
         }

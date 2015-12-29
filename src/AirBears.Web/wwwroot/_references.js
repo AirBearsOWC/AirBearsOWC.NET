@@ -8,7 +8,6 @@
 /// <reference path="app/registration/register-authority.controller.js" />
 /// <reference path="app/registration/register-pilot - copy.controller.js" />
 /// <reference path="app/registration/register-pilot.controller.js" />
-/// <reference path="js/combined.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/angular-animate/angular-animate.js" />

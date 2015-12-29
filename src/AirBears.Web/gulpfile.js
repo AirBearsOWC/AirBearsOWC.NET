@@ -66,4 +66,11 @@ gulp.task("min:css", function () {
         .pipe(gulp.dest("."));
 });
 
-gulp.task("min", ["min:js", "min:css"]);
+gulp.task("move:fonts", function () {
+    var fontPaths = paths.webroot + "lib/bootstrap/dist/fonts/*";
+
+    return gulp.src(fontPaths)
+        .pipe(gulp.dest(paths.webroot + "fonts"));
+});
+
+gulp.task("min", ["min:js", "min:css", "move:fonts"]);
