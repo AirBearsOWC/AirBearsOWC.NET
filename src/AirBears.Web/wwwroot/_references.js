@@ -6,7 +6,7 @@
 /// <reference path="app/dashboard/home.controller.js" />
 /// <reference path="app/layout/shell.controller.js" />
 /// <reference path="app/registration/register-authority.controller.js" />
-/// <reference path="app/registration/register-pilot - copy.controller.js" />
+/// <reference path="app/registration/register-options-modal.controller.js" />
 /// <reference path="app/registration/register-pilot.controller.js" />
 /// <reference path="js/site.js" />
 /// <reference path="lib/angular/angular.js" />

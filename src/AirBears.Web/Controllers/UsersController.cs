@@ -12,9 +12,9 @@ namespace AirBears.Web.Controllers
     [Route("api/users")]
     public class UsersController : Controller
     {
-        private readonly Models.DbContext _context;
+        private readonly AppDbContext _context;
 
-        public UsersController(Models.DbContext context)
+        public UsersController(AppDbContext context)
         {
             _context = context;
         }

@@ -41,11 +41,11 @@ namespace AirBears.Web
             // Add framework services.
             services.AddEntityFramework()
                 .AddSqlServer()
-                .AddDbContext<Models.DbContext>(options =>
+                .AddDbContext<Models.AppDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<Models.DbContext>()
+                .AddEntityFrameworkStores<Models.AppDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddMvc();
@@ -70,19 +70,15 @@ namespace AirBears.Web
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-
-                // For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
-                try
-                {
-                    using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-                        .CreateScope())
-                    {
-                        serviceScope.ServiceProvider.GetService<Models.DbContext>()
-                             .Database.Migrate();
-                    }
-                }
-                catch { }
             }
+
+            using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
+            {
+                serviceScope.ServiceProvider.GetService<AppDbContext>().Database.Migrate();
+                serviceScope.ServiceProvider.GetService<AppDbContext>().EnsureSeedData();
+            }
+
+            AutoMapperConfig.RegisterMappings();
 
             app.UseIISPlatformHandler();
             app.UseDefaultFiles();
