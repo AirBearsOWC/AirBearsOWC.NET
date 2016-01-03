@@ -46,3 +46,13 @@ input, select, textarea {
     color: #fff;
     background: rgba(30,30,30,0.6);
 }
+
+/*
+    Modal Overrides
+*/
+
+@media (min-width: 768px) {
+    .modal-dialog {
+        margin: 135px auto;
+    }
+}
