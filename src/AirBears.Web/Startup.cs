@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using AirBears.Web.Models;
 using AirBears.Web.Services;
+using Newtonsoft.Json.Serialization;
 
 namespace AirBears.Web
 {
@@ -48,7 +49,10 @@ namespace AirBears.Web
                 .AddEntityFrameworkStores<Models.AppDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddMvc();
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();

@@ -17,8 +17,7 @@
         <ul>
             <li>You must be at least 16 years old</li>
             <li>You must have an airframe capable of taking pictures and/or videos (real time or recorded)</li>
-            <li>You may be required to forfiet
-            your footage due to its sensitivity to the friends and families involved</li>
+            <li>You may be required to forfiet your footage due to its sensitivity to the friends and families involved</li>
         </ul>
         <p>
             To qualify, you must be at least 16 years old, and have an airframe capable of taking pictures/videos,
@@ -27,53 +26,63 @@
         </p>
     </div>
     <div class="col-sm-8">
-        <form role="form">
-            <h3>Pilot Info</h3>
+        <form role="form" ng-submit="vm.submit()">
+            <h3>Pilot Information</h3>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input id="firstName" type="text" class="form-control" ng-model="vm.registration.firstName" autofocus />
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input id="lastName" type="text" class="form-control" ng-model="vm.registration.lastName" />
+                    </div>
+                </div>
+            </div>
 
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="firstName">First Name</label>
-                        <input id="firstName" type="text" class="form-control" ng-model="vm.user.firstName" autofocus />
+                        <label for="phone">Phone Number</label>
+                        <input id="phone" type="text" class="form-control" ng-model="vm.registration.phone" />
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <div class="form-group">
-                        <label for="lastName">Last Name</label>
-                        <input id="lastName" type="text" class="form-control" ng-model="vm.user.lastName" />
+                        <label for="teeShirt">T-Shirt Size</label>
+                        <select id="teeShirt" class="form-control" ng-model="vm.registration.teeShirtSizeId" ng-options="t.name for t in vm.teeShirtSizes">
+                            <option value="">Select a Size</option>
+                        </select>
                     </div>
                 </div>
             </div>
+
+            <h3>New Login</h3>
 
             <div class="row">
                 <div class="col-sm-8">
                     <div class="form-group">
                         <label for="email">Email <small class="glyphicon glyphicon-question-sign" uib-tooltip="You will use this email address to sign in to Air Bears."></small></label>
-                        <input id="email" type="email" class="form-control" ng-model="vm.user.email" />
+                        <input id="email" type="email" class="form-control" ng-model="vm.registration.email" />
                     </div>
                 </div>
-            </div>   
-            
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input id="phone" type="text" class="form-control" ng-model="vm.user.phone" />
-                    </div>
-                </div>
-            </div>
+            </div>            
 
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input id="password" type="password" class="form-control" ng-model="vm.user.password" />
+                        <input id="password" type="password" class="form-control" ng-model="vm.registration.password" />
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-5">
                     <div class="form-group">
                         <label for="confirmedPassword">Password Confirmed</label>
-                        <input id="confirmedPassword" type="password" class="form-control" ng-model="vm.user.passwordConfirmed" />
+                        <input id="confirmedPassword" type="password" class="form-control" ng-model="vm.registration.confirmPassword" />
                     </div>
                 </div>
             </div>
@@ -84,10 +93,10 @@
                 <div class="col-sm-6">
                     <div class="form-group">
                         <label for="street1">Street</label>
-                        <input id="street1" type="text" class="form-control" placeholder="Street Line 1" ng-model="vm.user.street1" />
+                        <input id="street1" type="text" class="form-control" placeholder="Street Line 1" ng-model="vm.registration.street1" />
                     </div>
                     <div class="form-group">
-                        <input id="street2" type="text" class="form-control" placeholder="Street Line 2" ng-model="vm.user.street2" />
+                        <input id="street2" type="text" class="form-control" placeholder="Street Line 2" ng-model="vm.registration.street2" />
                     </div>
                 </div>
             </div>
@@ -96,21 +105,23 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="city">City</label>
-                        <input id="city" type="text" class="form-control" ng-model="vm.user.city" />
+                        <input id="city" type="text" class="form-control" ng-model="vm.registration.city" />
                     </div>
                 </div>
 
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="state">State</label>
-                        <input id="state" type="text" class="form-control" ng-model="vm.user.state" />
+                        <select id="state" class="form-control" ng-model="vm.registration.stateId" ng-options="s.name for s in vm.states">
+                            <option value="">Select a State</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="zip">Zip Code</label>
-                        <input id="zip" type="text" class="form-control" ng-model="vm.user.zip" />
+                        <input id="zip" type="text" class="form-control" ng-model="vm.registration.zip" />
                     </div>
                 </div>
             </div>

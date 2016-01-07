@@ -5,6 +5,8 @@ using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using AirBears.Web.Models;
+using AirBears.Web.ViewModels;
+using AutoMapper;
 
 namespace AirBears.Web.Controllers
 {
@@ -21,9 +23,14 @@ namespace AirBears.Web.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<IEnumerable<UserViewModel>> GetUsers()
         {
-            return await _context.Users.ToListAsync();
+            var users = await _context.Users
+                .Include(u => u.TeeShirtSize)
+                .Include(u => u.State)
+                .ToListAsync();
+
+            return Mapper.Map<IEnumerable<UserViewModel>>(users);
         }
 
         // GET: api/Users/5
