@@ -12,6 +12,8 @@ namespace AirBears.Web.Models
 
         [Required]
         public string Name { get; set; }
+
+        public int SortOrder { get; set; }
     }
 
     public class Country

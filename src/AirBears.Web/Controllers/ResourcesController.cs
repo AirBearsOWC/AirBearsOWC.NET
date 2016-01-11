@@ -28,7 +28,7 @@ namespace AirBears.Web.Controllers
         [HttpGet("tee-shirt-sizes")]
         public async Task<IEnumerable<TeeShirtSize>> GetTeeShirtSizes()
         {
-            return await _context.TeeShirtSizes.OrderBy(t => t.Name).ToListAsync();
+            return await _context.TeeShirtSizes.OrderBy(t => t.SortOrder).ToListAsync();
         }
 
         protected override void Dispose(bool disposing)

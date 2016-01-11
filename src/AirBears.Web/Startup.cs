@@ -73,6 +73,8 @@ namespace AirBears.Web
             }
             else
             {
+                //app.UseDeveloperExceptionPage();
+                //app.UseDatabaseErrorPage();
                 app.UseExceptionHandler("/Home/Error");
             }
 
@@ -84,7 +86,7 @@ namespace AirBears.Web
 
             AutoMapperConfig.RegisterMappings();
 
-            app.UseIISPlatformHandler();
+            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseIdentity();

@@ -5,14 +5,15 @@
         .module("app")
         .controller("RegisterPilotController", RegisterPilotController);
 
-    RegisterPilotController.$inject = ["resourceService"];
+    RegisterPilotController.$inject = ["$uibModal", "resourceService", "registrationService"];
 
-    function RegisterPilotController(resourceService) {
+    function RegisterPilotController($uibModal, resourceService, registrationService) {
         var vm = this;
 
         vm.states = [];
         vm.teeShirtSizes = [];
         vm.registration = {};
+        vm.openTerms = openTerms;
         vm.submit = submit;
 
         activate();
@@ -27,8 +28,22 @@
             });
         }
 
-        function submit() {
+        function openTermsAndConditions() {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: "app/registration/terms.html",
+                size: "md"
+            });
 
+            modalInstance.result.then(function (result) {
+
+            });
+        }
+
+        function submit() {
+            registrationService.registerPilot(vm.registration).then(function(data){
+
+            });
         }
     }
 })();

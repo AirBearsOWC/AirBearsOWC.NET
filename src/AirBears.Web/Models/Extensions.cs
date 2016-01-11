@@ -112,15 +112,15 @@ namespace AirBears.Web.Models
             if (!context.TeeShirtSizes.Any())
             {
                 context.TeeShirtSizes.AddRange(
-                    new TeeShirtSize { Name = "S" },
-                    new TeeShirtSize { Name = "M" },
-                    new TeeShirtSize { Name = "L" },
-                    new TeeShirtSize { Name = "XL" },
-                    new TeeShirtSize { Name = "2XL" },
-                    new TeeShirtSize { Name = "3XL" },
-                    new TeeShirtSize { Name = "4XL" },
-                    new TeeShirtSize { Name = "5XL" },
-                    new TeeShirtSize { Name = "FF" }
+                    new TeeShirtSize { Name = "S", SortOrder = 0 },
+                    new TeeShirtSize { Name = "M", SortOrder = 1 },
+                    new TeeShirtSize { Name = "L", SortOrder = 2 },
+                    new TeeShirtSize { Name = "XL", SortOrder = 3 },
+                    new TeeShirtSize { Name = "2XL", SortOrder = 4 },
+                    new TeeShirtSize { Name = "3XL", SortOrder = 5 },
+                    new TeeShirtSize { Name = "4XL", SortOrder = 6 },
+                    new TeeShirtSize { Name = "5XL", SortOrder = 7 },
+                    new TeeShirtSize { Name = "FF", SortOrder = 8 }
                 );
 
                 context.SaveChanges();

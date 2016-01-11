@@ -54,7 +54,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="teeShirt">T-Shirt Size</label>
-                        <select id="teeShirt" class="form-control" ng-model="vm.registration.teeShirtSizeId" ng-options="t.name for t in vm.teeShirtSizes">
+                        <select id="teeShirt" class="form-control" ng-model="vm.registration.teeShirtSizeId" ng-options="t.id as t.name for t in vm.teeShirtSizes">
                             <option value="">Select a Size</option>
                         </select>
                     </div>
@@ -112,7 +112,7 @@
                 <div class="col-sm-4">
                     <div class="form-group">
                         <label for="state">State</label>
-                        <select id="state" class="form-control" ng-model="vm.registration.stateId" ng-options="s.name for s in vm.states">
+                        <select id="state" class="form-control" ng-model="vm.registration.stateId" ng-options="s.id as s.name for s in vm.states">
                             <option value="">Select a State</option>
                         </select>
                     </div>
@@ -122,6 +122,17 @@
                     <div class="form-group">
                         <label for="zip">Zip Code</label>
                         <input id="zip" type="text" class="form-control" ng-model="vm.registration.zip" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row vert-margin">
+                <div class="col-sm-3">
+                    <input typs="button" class="btn btn-sm btn-default" value="Terms & Conditions" />
+                </div>
+                <div class="col-sm-9">
+                    <div class="checkbox">
+                        <label><input type="checkbox" ng-model="vm.registration.hasAgreedToTerms"><span uib-tooltip="Checking this box indicates that you agree to the terms and conditions.">I agree to the terms and conditions.</span></label>
                     </div>
                 </div>
             </div>
@@ -143,6 +154,11 @@
         background: url('/images/large-bg.png');
         height: 500px;
         background-position: 0px -254px;
+    }
+
+    .vert-margin {
+        margin-top: 15px;
+        margin-bottom: 15px;
     }
 
     /*.header{
