@@ -13,7 +13,7 @@
         vm.states = [];
         vm.teeShirtSizes = [];
         vm.registration = {};
-        vm.openTerms = openTerms;
+        vm.openTermsAndConditions = openTermsAndConditions;
         vm.submit = submit;
 
         activate();
@@ -32,11 +32,12 @@
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: "app/registration/terms.html",
-                size: "md"
+                controller: "TermsController as vm",
+                size: "lg"
             });
 
             modalInstance.result.then(function (result) {
-
+                if (result.hasAgreed) { vm.registration.hasAgreedToTerms = true; }
             });
         }
 

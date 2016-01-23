@@ -128,11 +128,11 @@
 
             <div class="row vert-margin">
                 <div class="col-sm-3">
-                    <input typs="button" class="btn btn-sm btn-default" value="Terms & Conditions" />
+                    <input type="button" class="btn btn-sm btn-default" value="Terms & Conditions" ng-click="vm.openTermsAndConditions()"/>
                 </div>
                 <div class="col-sm-9">
-                    <div class="checkbox">
-                        <label><input type="checkbox" ng-model="vm.registration.hasAgreedToTerms"><span uib-tooltip="Checking this box indicates that you agree to the terms and conditions.">I agree to the terms and conditions.</span></label>
+                    <div class="checkbox" style="top: -5px">
+                        <label><input type="checkbox" ng-model="vm.registration.hasAgreedToTerms"><span uib-tooltip="Checking this box indicates that you have read and agree to the terms and conditions.">I agree to the terms and conditions.</span></label>
                     </div>
                 </div>
             </div>
