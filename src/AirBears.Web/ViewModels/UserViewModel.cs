@@ -27,6 +27,11 @@ namespace AirBears.Web.ViewModels
 
         public bool HasAgreedToTerms { get; set; }
 
+        /// <summary>
+        /// Identifies an account as an authority account, regardless if the account has been granted the Authority role.
+        /// </summary>
+        public bool IsAuthorityAccount { get; set; }
+
         public string TeeShirtSize { get; set; }
     }
 }

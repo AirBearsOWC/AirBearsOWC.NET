@@ -5,9 +5,9 @@
         .module("app")
         .controller("RegisterAuthorityController", RegisterAuthorityController);
 
-    RegisterAuthorityController.$inject = [];
+    RegisterAuthorityController.$inject = ["registrationService"];
 
-    function RegisterAuthorityController() {
+    function RegisterAuthorityController(registrationService) {
         var vm = this;
 
         vm.registration = {};
@@ -19,7 +19,9 @@
 
         }
 
-        function submit() {
+        function submit(isValid) {
+            if (!isValid) { return; }
+
             registrationService.registerAuthority(vm.registration).then(function (data) {
 
             });

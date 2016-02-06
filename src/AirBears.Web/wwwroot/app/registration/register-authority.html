@@ -13,14 +13,14 @@
 
 <div class="row" style="margin-top: 190px;">
     <div class="col-sm-8">
-        <form role="form" ng-submit="vm.submit()">
+        <form name="regForm" role="form" ng-submit="vm.submit(regForm.$valid)">
             <h3>Organization Information</h3>
 
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
-                        <label for="organization">Name <small class="glyphicon glyphicon-question-sign" uib-tooltip="What is the name of the organization in need of Air Bears SAR assistance?"></small></label>
-                        <input id="organization" type="text" class="form-control" ng-model="vm.registration.organization" />
+                        <label for="organization">Organization Name <small class="glyphicon glyphicon-question-sign" uib-tooltip="What is the name of the organization in need of Air Bears SAR assistance?"></small></label>
+                        <input id="organization" type="text" class="form-control" required ng-model="vm.registration.organization" />
                     </div>
                 </div>
             </div>
@@ -29,7 +29,7 @@
                 <div class="col-sm-5">
                     <div class="form-group">
                         <label for="phone">Phone Number</label>
-                        <input id="phone" type="text" class="form-control" ng-model="vm.registration.phone" />
+                        <input id="phone" type="text" class="form-control" required ng-model="vm.registration.phone" />
                     </div>
                 </div>
             </div>
@@ -40,13 +40,13 @@
                 <div class="col-sm-5">
                     <div class="form-group">
                         <label for="firstName">Contact First Name</label>
-                        <input id="firstName" type="text" class="form-control" ng-model="vm.registration.firstName" />
+                        <input id="firstName" type="text" class="form-control" required ng-model="vm.registration.firstName" />
                     </div>
                 </div>
                 <div class="col-sm-5">
                     <div class="form-group">
                         <label for="lastName">Contact Last Name</label>
-                        <input id="lastName" type="text" class="form-control" ng-model="vm.registration.lastName" />
+                        <input id="lastName" type="text" class="form-control" required ng-model="vm.registration.lastName" />
                     </div>
                 </div>
             </div>
@@ -58,7 +58,7 @@
                 <div class="col-sm-7">
                     <div class="form-group">
                         <label for="email">Email <small class="glyphicon glyphicon-question-sign" uib-tooltip="You will use this email address to sign in to Air Bears."></small></label>
-                        <input id="email" type="email" class="form-control" ng-model="vm.registration.email" />
+                        <input id="email" type="email" class="form-control" required ng-model="vm.registration.email" />
                     </div>
                 </div>
             </div>
@@ -67,19 +67,19 @@
                 <div class="col-sm-5">
                     <div class="form-group">
                         <label for="password">Password</label>
-                        <input id="password" type="password" class="form-control" ng-model="vm.registration.password" />
+                        <input id="password" type="password" class="form-control" required ng-model="vm.registration.password" />
                     </div>
                 </div>
                 <div class="col-sm-5">
                     <div class="form-group">
                         <label for="confirmedPassword">Password Confirmed</label>
-                        <input id="confirmedPassword" type="password" class="form-control" ng-model="vm.registration.confirmPassword" />
+                        <input id="confirmedPassword" type="password" class="form-control" required ng-model="vm.registration.confirmPassword" />
                     </div>
                 </div>
             </div>
 
             <div class="form-group">
-                <input type="submit" class="form-control btn btn-success" value="Register" />
+                <input type="submit" class="form-control btn btn-success" value="Register" ng-disabled="!regForm.$valid" />
             </div>
         </form>
     </div>

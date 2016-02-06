@@ -84,7 +84,7 @@ namespace AirBears.Web.Controllers
         }
 
         // POST: /api/accounts/authority-approval
-        [HttpPost("authority-registration", Name = "Approve Authority")]
+        [HttpPost("authority-approval", Name = "Approve Authority")]
         [Authorize(Roles = Roles.Admin)]
         public async Task<IActionResult> ApproveAuthority([FromBody]string username)
         {

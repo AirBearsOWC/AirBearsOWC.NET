@@ -44,7 +44,7 @@ namespace AirBears.Web.Models
         //public virtual Country Country { get; set; }
 
         /// <summary>
-        /// Itentifies an account as an authority account, regarless if the account has been granted the Authority role.
+        /// Identifies an account as an authority account, regardless if the account has been granted the Authority role.
         /// </summary>
         public bool IsAuthorityAccount { get; set; }
 
