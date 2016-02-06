@@ -15,24 +15,19 @@ namespace AirBears.Web.Models
         [Required]
         public string LastName { get; set; }
 
-        [Required]
         public Guid? TeeShirtSizeId { get; set; }
 
-        [Required]
         public string Street1 { get; set; }
 
         public string Street2 { get; set; }
 
-        [Required]
         public string City { get; set; }
 
         /// <summary>
         /// State or province (region) dpending on the country.
         /// </summary>
-        [Required]
         public Guid? StateId { get; set; }
 
-        [Required]
         public string Zip { get; set; }
 
         public bool HasAgreedToTerms { get; set; }
@@ -47,6 +42,11 @@ namespace AirBears.Web.Models
         public virtual State State { get; set; }
 
         //public virtual Country Country { get; set; }
+
+        /// <summary>
+        /// Itentifies an account as an authority account, regarless if the account has been granted the Authority role.
+        /// </summary>
+        public bool IsAuthorityAccount { get; set; }
 
         #endregion
     }

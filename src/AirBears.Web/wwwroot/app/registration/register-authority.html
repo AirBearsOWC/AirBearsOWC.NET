@@ -1,1 +1,125 @@
-﻿<h2>Register Authority</h2>
+﻿<div class="bg-img"></div>
+
+<div class="jumbotron">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1>Incident Commander Registration</h1>
+                <h2>Gain access to our SAR pilots across the globe</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-top: 190px;">
+    <div class="col-sm-8">
+        <form role="form" ng-submit="vm.submit()">
+            <h3>Organization Information</h3>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label for="organization">Name <small class="glyphicon glyphicon-question-sign" uib-tooltip="What is the name of the organization in need of Air Bears SAR assistance?"></small></label>
+                        <input id="organization" type="text" class="form-control" ng-model="vm.registration.organization" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input id="phone" type="text" class="form-control" ng-model="vm.registration.phone" />
+                    </div>
+                </div>
+            </div>
+
+            <h3>Commander Information <small class="glyphicon glyphicon-question-sign" uib-tooltip="Who will be the primary point of contact?"></small></h3>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="firstName">Contact First Name</label>
+                        <input id="firstName" type="text" class="form-control" ng-model="vm.registration.firstName" />
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="lastName">Contact Last Name</label>
+                        <input id="lastName" type="text" class="form-control" ng-model="vm.registration.lastName" />
+                    </div>
+                </div>
+            </div>
+
+
+            <h3>New Login</h3>
+
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="form-group">
+                        <label for="email">Email <small class="glyphicon glyphicon-question-sign" uib-tooltip="You will use this email address to sign in to Air Bears."></small></label>
+                        <input id="email" type="email" class="form-control" ng-model="vm.registration.email" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input id="password" type="password" class="form-control" ng-model="vm.registration.password" />
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="form-group">
+                        <label for="confirmedPassword">Password Confirmed</label>
+                        <input id="confirmedPassword" type="password" class="form-control" ng-model="vm.registration.confirmPassword" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" class="form-control btn btn-success" value="Register" />
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-4">
+        <h3>Approval Process</h3>
+        <p>
+            Air Bears representatives contact all registered incident commanders to ensure legitimacy. Once a registed incident commander has
+            been approved, they will have unrestricted access to our SAR pilot locator.
+        </p>
+    </div>
+</div>
+
+<style>
+    .bg-img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 0;
+        background: url('/images/large-bg.png');
+        height: 500px;
+        background-position: 0px -254px;
+    }
+
+    .vert-margin {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    /*.header{
+        color: #fff;
+        text-shadow: 1px 2px #000;
+    }*/
+
+    .jumbotron {
+        margin-top: 50px;
+        position: relative;
+        z-index: 10;
+        background: rgba(30,30,30,0.6);
+        color: #fff;
+        text-shadow: 1px 2px #000;
+    }
+</style>

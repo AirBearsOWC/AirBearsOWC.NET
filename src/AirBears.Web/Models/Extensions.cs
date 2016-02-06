@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Entity;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Migrations;
 using System;
@@ -32,6 +33,7 @@ namespace AirBears.Web.Models
         {
             if (context.AllMigrationsApplied())
             {
+                context.SeedRoles();
                 context.SeedStates();
                 context.SeedTeeShirtSizes();
             }
@@ -121,6 +123,19 @@ namespace AirBears.Web.Models
                     new TeeShirtSize { Name = "4XL", SortOrder = 6 },
                     new TeeShirtSize { Name = "5XL", SortOrder = 7 },
                     new TeeShirtSize { Name = "FF", SortOrder = 8 }
+                );
+
+                context.SaveChanges();
+            }
+        }
+
+        private static void SeedRoles(this AppDbContext context)
+        {
+            if (!context.Roles.Any())
+            {
+                context.Roles.AddRange(
+                    new IdentityRole { Id = "1", Name = Roles.Admin },
+                    new IdentityRole { Id = "2", Name = Roles.Authority }
                 );
 
                 context.SaveChanges();

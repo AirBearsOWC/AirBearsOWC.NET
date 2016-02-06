@@ -28,32 +28,19 @@ namespace AirBears.Web.Controllers
             _signInManager = signInManager;
         }
 
-        // POST: /api/accounts/registration
-        [HttpPost("registration", Name = "Register User")]
+        // POST: /api/accounts/pilot-registration
+        [HttpPost("pilot-registration", Name = "Register Pilot")]
         [AllowAnonymous]
-        public async Task<IActionResult> RegisterUser([FromBody]RegistrationViewModel model)
+        public async Task<IActionResult> RegisterUser([FromBody]PilotRegistrationViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            var user = new User
-            {
-                UserName = model.Email,
-                Email = model.Email,
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                City = model.City,
-                StateId = model.StateId,
-                Street1 = model.Street1,
-                Street2 = model.Street2,
-                Zip = model.Zip,
-                HasAgreedToTerms = model.HasAgreedToTerms,
-                TeeShirtSizeId = model.TeeShirtSizeId
-            };
-
+            var user = Mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
+
             if (!result.Succeeded)
             {
                 AddErrors(result);
@@ -68,6 +55,54 @@ namespace AirBears.Web.Controllers
                 .SingleAsync(u => u.UserName == model.Email);
 
             return Ok(Mapper.Map<UserViewModel>(responseUser));
+        }
+
+        // POST: /api/accounts/authority-registration
+        [HttpPost("authority-registration", Name = "Register Authority")]
+        [AllowAnonymous]
+        public async Task<IActionResult> RegisterAuthority([FromBody]AuthorityRegistrationViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var user = Mapper.Map<User>(model);
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+                return HttpBadRequest(ModelState);
+            }
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            var responseUser = await _context.Users.SingleAsync(u => u.UserName == model.Email);
+
+            return Ok(Mapper.Map<UserViewModel>(responseUser));
+        }
+
+        // POST: /api/accounts/authority-approval
+        [HttpPost("authority-registration", Name = "Approve Authority")]
+        [Authorize(Roles = Roles.Admin)]
+        public async Task<IActionResult> ApproveAuthority([FromBody]string username)
+        {
+            var user = await _userManager.FindByEmailAsync(username);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if(await _userManager.IsInRoleAsync(user, Roles.Authority))
+            {
+                return HttpBadRequest($"{username} already has the {Roles.Authority} role!");
+            }
+
+            await _userManager.AddToRoleAsync(user, Roles.Authority);
+
+            return Ok();
         }
 
         private void AddErrors(IdentityResult result)

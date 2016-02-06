@@ -73,9 +73,9 @@ namespace AirBears.Web
             }
             else
             {
-                //app.UseDeveloperExceptionPage();
-                //app.UseDatabaseErrorPage();
-                app.UseExceptionHandler("/Home/Error");
+                app.UseDeveloperExceptionPage();
+                app.UseDatabaseErrorPage();
+                //app.UseExceptionHandler("/Home/Error");
             }
 
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
