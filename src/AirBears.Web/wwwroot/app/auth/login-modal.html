@@ -1,18 +1,24 @@
 ﻿<div class="modal-header">
     <button type="button" class="close" ng-click="vm.cancel()">&times;</button>
-    <h4 class="modal-title">Login</h4>
+    <h4 class="modal-title">Air Bears Login</h4>
 </div>
 <div class="modal-body">
-    <form ng-submit="vm.login()">
+    <form name="loginForm" ng-submit="vm.login()">
         <div class="alert alert-warning fadein" ng-show="vm.message">
             <a href="#" class="close" ng-click="vm.clear()">&times;</a>
             {{ vm.message }}
         </div>
         <div class="form-group">
-            <input type="email" class="form-control" placeholder="Email" ng-model="vm.loginData.userName" autofocus>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="email" class="form-control" placeholder="Email" autofocus required ng-model="vm.username">
+            </div>        
         </div>
         <div class="form-group">
-            <input type="password" class="form-control" placeholder="Password" ng-model="vm.loginData.password">
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                <input type="password" class="form-control" placeholder="Password" required ng-model="vm.password">
+            </div>   
         </div>
         <!--<div class="checkbox">
             <label>
@@ -21,7 +27,7 @@
                 <span class="glyphicon glyphicon-question-sign" tooltip-placement="right" uib-tooltip="Leaguestone will remember you for 5 days on this device."></span>
             </label>
         </div>-->
-        <button type="submit" class="btn btn-primary" ng-disabled="vm.isLoggingIn">Log In</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="vm.isLoggingIn || !loginForm.$valid">Log In</button>
         <a href="" class="pointer" style="margin-left: 10px;" ng-click="vm.openResetPassword()">Forgot Password?</a>
     </form>
 </div>

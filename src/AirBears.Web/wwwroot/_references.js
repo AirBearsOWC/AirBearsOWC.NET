@@ -2,6 +2,7 @@
 /// <reference path="../gulpfile.js" />
 /// <reference path="app/app.js" />
 /// <reference path="app/app.route.js" />
+/// <reference path="app/auth/auth.service.js" />
 /// <reference path="app/auth/login-modal.controller.js" />
 /// <reference path="app/common/resource.service.js" />
 /// <reference path="app/dashboard/home.controller.js" />

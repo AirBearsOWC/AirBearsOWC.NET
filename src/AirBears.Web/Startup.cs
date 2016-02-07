@@ -12,11 +12,20 @@ using Microsoft.Extensions.Logging;
 using AirBears.Web.Models;
 using AirBears.Web.Services;
 using Newtonsoft.Json.Serialization;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography;
+using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Authentication.JwtBearer;
 
 namespace AirBears.Web
 {
     public class Startup
     {
+        private const string TokenAudience = "AirBearsUsers";
+        private const string TokenIssuer = "AirBearsAPI";
+        private RsaSecurityKey key;
+        private TokenAuthOptions tokenOptions;
+
         public Startup(IHostingEnvironment env)
         {
             // Set up configuration sources.
@@ -44,6 +53,33 @@ namespace AirBears.Web
                 .AddSqlServer()
                 .AddDbContext<Models.AppDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+
+            // See the RSAKeyUtils.GetKeyParameters method for an examle of loading from
+            // a JSON file.
+            var keyParams = RsaKeyUtils.GetRandomKey();
+
+            // Create the key, and a set of token options to record signing credentials 
+            // using that key, along with the other parameters we will need in the 
+            // token controlller.
+            key = new RsaSecurityKey(keyParams);
+            tokenOptions = new TokenAuthOptions()
+            {
+                Audience = TokenAudience,
+                Issuer = TokenIssuer,
+                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256Signature)
+            };
+
+            // Save the token options into an instance so they're accessible to the 
+            // controller.
+            services.AddInstance(tokenOptions);
+
+            // Enable the use of an [Authorize("Bearer")] attribute on methods and classes to protect.
+            services.AddAuthorization(auth =>
+            {
+                auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
+                    .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
+                    .RequireAuthenticatedUser().Build());
+            });
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<Models.AppDbContext>()
@@ -87,6 +123,27 @@ namespace AirBears.Web
             AutoMapperConfig.RegisterMappings();
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
+
+            app.UseJwtBearerAuthentication(options =>
+            {
+                // Basic settings - signing key to validate with, audience and issuer.
+                options.TokenValidationParameters.IssuerSigningKey = key;
+                options.TokenValidationParameters.ValidAudience = tokenOptions.Audience;
+                options.TokenValidationParameters.ValidIssuer = tokenOptions.Issuer;
+
+                // When receiving a token, check that we've signed it.
+                options.TokenValidationParameters.ValidateSignature = true;
+
+                // When receiving a token, check that it is still valid.
+                options.TokenValidationParameters.ValidateLifetime = true;
+
+                // This defines the maximum allowable clock skew - i.e. provides a tolerance on the token expiry time 
+                // when validating the lifetime. As we're creating the tokens locally and validating them on the same 
+                // machines which should have synchronised time, this can be set to zero. Where external tokens are
+                // used, some leeway here could be useful.
+                options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(0);
+            });
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseIdentity();
@@ -98,5 +155,12 @@ namespace AirBears.Web
 
         // Entry point for the application.
         public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+    }
+
+    public class TokenAuthOptions
+    {
+        public string Audience { get; set; }
+        public string Issuer { get; set; }
+        public SigningCredentials SigningCredentials { get; set; }
     }
 }
