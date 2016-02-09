@@ -5,11 +5,12 @@
         .module("app")
         .controller("ShellController", ShellController);
 
-    ShellController.$inject = ["$uibModal"]; 
+    ShellController.$inject = ["$uibModal", "userService"]; 
 
-    function ShellController($uibModal) {
+    function ShellController($uibModal, userService) {
         var vm = this;
 
+        vm.user = null;
         vm.openRegistationOptions = openRegistationOptions;
         vm.openLogin = openLogin;
 
@@ -39,7 +40,15 @@
             });
 
             modalInstance.result.then(function (result) {
+                if (result.loginSuccess) {
+                    getCurrentUser();
+                }
+            });
+        }
 
+        function getCurrentUser() {
+            return userService.getCurrentUser().then(function (user) {
+                vm.user = user;
             });
         }
     }

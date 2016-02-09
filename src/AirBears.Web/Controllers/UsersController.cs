@@ -7,8 +7,9 @@ using Microsoft.Data.Entity;
 using AirBears.Web.Models;
 using AirBears.Web.ViewModels;
 using AutoMapper;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNet.Identity;
 
 namespace AirBears.Web.Controllers
 {
@@ -28,15 +29,18 @@ namespace AirBears.Web.Controllers
 
         [Route("/api/me")]
         [HttpGet]
-        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<UserViewModel> GetCurrentUser()
+        public async Task<IdentityViewModel> GetCurrentUser()
         {
             var user = await _context.Users
                 .Include(u => u.TeeShirtSize)
                 .Include(u => u.State)
-                .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+                .FirstOrDefaultAsync(u => u.UserName == User.GetUserName());
 
-            return Mapper.Map<UserViewModel>(user);
+            var resp = Mapper.Map<IdentityViewModel>(user);
+
+            resp.Roles = User.GetRoles();
+
+            return resp;
         }
 
         // GET: api/users

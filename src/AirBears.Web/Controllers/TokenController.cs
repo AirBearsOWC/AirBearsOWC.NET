@@ -69,14 +69,10 @@ namespace AirBears.Web.Controllers
 
             foreach (var r in roles) identity.AddClaim(new Claim(ClaimTypes.Role, r));
 
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
             identity.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
             identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
-
-            // Here, you should create or look up an identity for the user which is being authenticated.
-            // For now, just creating a simple generic identity.
-
-            //var identity = new ClaimsIdentity(new GenericIdentity(user, "TokenAuth"), new[] { new Claim("EntityID", "1", ClaimValueTypes.Integer) });
 
             var securityToken = handler.CreateToken(
                 issuer: _tokenOptions.Issuer,
@@ -85,6 +81,7 @@ namespace AirBears.Web.Controllers
                 subject: identity,
                 expires: expires
                 );
+
             return handler.WriteToken(securityToken);
         }
     }

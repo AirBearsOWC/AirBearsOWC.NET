@@ -1,10 +1,11 @@
 ﻿(function () {
     "use strict";
 
-    angular.module('app', [
+    angular.module("app", [
          "ui.router", 
          "ui.bootstrap", 
          "ngAnimate",
-         "angular-loading-bar"      
+         "angular-loading-bar",
+         "angular-storage"
     ]);
 })();

@@ -34,4 +34,9 @@ namespace AirBears.Web.ViewModels
 
         public string TeeShirtSize { get; set; }
     }
+
+    public class IdentityViewModel : UserViewModel
+    {
+        public IEnumerable<string> Roles { get; set; }
+    }
 }
