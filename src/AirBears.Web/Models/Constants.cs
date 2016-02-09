@@ -11,4 +11,9 @@ namespace AirBears.Web.Models
         public const string Admin = "Admin";
         public const string Admin_And_Authority = Admin + "," + Authority;
     }
+
+    public static class AuthPolicies
+    {
+        public const string Bearer = "Bearer";
+    }
 }

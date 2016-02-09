@@ -28,8 +28,6 @@ namespace AirBears.Web.Controllers
             _tokenOptions = tokenOptions;
             _userManager = userManager;
             _signInManager = signInManager;
-            //bearerOptions = options.Value;
-            //signingCredentials = signingCredentials;
         }
 
         /// <summary>
@@ -61,12 +59,19 @@ namespace AirBears.Web.Controllers
             return HttpBadRequest("Invalid login attempt.");
         }
 
-        private string GetToken(DateTime? expires)
+        private async Task<string> GetToken(DateTime? expires)
         {
             var handler = new JwtSecurityTokenHandler();
-           // await _userManager.FindByIdAsync(user);
+            var user = await _userManager.FindByIdAsync(User.GetUserId());
 
             var identity = User.Identity as ClaimsIdentity;
+            var roles = await _userManager.GetRolesAsync(user);
+
+            foreach (var r in roles) identity.AddClaim(new Claim(ClaimTypes.Role, r));
+
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
+            identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
 
             // Here, you should create or look up an identity for the user which is being authenticated.
             // For now, just creating a simple generic identity.

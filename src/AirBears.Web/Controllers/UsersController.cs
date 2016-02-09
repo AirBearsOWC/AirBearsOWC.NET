@@ -7,21 +7,39 @@ using Microsoft.Data.Entity;
 using AirBears.Web.Models;
 using AirBears.Web.ViewModels;
 using AutoMapper;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Authorization;
 
 namespace AirBears.Web.Controllers
 {
     [Produces("application/json")]
     [Route("api/users")]
+    [Authorize(AuthPolicies.Bearer)]
     public class UsersController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public UsersController(AppDbContext context)
+        public UsersController(AppDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
-        // GET: api/Users
+        [Route("/api/me")]
+        [HttpGet]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
+        public async Task<UserViewModel> GetCurrentUser()
+        {
+            var user = await _context.Users
+                .Include(u => u.TeeShirtSize)
+                .Include(u => u.State)
+                .FirstOrDefaultAsync(u => u.UserName == User.Identity.Name);
+
+            return Mapper.Map<UserViewModel>(user);
+        }
+
+        // GET: api/users
         [HttpGet]
         public async Task<IEnumerable<UserViewModel>> GetUsers()
         {
@@ -33,7 +51,7 @@ namespace AirBears.Web.Controllers
             return Mapper.Map<IEnumerable<UserViewModel>>(users);
         }
 
-        // GET: api/Users/5
+        // GET: api/users/5
         [HttpGet("{id}", Name = "GetUser")]
         public async Task<IActionResult> GetUser([FromRoute] string id)
         {
