@@ -23,7 +23,7 @@
                 <li><a ng-click="vm.openLogin()">Login</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-show="vm.user">
-                <li><a ng-bind="vm.user.firstName"></a></li>
+                <li><a>{{vm.user.firstName vm.user.lastName}}</a></li>
             </ul>
         </div>
     </div>

@@ -5,7 +5,8 @@ var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
-    uglify = require("gulp-uglify");
+    uglify = require("gulp-uglify"),
+    sourcemaps = require("gulp-sourcemaps");
 
 var paths = {
     webroot: "./wwwroot/"
@@ -20,6 +21,7 @@ paths.concatCssDest = paths.webroot + "css/combined.css";
 
 paths.thirdPartyJs = [
     paths.webroot + "lib/angular/angular.js",
+    paths.webroot + "lib/a0-angular-storage/dist/angular-storage.js",
     paths.webroot + "lib/angular-animate/angular-animate.js",
     paths.webroot + "lib/angular-bootstrap/ui-bootstrap.js",
     paths.webroot + "lib/angular-bootstrap/ui-bootstrap-tpls.js",
@@ -46,13 +48,16 @@ gulp.task("clean", ["clean:js", "clean:css"]);
 
 gulp.task("min:js", function () {
     var scriptPaths = paths.thirdPartyJs;
+    scriptPaths.push(paths.webroot + "app/app.js");
     scriptPaths.push(paths.app);
     scriptPaths.push("!" + paths.concatJsDest);
 
     return gulp.src(scriptPaths, { base: "." })
-        .pipe(concat(paths.concatJsDest))
+        .pipe(sourcemaps.init())
+        .pipe(concat("combined.js"))
         .pipe(uglify())
-        .pipe(gulp.dest("."));
+        .pipe(sourcemaps.write())
+        .pipe(gulp.dest("./wwwroot/js"));
 });
 
 gulp.task("min:css", function () {

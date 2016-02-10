@@ -16,8 +16,8 @@
         return service;
 
         function authenticate(email, password) {
-            return $http.post(urlBase + "token", {email: email, password: password}).success(function(resp){
-                var token = resp.data.token;
+            return $http.post(urlBase + "token", { email: email, password: password }).success(function (resp) {
+                var token = resp.token.result;
                 store.set("auth_token", token);
             });
         }

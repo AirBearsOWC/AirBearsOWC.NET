@@ -5,9 +5,9 @@
         .module("app")
         .config(configureRoutes);
 
-    configureRoutes.$inject = ["$stateProvider", "$urlRouterProvider"];
+    configureRoutes.$inject = ["$stateProvider", "$urlRouterProvider", "$httpProvider"];
 
-    function configureRoutes($stateProvider, $urlRouterProvider) {
+    function configureRoutes($stateProvider, $urlRouterProvider, $httpProvider) {
         $urlRouterProvider.otherwise("/");
 
         $stateProvider
@@ -31,5 +31,7 @@
                 templateUrl: "app/registration/register-authority.html",
                 controller: "RegisterAuthorityController as vm"
             });
+
+        $httpProvider.interceptors.push("authInterceptor");
     }
 })();
