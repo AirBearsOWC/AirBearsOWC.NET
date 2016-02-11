@@ -12,6 +12,7 @@
         var urlBase = "/api/users/";
 
         service.getCurrentUser = getCurrentUser;
+        service.getUsers = getUsers;
 
         return service;
 
@@ -24,7 +25,17 @@
                     user.isAdmin = true;
                 }
 
+                if (user.roles.indexOf("Authority") >= 0) {
+                    user.isAuthority = true;
+                }
+
                 return user;
+            });
+        }
+
+        function getUsers() {
+            return $http.get("/api/users").then(function (resp) {
+                return resp.data;
             });
         }
     }

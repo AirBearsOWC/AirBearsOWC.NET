@@ -138,7 +138,7 @@ namespace AirBears.Web
                     // This should be much more intelligent - at the moment only expired 
                     // security tokens are caught - might be worth checking other possible 
                     // exceptions such as an invalid signature.
-                    if (error != null && error.Error is SecurityTokenExpiredException)
+                    if (error != null && (error.Error is SecurityTokenExpiredException || error.Error is SecurityTokenInvalidSignatureException))
                     {
                         context.Response.StatusCode = 401;
                         // What you choose to return here is up to you, in this case a simple 

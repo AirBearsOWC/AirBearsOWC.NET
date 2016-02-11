@@ -18,6 +18,10 @@ namespace AirBears.Web.ViewModels
 
         public string City { get; set; }
 
+        public string Email { get; set; }
+
+        public string PhoneNumber { get; set; }
+
         /// <summary>
         /// State or province depending on the country.
         /// </summary>

@@ -45,11 +45,13 @@ namespace AirBears.Web.Controllers
 
         // GET: api/users
         [HttpGet]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IEnumerable<UserViewModel>> GetUsers()
         {
             var users = await _context.Users
                 .Include(u => u.TeeShirtSize)
                 .Include(u => u.State)
+                .OrderBy(u => u.LastName)
                 .ToListAsync();
 
             return Mapper.Map<IEnumerable<UserViewModel>>(users);
@@ -57,6 +59,7 @@ namespace AirBears.Web.Controllers
 
         // GET: api/users/5
         [HttpGet("{id}", Name = "GetUser")]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> GetUser([FromRoute] string id)
         {
             if (!ModelState.IsValid)

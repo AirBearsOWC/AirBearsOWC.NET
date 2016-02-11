@@ -85,7 +85,7 @@ namespace AirBears.Web.Controllers
 
         // POST: /api/accounts/authority-approval
         [HttpPost("authority-approval", Name = "Approve Authority")]
-        [Authorize(Roles = Roles.Admin)]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> ApproveAuthority([FromBody]string username)
         {
             var user = await _userManager.FindByEmailAsync(username);

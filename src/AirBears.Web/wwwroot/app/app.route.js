@@ -30,6 +30,11 @@
                 url: "/register-authority",
                 templateUrl: "app/registration/register-authority.html",
                 controller: "RegisterAuthorityController as vm"
+            })
+            .state("root.manage-users", {
+                url: "/manage-users",
+                templateUrl: "app/manage-users/manage-users.html",
+                controller: "ManageUsersController as vm"
             });
 
         $httpProvider.interceptors.push("authInterceptor");

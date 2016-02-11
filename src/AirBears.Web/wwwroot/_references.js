@@ -10,6 +10,7 @@
 /// <reference path="app/common/user.service.js" />
 /// <reference path="app/dashboard/home.controller.js" />
 /// <reference path="app/layout/shell.controller.js" />
+/// <reference path="app/manage-users/register-authority.controller.js" />
 /// <reference path="app/registration/register-authority.controller.js" />
 /// <reference path="app/registration/register-options-modal.controller.js" />
 /// <reference path="app/registration/register-pilot.controller.js" />
