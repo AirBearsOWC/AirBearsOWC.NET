@@ -17,7 +17,14 @@
 
         function getCurrentUser() {
             return $http.get("/api/me").then(function (resp) {
-                return resp.data;
+                var user = resp.data;
+
+                if (user.roles.indexOf("Admin") >= 0)
+                {
+                    user.isAdmin = true;
+                }
+
+                return user;
             });
         }
     }

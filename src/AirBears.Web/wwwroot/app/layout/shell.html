@@ -17,13 +17,30 @@
                 <li><a href>Pilot Search</a></li>
                 <li><a href>News</a></li>
                 <li><a href>Contact</a></li>
+                <li class="dropdown" ng-show="vm.user && vm.user.isAdmin">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        Manage <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Users</a></li>
+                        <li><a href="#">Inventory</a></li>
+                    </ul>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-hide="vm.user">
                 <li><a ng-click="vm.openRegistationOptions()">Sign Up</a></li>
                 <li><a ng-click="vm.openLogin()">Login</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right" ng-show="vm.user">
-                <li><a>{{vm.user.firstName vm.user.lastName}}</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        {{ vm.user.firstName }} {{ vm.user.lastName }} <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">My Profile</a></li>
+                        <li><a href="#" ng-click="vm.logout()"><span class="glyphicon glyphicon-lock"></span>&nbsp; Log Out</a></li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>

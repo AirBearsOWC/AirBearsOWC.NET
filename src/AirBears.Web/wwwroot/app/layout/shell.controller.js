@@ -5,18 +5,21 @@
         .module("app")
         .controller("ShellController", ShellController);
 
-    ShellController.$inject = ["$uibModal", "userService"]; 
+    ShellController.$inject = ["$state", "$uibModal", "authService", "userService"]; 
 
-    function ShellController($uibModal, userService) {
+    function ShellController($state, $uibModal, authService, userService) {
         var vm = this;
 
         vm.user = null;
         vm.openRegistationOptions = openRegistationOptions;
         vm.openLogin = openLogin;
+        vm.logout = logout;
 
         activate();
 
-        function activate() { }
+        function activate() {
+            getCurrentUser();
+        }
 
         function openRegistationOptions() {
             var modalInstance = $uibModal.open({
@@ -44,6 +47,12 @@
                     getCurrentUser();
                 }
             });
+        }
+
+        function logout() {
+            authService.logout();
+            vm.user = null;
+            $state.go("root.home");
         }
 
         function getCurrentUser() {

@@ -1,6 +1,5 @@
 ﻿/// <autosync enabled="true" />
 /// <reference path="../gulpfile.js" />
-/// <reference path="../js/combined.js" />
 /// <reference path="app/app.config.js" />
 /// <reference path="app/app.js" />
 /// <reference path="app/app.route.js" />

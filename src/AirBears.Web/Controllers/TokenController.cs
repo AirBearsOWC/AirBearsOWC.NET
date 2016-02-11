@@ -65,12 +65,12 @@ namespace AirBears.Web.Controllers
             var user = await _userManager.FindByIdAsync(User.GetUserId());
 
             var identity = User.Identity as ClaimsIdentity;
-            var roles = await _userManager.GetRolesAsync(user);
+            //var roles = await _userManager.GetRolesAsync(user);
 
-            foreach (var r in roles) identity.AddClaim(new Claim(ClaimTypes.Role, r));
+            //foreach (var r in roles) identity.AddClaim(new Claim(ClaimTypes.Role, r));
 
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
-            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            //identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            //identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
             identity.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
             identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
 

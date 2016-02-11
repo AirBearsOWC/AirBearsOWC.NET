@@ -5,9 +5,9 @@
         .module("app")
         .factory("authInterceptor", authInterceptor);
 
-    authInterceptor.$inject = ["$rootScope", "store"];
+    authInterceptor.$inject = ["$rootScope", "$q", "store"];
 
-    function authInterceptor($rootScope, store) {
+    function authInterceptor($rootScope, $q, store) {
         var service = {};
         var urlBase = "/api/";
 
@@ -26,11 +26,13 @@
             return config;
         }
 
-        function responseError(){
+        function responseError(response) {
             if (response.status === 401) {
                 $rootScope.$broadcast("unauthorized");
+                store.remove("auth_token");
             }
-            return response;
+
+            return $q.reject(response);
         }
     }
 })();

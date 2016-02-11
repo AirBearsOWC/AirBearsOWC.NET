@@ -5,9 +5,9 @@
         .module("app")
         .controller("LoginModalController", LoginModalController);
 
-    LoginModalController.$inject = ["$modalInstance", "authService"];
+    LoginModalController.$inject = ["$uibModalInstance", "authService"];
 
-    function LoginModalController($modalInstance, authService) {
+    function LoginModalController($uibModalInstance, authService) {
         var vm = this;
 
         vm.messages = [];
@@ -23,7 +23,7 @@
             vm.isLoggingIn = true;
 
             authService.authenticate(vm.username, vm.password).then(function () {
-                $modalInstance.close({ loginSuccess: true });
+                $uibModalInstance.close({ loginSuccess: true });
             },
             function (resp) {
                 vm.messages = [];
@@ -42,7 +42,7 @@
         }
 
         function cancel() {
-            $modalInstance.dismiss("cancel");
+            $uibModalInstance.dismiss("cancel");
         }
     }
 })();
