@@ -23,7 +23,7 @@
             if (!isValid) { return; }
 
             registrationService.registerAuthority(vm.registration).then(function (data) {
-
+                $state.go("root.register-authority.confirmation", { user: data });
             });
         }
     }

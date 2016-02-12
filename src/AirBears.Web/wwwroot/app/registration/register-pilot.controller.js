@@ -5,9 +5,9 @@
         .module("app")
         .controller("RegisterPilotController", RegisterPilotController);
 
-    RegisterPilotController.$inject = ["$uibModal", "resourceService", "registrationService"];
+    RegisterPilotController.$inject = ["$state", "$uibModal", "resourceService", "registrationService"];
 
-    function RegisterPilotController($uibModal, resourceService, registrationService) {
+    function RegisterPilotController($state, $uibModal, resourceService, registrationService) {
         var vm = this;
 
         vm.states = [];
@@ -43,7 +43,7 @@
 
         function submit() {
             registrationService.registerPilot(vm.registration).then(function(data){
-
+                $state.go("root.register-pilot.confirmation", { user: data });
             });
         }
     }

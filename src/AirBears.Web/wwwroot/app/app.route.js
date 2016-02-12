@@ -22,14 +22,32 @@
                 controller: "HomeController as vm"
             })
             .state("root.register-pilot", {
+                abstract: true,
+                template: "<div class='reveal-animation' ui-view></div>",
+            })
+            .state("root.register-pilot.registration", {
                 url: "/register-pilot",
                 templateUrl: "app/registration/register-pilot.html",
                 controller: "RegisterPilotController as vm"
             })
+            .state("root.register-pilot.confirmation", {
+                url: "/register-pilot-confirmation",
+                templateUrl: "app/registration/pilot-confirmation.html",
+                controller: "PilotConfirmationController as vm"
+            })
             .state("root.register-authority", {
+                abstract: true,
+                template: "<div class='reveal-animation' ui-view></div>",
+            })
+            .state("root.register-authority.registration", {
                 url: "/register-authority",
                 templateUrl: "app/registration/register-authority.html",
                 controller: "RegisterAuthorityController as vm"
+            })
+            .state("root.register-authority.confirmation", {
+                url: "/register-authority-confirmation",
+                templateUrl: "app/registration/authority-confirmation.html",
+                controller: "AuthorityConfirmationController as vm"
             })
             .state("root.manage-users", {
                 url: "/manage-users",
