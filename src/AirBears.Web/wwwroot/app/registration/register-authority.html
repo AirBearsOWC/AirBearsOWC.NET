@@ -5,18 +5,20 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="organization">Organization Name <small class="glyphicon glyphicon-question-sign" uib-tooltip="What is the name of the organization in need of Air Bears SAR assistance?"></small></label>
-                    <input id="organization" type="text" class="form-control" required ng-model="vm.registration.organization" />
+                    <input id="organization" name="organization" type="text" class="form-control" required ng-model="vm.registration.organization" />
+                    <div class="help-block validation" ng-show="regForm.organization.$error.required">Organization Name is required.</div>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="phone">Phone Number</label>
-                    <input id="phone" type="text" class="form-control" required ng-model="vm.registration.phoneNumber" />
+                    <input id="phone" name="phone" type="text" class="form-control" required ng-model="vm.registration.phoneNumber" />
+                    <div class="help-block validation" ng-show="regForm.phone.$error.required">Phone Number is required.</div>
                 </div>
             </div>
         </div>
@@ -25,15 +27,17 @@
 
         <div class="row">
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="firstName">Contact First Name</label>
-                    <input id="firstName" type="text" class="form-control" required ng-model="vm.registration.firstName" />
+                    <input id="firstName" name="firstName" type="text" class="form-control" required ng-model="vm.registration.firstName" />
+                    <div class="help-block validation" ng-show="regForm.firstName.$error.required">First Name is required.</div>
                 </div>
             </div>
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="lastName">Contact Last Name</label>
-                    <input id="lastName" type="text" class="form-control" required ng-model="vm.registration.lastName" />
+                    <input id="lastName" name="lastName" type="text" class="form-control" required ng-model="vm.registration.lastName" />
+                    <div class="help-block validation" ng-show="regForm.lastName.$error.required">Last Name is required.</div>
                 </div>
             </div>
         </div>
@@ -43,24 +47,29 @@
 
         <div class="row">
             <div class="col-sm-7">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="email">Email <small class="glyphicon glyphicon-question-sign" uib-tooltip="You will use this email address to sign in to Air Bears."></small></label>
-                    <input id="email" type="email" class="form-control" required ng-model="vm.registration.email" />
+                    <input id="email" name="email" type="email" class="form-control" required ng-model="vm.registration.email" />
+                    <div class="help-block validation" ng-show="regForm.email.$error.required">Email is required.</div>
+                    <div class="help-block validation" ng-show="regForm.email.$error.email">Email must be valid.</div>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="password">Password</label>
-                    <input id="password" type="password" class="form-control" required ng-model="vm.registration.password" />
+                    <input id="password" name="password" type="password" class="form-control" required ng-model="vm.registration.password" />
+                    <div class="help-block validation" ng-show="regForm.password.$error.required">Password is required.</div>
                 </div>
             </div>
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="confirmedPassword">Password Confirmed</label>
-                    <input id="confirmedPassword" type="password" class="form-control" required ng-model="vm.registration.confirmPassword" />
+                    <input id="confirmedPassword" name="confirmedPassword" type="password" class="form-control" required ng-pattern="vm.registration.password" ng-model="vm.registration.confirmPassword" />
+                    <div class="help-block validation" ng-show="regForm.confirmedPassword.$error.required">Confirmed Password is required.</div>
+                    <div class="help-block validation" ng-show="regForm.confirmedPassword.$error.pattern">Passwords don't match.</div>
                 </div>
             </div>
         </div>

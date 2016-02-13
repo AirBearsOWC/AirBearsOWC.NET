@@ -105,6 +105,24 @@ input, select, textarea {
 }
 
 
+
+/*
+    Validation
+*/
+
+.help-block.validation {
+    display: none;
+}
+
+.has-error .help-block.validation {
+    display: block;
+}
+
+.has-error label {
+    color: #a94442;
+}
+
+
 /*
     Modal Overrides
 */

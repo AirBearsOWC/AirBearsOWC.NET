@@ -6,6 +6,7 @@
 /// <reference path="app/auth/auth.service.js" />
 /// <reference path="app/auth/auth-interceptor.service.js" />
 /// <reference path="app/auth/login-modal.controller.js" />
+/// <reference path="app/common/client-validate.directive.js" />
 /// <reference path="app/common/resource.service.js" />
 /// <reference path="app/common/user.service.js" />
 /// <reference path="app/dashboard/home.controller.js" />

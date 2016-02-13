@@ -20,12 +20,11 @@
         }
 
         function submit(isValid) {
-            //if (!isValid) { return; }
+            if (!isValid) { return; }
 
-            //registrationService.registerAuthority(vm.registration).then(function (resp) {
-            //    $state.go("root.register-authority.confirmation", { user: resp.data });
-            //});
-            $state.go("root.register-authority.confirmation", { user: { firstNAme: "Tom" } });
+            registrationService.registerAuthority(vm.registration).then(function (resp) {
+                $state.go("root.register-authority.confirmation", { user: resp.data });
+            });
         }
     }
 })();
