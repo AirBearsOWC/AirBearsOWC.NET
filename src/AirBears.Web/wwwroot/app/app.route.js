@@ -23,7 +23,7 @@
             })
             .state("root.register-pilot", {
                 abstract: true,
-                template: "<div class='reveal-animation' ui-view></div>",
+                templateUrl: "app/registration/pilot-registration-shell.html",
             })
             .state("root.register-pilot.registration", {
                 url: "/register-pilot",
@@ -33,11 +33,14 @@
             .state("root.register-pilot.confirmation", {
                 url: "/register-pilot-confirmation",
                 templateUrl: "app/registration/pilot-confirmation.html",
-                controller: "PilotConfirmationController as vm"
+                controller: "PilotConfirmationController as vm",
+                params: {
+                    user: null
+                }
             })
             .state("root.register-authority", {
                 abstract: true,
-                template: "<div class='reveal-animation' ui-view></div>",
+                templateUrl: "app/registration/authority-registration-shell.html"
             })
             .state("root.register-authority.registration", {
                 url: "/register-authority",
@@ -47,7 +50,10 @@
             .state("root.register-authority.confirmation", {
                 url: "/register-authority-confirmation",
                 templateUrl: "app/registration/authority-confirmation.html",
-                controller: "AuthorityConfirmationController as vm"
+                controller: "AuthorityConfirmationController as vm",
+                params: {
+                    user: null
+                }
             })
             .state("root.manage-users", {
                 url: "/manage-users",

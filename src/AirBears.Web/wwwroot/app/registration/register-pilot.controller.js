@@ -42,8 +42,8 @@
         }
 
         function submit() {
-            registrationService.registerPilot(vm.registration).then(function(data){
-                $state.go("root.register-pilot.confirmation", { user: data });
+            registrationService.registerPilot(vm.registration).then(function(resp){
+                $state.go("root.register-pilot.confirmation", { user: resp.data });
             });
         }
     }

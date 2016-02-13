@@ -6,6 +6,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    padding-bottom: 50px;
 }
 
 input, select, textarea {
@@ -74,6 +75,36 @@ input, select, textarea {
     padding: 6px 20px;
 }
 
+.bg-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 0;
+    background: url('/images/large-bg.png');
+    height: 500px;
+    background-position: 0px -254px;
+}
+
+.vert-margin {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.jumbotron {
+    margin-top: 50px;
+    position: relative;
+    z-index: 10;
+    background: rgba(30,30,30,0.6);
+    color: #fff;
+    text-shadow: 1px 2px #000;
+}
+
+.under-jumbo {
+    margin-top: 190px;
+}
+
+
 /*
     Modal Overrides
 */
@@ -82,4 +113,26 @@ input, select, textarea {
     .modal-dialog {
         margin: 135px auto;
     }
+}
+
+
+/* 
+    Animations
+*/
+
+.reveal-animation.ng-enter {
+    transition: 0.5s ease all;
+    opacity: 0;
+}
+
+.reveal-animation.ng-leave {
+    transition: 0.3s ease all;
+}
+
+.reveal-animation.ng-enter.ng-enter-active {
+    opacity: 1;
+}
+
+.reveal-animation.ng-leave.ng-leave-active {
+    opacity: 0;
 }

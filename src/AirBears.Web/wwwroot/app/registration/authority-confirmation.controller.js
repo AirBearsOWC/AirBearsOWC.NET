@@ -16,7 +16,7 @@
 
         function activate() {
             if (!vm.user) {
-                $state.go("root.authority-pilot.registration");
+                $state.go("root.register-authority.registration");
             }
         }
     }
