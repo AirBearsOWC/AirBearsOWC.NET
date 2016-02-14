@@ -49,6 +49,10 @@
 
             registrationService.registerPilot(vm.registration).then(function(resp){
                 $state.go("root.register-pilot.confirmation", { user: resp.data });
+            },
+            function (resp) {
+                vm.isSubmitting = false;
+                toast.pop("error", "Invalid Registration", "", resp.data);
             });
         }
     }

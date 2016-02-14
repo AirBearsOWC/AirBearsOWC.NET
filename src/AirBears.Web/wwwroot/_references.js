@@ -8,6 +8,7 @@
 /// <reference path="app/auth/login-modal.controller.js" />
 /// <reference path="app/common/client-validate.directive.js" />
 /// <reference path="app/common/resource.service.js" />
+/// <reference path="app/common/toast.service.js" />
 /// <reference path="app/common/user.service.js" />
 /// <reference path="app/dashboard/home.controller.js" />
 /// <reference path="app/layout/shell.controller.js" />

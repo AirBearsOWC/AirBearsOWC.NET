@@ -5,9 +5,9 @@
         .module("app")
         .controller("RegisterAuthorityController", RegisterAuthorityController);
 
-    RegisterAuthorityController.$inject = ["$state", "registrationService"];
+    RegisterAuthorityController.$inject = ["$state", "registrationService", "toast"];
 
-    function RegisterAuthorityController($state, registrationService) {
+    function RegisterAuthorityController($state, registrationService, toast) {
         var vm = this;
 
         vm.registration = {};
@@ -27,6 +27,10 @@
 
             registrationService.registerAuthority(vm.registration).then(function (resp) {
                 $state.go("root.register-authority.confirmation", { user: resp.data });
+            }, 
+            function (resp) {
+                vm.isSubmitting = false;
+                toast.pop("error", "Invalid Registration", "", resp.data);
             });
         }
     }
