@@ -24,6 +24,7 @@
 /// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/angular-animate/angular-animate.js" />
 /// <reference path="lib/angular-bootstrap/ui-bootstrap-tpls.js" />
+/// <reference path="lib/AngularJS-Toaster/toaster.js" />
 /// <reference path="lib/angular-loading-bar/build/loading-bar.js" />
 /// <reference path="lib/angular-ui-router/release/angular-ui-router.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />

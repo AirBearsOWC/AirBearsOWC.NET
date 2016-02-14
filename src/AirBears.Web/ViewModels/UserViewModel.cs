@@ -1,10 +1,13 @@
 ﻿using AirBears.Web.Models;
+using System;
 using System.Collections.Generic;
 
 namespace AirBears.Web.ViewModels
 {
     public class UserViewModel
     {
+        public string Id { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -34,6 +37,8 @@ namespace AirBears.Web.ViewModels
         public bool IsAuthorityAccount { get; set; }
 
         public string TeeShirtSize { get; set; }
+
+        public DateTime? TeeShirtMailedDate { get; set; }
     }
 
     public class IdentityViewModel : UserViewModel

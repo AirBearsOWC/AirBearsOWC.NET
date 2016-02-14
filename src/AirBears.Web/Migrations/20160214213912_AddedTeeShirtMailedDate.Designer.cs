@@ -8,9 +8,10 @@ using AirBears.Web.Models;
 namespace AirBears.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160214213912_AddedTeeShirtMailedDate")]
+    partial class AddedTeeShirtMailedDate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")

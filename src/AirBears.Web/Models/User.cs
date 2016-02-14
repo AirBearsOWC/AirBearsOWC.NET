@@ -14,6 +14,8 @@ namespace AirBears.Web.Models
 
         public Guid? TeeShirtSizeId { get; set; }
 
+        public DateTime? TeeShirtMailedDate { get; set; }
+
         public string Street1 { get; set; }
 
         public string Street2 { get; set; }

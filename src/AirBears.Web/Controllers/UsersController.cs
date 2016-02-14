@@ -9,6 +9,7 @@ using AutoMapper;
 using Microsoft.AspNet.Authorization;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
+using System;
 
 namespace AirBears.Web.Controllers
 {
@@ -61,19 +62,55 @@ namespace AirBears.Web.Controllers
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> GetUser([FromRoute] string id)
         {
-            if (!ModelState.IsValid)
-            {
-                return HttpBadRequest(ModelState);
-            }
+            var user = await _userManager.FindByIdAsync(id);
 
-            var applicationUser = await _context.Users.SingleAsync(m => m.Id == id);
-
-            if (applicationUser == null)
+            if (user == null)
             {
                 return HttpNotFound();
             }
 
-            return Ok(applicationUser);
+            return Ok();
+        }
+
+        // PUT: api/users/5/tee-shirt-mailed
+        [HttpPut("{id}/tee-shirt-mailed", Name = "MarkTeeShirtMailed")]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
+        public async Task<IActionResult> MarkTeeShirtMailed([FromRoute] string id, [FromBody] bool teeShirtMailed)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            user.TeeShirtMailedDate = teeShirtMailed ? DateTime.UtcNow : default(DateTime?);
+            _context.Users.Update(user, GraphBehavior.SingleObject);
+            _context.SaveChanges();
+
+            return Ok(Mapper.Map<UserViewModel>(user));
+        }
+
+        // PUT: /api/users/5/authority-approval
+        [HttpPut("{id}/authority-approval", Name = "Approve Authority")]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
+        public async Task<IActionResult> ApproveAuthority([FromRoute] string id, [FromBody] bool isAuthorityApproved)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            if (await _userManager.IsInRoleAsync(user, Roles.Authority))
+            {
+                return HttpBadRequest($"{user.UserName} already has the {Roles.Authority} role!");
+            }
+
+            await _userManager.AddToRoleAsync(user, Roles.Authority);
+
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)

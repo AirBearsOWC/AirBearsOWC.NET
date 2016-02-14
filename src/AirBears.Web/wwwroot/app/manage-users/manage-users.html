@@ -16,6 +16,7 @@
                         <th>Email</th>
                         <th>Phone</th>
                         <th>User Type</th>
+                        <th>Tee-Shirt Mailed?</th>
                         <th>Approved Authority</th>
                     </tr>
                 </thead>
@@ -27,6 +28,10 @@
                         <td>{{ user.email }}</td>
                         <td>{{ user.phoneNumber }}</td>
                         <td>{{ user.isAuthorityAccount ? "Authority" : "Pilot" }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" ng-hide="user.teeShirtMailedDate" ng-click="vm.markTeeShirtMailed($index, 'true')">Mark Shirt Mailed</button>
+                            <span ng-show="user.teeShirtMailedDate">{{ user.teeShirtMailedDate | date:"MMM dd, yyyy" }}</span>
+                        </td>
                         <td>No</td>
                     </tr>
                 </tbody>

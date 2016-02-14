@@ -13,6 +13,7 @@
 
         service.getCurrentUser = getCurrentUser;
         service.getUsers = getUsers;
+        service.markTeeShirtMailed = markTeeShirtMailed;
 
         return service;
 
@@ -37,6 +38,10 @@
             return $http.get("/api/users").then(function (resp) {
                 return resp.data;
             });
+        }
+
+        function markTeeShirtMailed(userId, isMailed) {
+            return $http.put("/api/users/" + userId + "/tee-shirt-mailed", isMailed);
         }
     }
 })();

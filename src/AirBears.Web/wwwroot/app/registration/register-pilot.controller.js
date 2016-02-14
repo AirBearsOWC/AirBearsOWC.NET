@@ -5,9 +5,9 @@
         .module("app")
         .controller("RegisterPilotController", RegisterPilotController);
 
-    RegisterPilotController.$inject = ["$state", "$uibModal", "resourceService", "registrationService"];
+    RegisterPilotController.$inject = ["$state", "$uibModal", "resourceService", "registrationService", "toast"];
 
-    function RegisterPilotController($state, $uibModal, resourceService, registrationService) {
+    function RegisterPilotController($state, $uibModal, resourceService, registrationService, toast) {
         var vm = this;
 
         vm.states = [];

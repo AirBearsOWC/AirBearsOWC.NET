@@ -80,28 +80,6 @@ namespace AirBears.Web.Controllers
             return Ok(Mapper.Map<UserViewModel>(responseUser));
         }
 
-        // POST: /api/accounts/authority-approval
-        [HttpPost("authority-approval", Name = "Approve Authority")]
-        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IActionResult> ApproveAuthority([FromBody]string username)
-        {
-            var user = await _userManager.FindByEmailAsync(username);
-
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-
-            if(await _userManager.IsInRoleAsync(user, Roles.Authority))
-            {
-                return HttpBadRequest($"{username} already has the {Roles.Authority} role!");
-            }
-
-            await _userManager.AddToRoleAsync(user, Roles.Authority);
-
-            return Ok();
-        }
-
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
