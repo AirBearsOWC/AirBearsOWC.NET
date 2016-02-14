@@ -1,14 +1,8 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Mvc;
 using AirBears.Web.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Authorization;
-using Microsoft.Data.Entity;
 using AirBears.Web.ViewModels;
-using AutoMapper;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System;

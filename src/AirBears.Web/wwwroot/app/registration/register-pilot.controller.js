@@ -13,6 +13,7 @@
         vm.states = [];
         vm.teeShirtSizes = [];
         vm.registration = {};
+        vm.isSubmitting = false;
         vm.openTermsAndConditions = openTermsAndConditions;
         vm.submit = submit;
 
@@ -41,7 +42,11 @@
             });
         }
 
-        function submit() {
+        function submit(isValid) {
+            if (!isValid) { return; }
+
+            vm.isSubmitting = true;
+
             registrationService.registerPilot(vm.registration).then(function(resp){
                 $state.go("root.register-pilot.confirmation", { user: resp.data });
             });

@@ -13,37 +13,41 @@
 </div>
 
 <div class="col-sm-8">
-    <form role="form" novalidate ng-submit="vm.submit()">
+    <form name="regForm" role="form" novalidate ng-submit="vm.submit(regForm.$valid)">
         <h3>Pilot Information</h3>
 
         <div class="row">
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="firstName">First Name</label>
-                    <input id="firstName" type="text" class="form-control" ng-model="vm.registration.firstName" autofocus />
+                    <input id="firstName" name="firstName" type="text" class="form-control" required ng-model="vm.registration.firstName" autofocus />
+                    <div class="help-block validation" ng-show="regForm.firstName.$error.required">First Name is required.</div>
                 </div>
             </div>
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="lastName">Last Name</label>
-                    <input id="lastName" type="text" class="form-control" ng-model="vm.registration.lastName" />
+                    <input id="lastName" name="lastName" type="text" class="form-control" required ng-model="vm.registration.lastName" />
+                    <div class="help-block validation" ng-show="regForm.lastName.$error.required">Last Name is required.</div>
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="phone">Phone Number</label>
-                    <input id="phone" type="text" class="form-control" ng-model="vm.registration.phoneNumber" />
+                    <input id="phone" name="phone" type="text" class="form-control" required ng-model="vm.registration.phoneNumber" />
+                    <div class="help-block validation" ng-show="regForm.phone.$error.required">Phone Number is required.</div>
                 </div>
             </div>
             <div class="col-sm-4">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="teeShirt">T-Shirt Size</label>
-                    <select id="teeShirt" class="form-control" ng-model="vm.registration.teeShirtSizeId" ng-options="t.id as t.name for t in vm.teeShirtSizes">
+                    <select id="teeShirt" name="teeShirt" class="form-control" required ng-model="vm.registration.teeShirtSizeId" ng-options="t.id as t.name for t in vm.teeShirtSizes">
                         <option value="">Select a Size</option>
                     </select>
+                    <div class="help-block validation" ng-show="regForm.teeShirt.$error.required">Shirt Size is required.</div>
                 </div>
             </div>
         </div>
@@ -52,24 +56,29 @@
 
         <div class="row">
             <div class="col-sm-7">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="email">Email <small class="glyphicon glyphicon-question-sign" uib-tooltip="You will use this email address to sign in to Air Bears."></small></label>
-                    <input id="email" type="email" class="form-control" ng-model="vm.registration.email" />
+                    <input id="email" name="email" type="email" class="form-control" required ng-model="vm.registration.email" />
+                    <div class="help-block validation" ng-show="regForm.email.$error.required">Email is required.</div>
+                    <div class="help-block validation" ng-show="regForm.email.$error.email">Email must be valid.</div>
                 </div>
             </div>
         </div>            
 
         <div class="row">
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="password">Password</label>
-                    <input id="password" type="password" class="form-control" ng-model="vm.registration.password" />
+                    <input id="password" name="password" type="password" class="form-control" required ng-model="vm.registration.password" />
+                    <div class="help-block validation" ng-show="regForm.password.$error.required">Password is required.</div>
                 </div>
             </div>
             <div class="col-sm-5">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="confirmedPassword">Password Confirmed</label>
-                    <input id="confirmedPassword" type="password" class="form-control" ng-model="vm.registration.confirmPassword" />
+                    <input id="confirmedPassword" name="confirmedPassword" type="password" class="form-control" required ng-pattern="vm.registration.password" ng-model="vm.registration.confirmPassword" />
+                    <div class="help-block validation" ng-show="regForm.confirmedPassword.$error.required">Confirmed Password is required.</div>
+                    <div class="help-block validation" ng-show="regForm.confirmedPassword.$error.pattern">Passwords don't match.</div>
                 </div>
             </div>
         </div>
@@ -78,37 +87,41 @@
 
         <div class="row">
             <div class="col-sm-6">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="street1">Street</label>
-                    <input id="street1" type="text" class="form-control" placeholder="Street Line 1" ng-model="vm.registration.street1" />
+                    <input id="street1" name="street1" type="text" class="form-control" placeholder="Street Line 1" required ng-model="vm.registration.street1" />
+                    <div class="help-block validation" ng-show="regForm.street1.$error.required">Street is required.</div>
                 </div>
                 <div class="form-group">
-                    <input id="street2" type="text" class="form-control" placeholder="Street Line 2" ng-model="vm.registration.street2" />
+                    <input id="street2" name="street2" type="text" class="form-control" placeholder="Street Line 2" ng-model="vm.registration.street2" />
                 </div>
             </div>
         </div>
 
         <div class="row">
             <div class="col-sm-4">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="city">City</label>
-                    <input id="city" type="text" class="form-control" ng-model="vm.registration.city" />
+                    <input id="city" name="city" type="text" class="form-control" required ng-model="vm.registration.city" />
+                    <div class="help-block validation" ng-show="regForm.street1.$error.required">Street is required.</div>
                 </div>
             </div>
 
             <div class="col-sm-4">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="state">State</label>
-                    <select id="state" class="form-control" ng-model="vm.registration.stateId" ng-options="s.id as s.name for s in vm.states">
+                    <select id="state" name="state" class="form-control" required ng-model="vm.registration.stateId" ng-options="s.id as s.name for s in vm.states">
                         <option value="">Select a State</option>
                     </select>
+                    <div class="help-block validation" ng-show="regForm.state.$error.required">State is required.</div>
                 </div>
             </div>
 
             <div class="col-sm-4">
-                <div class="form-group">
+                <div class="form-group" ab-client-validate>
                     <label for="zip">Zip Code</label>
-                    <input id="zip" type="text" class="form-control" ng-model="vm.registration.zip" />
+                    <input id="zip" name="zip" type="text" class="form-control" required ng-model="vm.registration.zip" />
+                    <div class="help-block validation" ng-show="regForm.zip.$error.required">Zip Code is required.</div>
                 </div>
             </div>
         </div>
@@ -118,14 +131,17 @@
                 <input type="button" class="btn btn-sm btn-default" value="Terms & Conditions" ng-click="vm.openTermsAndConditions()"/>
             </div>
             <div class="col-sm-9">
-                <div class="checkbox" style="top: -5px">
-                    <label><input type="checkbox" ng-model="vm.registration.hasAgreedToTerms"><span uib-tooltip="Checking this box indicates that you have read and agree to the terms and conditions.">I agree to the terms and conditions.</span></label>
+                <div class="form-group" ab-client-validate>
+                    <div class="checkbox" style="top: -5px">
+                        <label><input name="hasAgreedToTerms" type="checkbox" required ng-model="vm.registration.hasAgreedToTerms"><span uib-tooltip="Checking this box indicates that you have read and agree to the terms and conditions.">I agree to the terms and conditions.</span></label>
+                    </div>
+                    <div class="help-block validation" ng-show="regForm.hasAgreedToTerms.$error.required">You must agree to the terms &amp; conditions.</div>
                 </div>
             </div>
         </div>
 
         <div class="form-group">             
-            <input type="submit" class="form-control btn btn-success" value="Pay and Complete Registration" />
+            <input type="submit" class="form-control btn btn-success" value="Pay and Complete Registration" ng-disabled="vm.isSubmitting" />
         </div>
     </form>
 </div>

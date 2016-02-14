@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -13,7 +10,6 @@ using AirBears.Web.Models;
 using AirBears.Web.Services;
 using Newtonsoft.Json.Serialization;
 using System.IdentityModel.Tokens;
-using System.Security.Cryptography;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Newtonsoft.Json;

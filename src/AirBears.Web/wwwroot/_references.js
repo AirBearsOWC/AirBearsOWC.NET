@@ -19,7 +19,6 @@
 /// <reference path="app/registration/register-pilot.controller.js" />
 /// <reference path="app/registration/registration.service.js" />
 /// <reference path="app/registration/terms.controller.js" />
-/// <reference path="js/combined.js" />
 /// <reference path="lib/a0-angular-storage/dist/angular-storage.js" />
 /// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/angular-animate/angular-animate.js" />

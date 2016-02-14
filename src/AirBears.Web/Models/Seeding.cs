@@ -2,15 +2,11 @@
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Migrations;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace AirBears.Web.Models
 {
-    public static class Extensions
+    public static class Seeding
     {
         /// <summary>
         /// Returns true if all database migrations have been applied.
@@ -122,8 +118,7 @@ namespace AirBears.Web.Models
                     new TeeShirtSize { Name = "2XL", SortOrder = 4 },
                     new TeeShirtSize { Name = "3XL", SortOrder = 5 },
                     new TeeShirtSize { Name = "4XL", SortOrder = 6 },
-                    new TeeShirtSize { Name = "5XL", SortOrder = 7 },
-                    new TeeShirtSize { Name = "FF", SortOrder = 8 }
+                    new TeeShirtSize { Name = "5XL", SortOrder = 7 }
                 );
 
                 context.SaveChanges();
@@ -141,18 +136,6 @@ namespace AirBears.Web.Models
 
                 context.SaveChanges();
             }
-        }
-
-        /// <summary>
-        /// Returns all of the user's Role claims or and empty collection if there are none.
-        /// </summary>
-        /// <param name="principal"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> GetRoles(this ClaimsPrincipal principal)
-        {
-            var roles =  principal.FindAll(ClaimTypes.Role);
-
-            return roles.Any() ? roles.Select(r => r.Value) : Enumerable.Empty<string>();
         }
     }
 }
