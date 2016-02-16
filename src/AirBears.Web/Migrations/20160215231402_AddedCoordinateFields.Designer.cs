@@ -8,9 +8,10 @@ using AirBears.Web.Models;
 namespace AirBears.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160215231402_AddedCoordinateFields")]
+    partial class AddedCoordinateFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -60,8 +61,6 @@ namespace AirBears.Web.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired();
-
-                    b.Property<string>("GeocodeAddress");
 
                     b.Property<bool>("HasAgreedToTerms");
 

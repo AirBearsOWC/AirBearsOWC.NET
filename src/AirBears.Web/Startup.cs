@@ -1,20 +1,20 @@
-﻿using System;
+﻿using AirBears.Web.Models;
+using AirBears.Web.Services;
+using Microsoft.AspNet.Authentication.JwtBearer;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Builder;
+using Microsoft.AspNet.Diagnostics;
 using Microsoft.AspNet.Hosting;
+using Microsoft.AspNet.Http;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using AirBears.Web.Models;
-using AirBears.Web.Services;
-using Newtonsoft.Json.Serialization;
-using System.IdentityModel.Tokens;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Authentication.JwtBearer;
 using Newtonsoft.Json;
-using Microsoft.AspNet.Diagnostics;
-using Microsoft.AspNet.Http;
+using Newtonsoft.Json.Serialization;
+using System;
+using System.IdentityModel.Tokens;
 
 namespace AirBears.Web
 {
@@ -92,6 +92,7 @@ namespace AirBears.Web
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+            services.AddTransient<IGeocodeService, GeocodeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

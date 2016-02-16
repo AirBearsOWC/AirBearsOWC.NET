@@ -12,15 +12,15 @@ namespace AirBears.Web.ViewModels
 
         public string LastName { get; set; }
 
+        public string Email { get; set; }
+
+        public string PhoneNumber { get; set; }
+
         public string Street1 { get; set; }
 
         public string Street2 { get; set; }
 
         public string City { get; set; }
-
-        public string Email { get; set; }
-
-        public string PhoneNumber { get; set; }
 
         /// <summary>
         /// State or province depending on the country.
@@ -28,6 +28,12 @@ namespace AirBears.Web.ViewModels
         public State State { get; set; }
 
         public string Zip { get; set; }
+
+        public double? Longitude { get; set; }
+
+        public double? Latitude { get; set; }
+
+        public string GeocodeAddress { get; set; }
 
         public bool HasAgreedToTerms { get; set; }
 

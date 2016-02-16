@@ -70,6 +70,16 @@ namespace AirBears.Web.ViewModels
 
         [MustBeTrue(ErrorMessage = "You must agree to the terms.")]
         public bool HasAgreedToTerms { get; set; }
+
+        public string GetAddress(string state)
+        {
+            if (!string.IsNullOrWhiteSpace(Street2))
+            {
+                return $"{Street1}, {Street2}, {City}, {state} {Zip}";
+            }
+
+            return $"{Street1}, {City}, {state} {Zip}";
+        }
     }
 
     public class AuthorityRegistrationViewModel

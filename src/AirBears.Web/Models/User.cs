@@ -23,11 +23,19 @@ namespace AirBears.Web.Models
         public string City { get; set; }
 
         /// <summary>
-        /// State or province (region) dpending on the country.
+        /// State or province (region) depending on the country.
         /// </summary>
         public Guid? StateId { get; set; }
 
         public string Zip { get; set; }
+
+        public double? Longitude { get; set; }
+
+        public double? Latitude { get; set; }
+
+        public string GeocodeAddress { get; set; }
+
+        //Hoping for DbGeography in EF7 at some point in time...
 
         public bool HasAgreedToTerms { get; set; }
 
