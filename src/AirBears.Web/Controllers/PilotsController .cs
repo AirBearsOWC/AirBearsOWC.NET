@@ -14,41 +14,26 @@ using System;
 namespace AirBears.Web.Controllers
 {
     [Produces("application/json")]
-    [Route("api/users")]
+    [Route("api/pilots")]
     [Authorize(AuthPolicies.Bearer)]
-    public class UsersController : Controller
+    public class PilotsController : Controller
     {
         private readonly AppDbContext _context;
         private readonly UserManager<User> _userManager;
 
-        public UsersController(AppDbContext context, UserManager<User> userManager)
+        public PilotsController(AppDbContext context, UserManager<User> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
-        [Route("/api/me")]
-        [HttpGet]
-        public async Task<IdentityViewModel> GetCurrentUser()
-        {
-            var user = await _context.Users
-                .Include(u => u.TeeShirtSize)
-                .Include(u => u.State)
-                .FirstOrDefaultAsync(u => u.UserName == User.GetUserName());
-
-            var resp = Mapper.Map<IdentityViewModel>(user);
-
-            resp.Roles = User.GetRoles();
-
-            return resp;
-        }
-
-        // GET: api/users
+        // GET: api/pilots
         [HttpGet]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IEnumerable<UserViewModel>> GetUsers()
+        public async Task<IEnumerable<UserViewModel>> GetPilots()
         {
             var users = await _context.Users
+                .Where(u => !u.IsAuthorityAccount)
                 .Include(u => u.TeeShirtSize)
                 .Include(u => u.State)
                 .OrderBy(u => u.LastName)
@@ -57,10 +42,25 @@ namespace AirBears.Web.Controllers
             return Mapper.Map<IEnumerable<UserViewModel>>(users);
         }
 
-        // GET: api/users/5
-        [HttpGet("{id}", Name = "GetUser")]
+        // GET: api/pilots/search?address=
+        [HttpGet("search?address={address}", Name = "Pilot Search")]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin_And_Authority)]
+        public async Task<IEnumerable<UserViewModel>> Search(string address)
+        {
+            var users = await _context.Users
+                .Where(u => !u.IsAuthorityAccount)
+                .Include(u => u.TeeShirtSize)
+                .Include(u => u.State)
+                .OrderBy(u => u.LastName)
+                .ToListAsync();
+
+            return Mapper.Map<IEnumerable<UserViewModel>>(users);
+        }
+
+        // GET: api/pilots/5
+        [HttpGet("{id}", Name = "GetPilot")]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IActionResult> GetUser([FromRoute] string id)
+        public async Task<IActionResult> GetPilot([FromRoute] string id)
         {
             var user = await _userManager.FindByIdAsync(id);
 
@@ -72,10 +72,10 @@ namespace AirBears.Web.Controllers
             return Ok(Mapper.Map<UserViewModel>(user));
         }
 
-        // PUT: /api/users/5/authority-approval
-        [HttpPut("{id}/authority-approval", Name = "Approve Authority")]
+        // PUT: api/pilots/5/tee-shirt-mailed
+        [HttpPut("{id}/tee-shirt-mailed", Name = "MarkTeeShirtMailed")]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IActionResult> ApproveAuthority([FromRoute] string id, [FromBody] bool isAuthorityApproved)
+        public async Task<IActionResult> MarkTeeShirtMailed([FromRoute] string id, [FromBody] bool teeShirtMailed)
         {
             var user = await _userManager.FindByIdAsync(id);
 
@@ -84,14 +84,11 @@ namespace AirBears.Web.Controllers
                 return HttpNotFound();
             }
 
-            if (await _userManager.IsInRoleAsync(user, Roles.Authority))
-            {
-                return HttpBadRequest($"{user.UserName} already has the {Roles.Authority} role!");
-            }
+            user.TeeShirtMailedDate = teeShirtMailed ? DateTime.UtcNow : default(DateTime?);
+            _context.Users.Update(user, GraphBehavior.SingleObject);
+            _context.SaveChanges();
 
-            await _userManager.AddToRoleAsync(user, Roles.Authority);
-
-            return Ok();
+            return Ok(Mapper.Map<UserViewModel>(user));
         }
 
         protected override void Dispose(bool disposing)

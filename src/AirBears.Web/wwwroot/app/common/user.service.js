@@ -41,7 +41,7 @@
         }
 
         function markTeeShirtMailed(userId, isMailed) {
-            return $http.put("/api/users/" + userId + "/tee-shirt-mailed", isMailed);
+            return $http.put("/api/pilots/" + userId + "/tee-shirt-mailed", isMailed);
         }
     }
 })();
