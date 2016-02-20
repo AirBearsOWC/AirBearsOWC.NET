@@ -15,6 +15,10 @@ namespace AirBears.Web
             Mapper.CreateMap<User, IdentityViewModel>()
                 .ForMember(dest => dest.TeeShirtSize, mapper => mapper.MapFrom(src => src.TeeShirtSize.Name));
 
+            Mapper.CreateMap<User, PilotSearchResultViewModel>()
+                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.MapFrom(src => src.TeeShirtSize.Name))
+                .ForMember(dest => dest.Distance, mapper => mapper.Ignore());
+
             Mapper.CreateMap<PilotRegistrationViewModel, User>()
                 .ForMember(dest => dest.UserName, mapper => mapper.MapFrom(src => src.Email))
                 .IgnoreAllNonExisting();

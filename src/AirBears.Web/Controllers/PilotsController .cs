@@ -16,7 +16,7 @@ namespace AirBears.Web.Controllers
 {
     [Produces("application/json")]
     [Route("api/pilots")]
-    //[Authorize(AuthPolicies.Bearer)]
+    [Authorize(AuthPolicies.Bearer)]
     public class PilotsController : Controller
     {
         private readonly AppDbContext _context;
@@ -45,10 +45,10 @@ namespace AirBears.Web.Controllers
             return Mapper.Map<IEnumerable<UserViewModel>>(users);
         }
 
-        // GET: api/pilots/search?address=
+        // GET: api/pilots/search?address=xyz&distance=25
         [HttpGet("search", Name = "Pilot Search")]
         //[Authorize(AuthPolicies.Bearer, Roles = Roles.Admin_And_Authority)]
-        public async Task<IActionResult> Search(string address)
+        public async Task<IActionResult> Search(string address, int distance)
         {
             var coords = await _geocodeService.GetCoordsForAddress(address);
 
@@ -58,12 +58,11 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-
-            //var dapperQuery = "select " + userCols + " from [User]  where " + //....
-            //                                                                  // other search code... 
-            //dapperQuery = dapperQuery + " and " +
-            //    "([LocationLong] > @longMin and [LocationLong] < @longMax and [LocationLat] > @latMin and [LocationLat] < @latMax) and " +
-            //    "((geography::STPointFromText([LocationPoint], 4326).STDistance(@userPoint)) <= @searchRadius)";
+            if(distance > 500)
+            {
+                ModelState.AddModelError("distance", "The distance cannot exceed 1000 miles.");
+                return HttpBadRequest(ModelState);
+            }
 
             //SELECT id, (3959 * acos(cos(radians(37)) * cos(radians(lat))
             //* cos(radians(lng) - radians(-122)) + sin(radians(37)) * sin(radians(lat)))) AS distance
@@ -71,49 +70,22 @@ namespace AirBears.Web.Controllers
             //HAVING distance < 25
             //ORDER BY distance
 
-            //Dim radians = 57.295779513082323
-            //Dim result = (_
-            //    From t1 in Entities.ZipCodeDatas
-            //    From t2 in Entities.ZipCodeDatas
-            //    Where t2.ZipCode = "10001" _
-            //    And 3963.0 * SqlFunctions.Acos(_
-            //        SqlFunctions.Sin(t1.Latitude / (radians)) _
-            //        * SqlFunctions.Sin(t2.Latitude / (57.295779513082323)) _
-            //        + SqlFunctions.Cos(t1.Latitude / (radians)) _
-            //        * SqlFunctions.Cos(t2.Latitude / (radians)) _
-            //        * SqlFunctions.Cos(t2.Longitude / (radians) - t1.Longitude / (radians)) _
-            //    ) < 100
-            //    Select New With {
-            //                _
-            //  ZipCodeDatas = t1, _
-            //        DistanceInMiles = 3963.0 * SqlFunctions.Acos(_
-            //            SqlFunctions.Sin(t1.Latitude / (@radians)) _
-            //            * SqlFunctions.Sin(t2.Latitude / (57.295779513082323)) _
-            //            + SqlFunctions.Cos(t1.Latitude / (@radians)) _
-            //            * SqlFunctions.Cos(t2.Latitude / (@radians)) _
-            //            * SqlFunctions.Cos(t2.Longitude / (@radians) - t1.Longitude / (@radians)) _
-            //        )
-            //    }
-            //).OrderBy(o => o.DistanceInMiles)
+            var sqlQuery = "SELECT * FROM dbo.AspNetUsers "
+                + $"WHERE (3959 * acos(cos(radians({coords.Latitude})) * cos(radians(Latitude)) "
+                + $"* cos(radians(Longitude) - radians({coords.Longitude})) + sin(radians({coords.Latitude})) * sin(radians(Latitude)))) < {distance}";
 
-            var sqlQuery = "SELECT * FROM dbo.AspNetUsers WHERE (3959 * acos(cos(radians(" + coords.Latitude + ")) * cos(radians(Latitude)) "
-            + "* cos(radians(Longitude) - radians(" + coords.Longitude + ")) + sin(radians(" + coords.Latitude + ")) * sin(radians(Latitude)))) < 25";
-            var users = _context.Users.FromSql(sqlQuery).ToList();
+            var results = _context.Users.FromSql(sqlQuery).ToList();
+            var users = Mapper.Map<List<PilotSearchResultViewModel>>(results);
 
-            //var users = await _context.Users.Select(u => new
-            //{
-            //    Firstname = u.FirstName,
-            //    Distance = Math.Acos(Math.Cos(coords.Latitude) * u.)
-            //}).ToListAsync();
+            users.ForEach(u =>
+            {
+                u.Distance = (3959 *
+                    Math.Acos((Math.Cos(coords.Latitude.ToRadians())) * Math.Cos(u.Latitude.Value.ToRadians()) *
+                    Math.Cos(u.Longitude.Value.ToRadians() - coords.Longitude.ToRadians()) +
+                    Math.Sin(coords.Latitude.ToRadians()) * Math.Sin(u.Latitude.Value.ToRadians())));
+            });
 
-            //var users = await _context.Users
-            //    .Where(u => !u.IsAuthorityAccount)
-            //    .Include(u => u.TeeShirtSize)
-            //    .Include(u => u.State)
-            //    .OrderBy(u => u.LastName)
-            //    .ToListAsync();
-
-            return Ok(Mapper.Map<IEnumerable<UserViewModel>>(users));
+            return Ok(users.OrderBy(u => u.Distance));
         }
 
         // GET: api/pilots/5

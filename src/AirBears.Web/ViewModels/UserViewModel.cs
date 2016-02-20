@@ -51,4 +51,12 @@ namespace AirBears.Web.ViewModels
     {
         public IEnumerable<string> Roles { get; set; }
     }
+
+    public class PilotSearchResultViewModel : UserViewModel
+    {
+        /// <summary>
+        /// Distance in miles from the search address.
+        /// </summary>
+        public double Distance { get; set; }
+    }
 }

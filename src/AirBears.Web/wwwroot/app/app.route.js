@@ -55,6 +55,11 @@
                     user: null
                 }
             })
+            .state("root.pilot-search", {
+                url: "/pilot-search",
+                templateUrl: "app/pilot-search/pilot-search.html",
+                controller: "PilotSearchController as vm"
+            })
             .state("root.manage-users", {
                 url: "/manage-users",
                 templateUrl: "app/manage-users/manage-users.html",

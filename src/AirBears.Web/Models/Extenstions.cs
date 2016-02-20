@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
@@ -16,6 +17,16 @@ namespace AirBears.Web.Models
             var roles = principal.FindAll(ClaimTypes.Role);
 
             return roles.Any() ? roles.Select(r => r.Value) : Enumerable.Empty<string>();
+        }
+
+        /// <summary>
+        /// Convert to Radians.
+        /// </summary>
+        /// <param name="val">The value to convert to radians</param>
+        /// <returns>The value in radians</returns>
+        public static double ToRadians(this double val)
+        {
+            return (Math.PI / 180) * val;
         }
     }
 }
