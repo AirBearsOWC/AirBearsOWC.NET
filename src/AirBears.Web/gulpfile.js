@@ -26,6 +26,7 @@ paths.thirdPartyJs = [
     paths.webroot + "lib/angular-bootstrap/ui-bootstrap.js",
     paths.webroot + "lib/angular-bootstrap/ui-bootstrap-tpls.js",
     paths.webroot + "lib/angular-loading-bar/build/loading-bar.js",
+    paths.webroot + "lib/angular-google-places-autocomplete/dist/autocomplete.min.js",
     paths.webroot + "lib/angularjs-toaster/toaster.js",
     paths.webroot + "lib/angular-ui-router/release/angular-ui-router.js",
     paths.webroot + "lib/jquery/dist/jquery.js",
@@ -34,6 +35,7 @@ paths.thirdPartyJs = [
 
 paths.thirdPartyCss = [
     paths.webroot + "lib/angular-loading-bar/build/loading-bar.css",
+    paths.webroot + "lib/angular-google-places-autocomplete/dist/autocomplete.min.css",
     paths.webroot + "lib/angularjs-toaster/toaster.css",
     paths.webroot + "lib/bootstrap/dist/css/bootstrap.css"
 ];

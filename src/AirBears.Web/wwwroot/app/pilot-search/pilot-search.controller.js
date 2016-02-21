@@ -36,7 +36,9 @@
             
             vm.isSearching = true;
 
-            pilotService.search(vm.address, vm.distance.value).then(function (resp) {
+            var address = angular.isObject(vm.address) ? vm.address.formatted_address : vm.address;
+
+            pilotService.search(address, vm.distance.value).then(function (resp) {
                 vm.results = resp.data;
                 vm.isSearching = false;
             }, 
