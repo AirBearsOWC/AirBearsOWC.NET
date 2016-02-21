@@ -7,6 +7,7 @@
          "ngAnimate",
          "toaster",
          "google.places",
+         "uiGmapgoogle-maps",
          "angular-loading-bar",
          "angular-storage"
     ]);

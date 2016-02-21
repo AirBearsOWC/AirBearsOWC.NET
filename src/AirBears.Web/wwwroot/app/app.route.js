@@ -5,9 +5,9 @@
         .module("app")
         .config(configureRoutes);
 
-    configureRoutes.$inject = ["$stateProvider", "$urlRouterProvider", "$httpProvider"];
+    configureRoutes.$inject = ["$stateProvider", "$urlRouterProvider", "$httpProvider", "uiGmapGoogleMapApiProvider"];
 
-    function configureRoutes($stateProvider, $urlRouterProvider, $httpProvider) {
+    function configureRoutes($stateProvider, $urlRouterProvider, $httpProvider, uiGmapGoogleMapApiProvider) {
         $urlRouterProvider.otherwise("/");
 
         $stateProvider
@@ -67,5 +67,12 @@
             });
 
         $httpProvider.interceptors.push("authInterceptor");
+
+        uiGmapGoogleMapApiProvider.configure({
+            // https://github.com/angular-ui/angular-google-maps/blob/master/src/coffee/providers/map-loader.coffee#L84
+            //    key: "your api key",
+            //v: "3.20", //defaults to latest 3.X anyhow
+            //libraries: "weather,geometry,visualization"
+        });
     }
 })();

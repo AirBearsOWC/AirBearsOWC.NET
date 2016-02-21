@@ -45,11 +45,54 @@ namespace AirBears.Web.Controllers
             return Mapper.Map<IEnumerable<UserViewModel>>(users);
         }
 
-        // GET: api/pilots/search?address=xyz&distance=25
+        private async Task<IEnumerable<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude)
+        {
+            var sqlQuery = "SELECT * FROM dbo.AspNetUsers "
+               + $"WHERE (3959 * acos(cos(radians({latitude})) * cos(radians(Latitude)) "
+               + $"* cos(radians(Longitude) - radians({longitude})) + sin(radians({latitude})) * sin(radians(Latitude)))) < {distance}";
+
+            var results = _context.Users.FromSql(sqlQuery).ToList();
+            var users = Mapper.Map<List<PilotSearchResultViewModel>>(results);
+
+            users.ForEach(u =>
+            {
+                u.Distance = (3959 *
+                    Math.Acos((Math.Cos(latitude.ToRadians())) * Math.Cos(u.Latitude.Value.ToRadians()) *
+                    Math.Cos(u.Longitude.Value.ToRadians() - longitude.ToRadians()) +
+                    Math.Sin(latitude.ToRadians()) * Math.Sin(u.Latitude.Value.ToRadians())));
+            });
+
+            return users.OrderBy(u => u.Distance);
+        }
+
+        /// <summary>
+        /// Returns a list of pilots that are within a particular distance (in miles) from the address or coordinates.
+        /// </summary>
+        /// <returns></returns>
+        // GET: api/pilots/search?address=xyz&distance=25&latitude=10&longitude=-5.5
         [HttpGet("search", Name = "Pilot Search")]
         //[Authorize(AuthPolicies.Bearer, Roles = Roles.Admin_And_Authority)]
-        public async Task<IActionResult> Search(string address, int distance)
+        public async Task<IActionResult> Search(string address, int distance, double? latitude, double? longitude)
         {
+            if (distance > 1000)
+            {
+                ModelState.AddModelError("distance", "The distance cannot exceed 1000 miles.");
+                return HttpBadRequest(ModelState);
+            }
+
+            // If lat/lng were provided, us them to perform the distance query.
+            if(latitude.HasValue && longitude.HasValue)
+            {
+                return Ok(await FindPilotsWithinRadius(distance, latitude.Value, longitude.Value));
+            }
+
+            if (string.IsNullOrWhiteSpace(address))
+            {
+                ModelState.AddModelError("address", "Address or coordinates are required.");
+                return HttpBadRequest(ModelState);
+            }
+
+            // Otherwise we have to ask the Geocode service to find the lat/lng for the given address.
             var coords = await _geocodeService.GetCoordsForAddress(address);
 
             if (coords.Status != GeocodeResponseStatus.OK)
@@ -58,34 +101,7 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            if(distance > 500)
-            {
-                ModelState.AddModelError("distance", "The distance cannot exceed 1000 miles.");
-                return HttpBadRequest(ModelState);
-            }
-
-            //SELECT id, (3959 * acos(cos(radians(37)) * cos(radians(lat))
-            //* cos(radians(lng) - radians(-122)) + sin(radians(37)) * sin(radians(lat)))) AS distance
-            //FROM markers
-            //HAVING distance < 25
-            //ORDER BY distance
-
-            var sqlQuery = "SELECT * FROM dbo.AspNetUsers "
-                + $"WHERE (3959 * acos(cos(radians({coords.Latitude})) * cos(radians(Latitude)) "
-                + $"* cos(radians(Longitude) - radians({coords.Longitude})) + sin(radians({coords.Latitude})) * sin(radians(Latitude)))) < {distance}";
-
-            var results = _context.Users.FromSql(sqlQuery).ToList();
-            var users = Mapper.Map<List<PilotSearchResultViewModel>>(results);
-
-            users.ForEach(u =>
-            {
-                u.Distance = (3959 *
-                    Math.Acos((Math.Cos(coords.Latitude.ToRadians())) * Math.Cos(u.Latitude.Value.ToRadians()) *
-                    Math.Cos(u.Longitude.Value.ToRadians() - coords.Longitude.ToRadians()) +
-                    Math.Sin(coords.Latitude.ToRadians()) * Math.Sin(u.Latitude.Value.ToRadians())));
-            });
-
-            return Ok(users.OrderBy(u => u.Distance));
+            return Ok(await FindPilotsWithinRadius(distance, coords.Latitude, coords.Longitude));
         }
 
         // GET: api/pilots/5

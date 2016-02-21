@@ -11,7 +11,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label for="address">Address</label>
-                                <input id="address" name="address" type="text" g-places-autocomplete class="form-control" required ng-model="vm.address" />
+                                <input id="address" name="address" type="text" class="form-control" required autocomplete="off" g-places-autocomplete ng-model="vm.address" />
                                 <!--<div class="help-block validation" ng-show="regForm.organization.$error.required">Organization Name is required.</div>-->
                             </div>
                         </div>
@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="panel panel-default" ng-show="vm.results.length > 0">
+        <div class="panel panel-default" ng-show="vm.results">
             <div class="panel-heading">
                 <h2 class="panel-title">Nearby Pilots</h2>
             </div>
@@ -44,14 +44,37 @@
                     <br />
                     <em>{{ pilot.email }}</em>
                 </li>
+                <li class="list-group-item" ng-show="vm.results.length === 0">
+                    No pilots were found. Try expanding your search distance.
+                </li>
             </ul>
         </div>
 
     </div>
 
     <div class="col-sm-7">
-
+        <ui-gmap-google-map ng-show="vm.map && vm.results" center="vm.map.center" zoom="vm.map.zoom">
+            <ui-gmap-marker ng-repeat="pilot in vm.results"
+                            idkey="pilot.id"
+                            click="vm.toggleMarkerWindow()"
+                            coords="{ latitude: pilot.latitude, longitude: pilot.longitude }" 
+                            options="vm.markerOptions">
+                <ui-gmap-window options="vm.windowOptions" closeClick="vm.closeMarkerWindow()">
+                    <div>
+                        <p>
+                            <strong>{{ pilot.firstName }} {{ pilot.lastName }}</strong>
+                        </p>
+                        <span><i class="glyphicon glyphicon-envelope"></i> {{ pilot.email }}</span><br />
+                        <span><i class="glyphicon glyphicon-phone-alt"></i> {{ pilot.phoneNumber }}</span>
+                    </div>
+                </ui-gmap-window>
+            </ui-gmap-marker>
+        </ui-gmap-google-map>
     </div>
 </div>
+
+<style>
+    .angular-google-map-container { height: 450px; width: 100%; }
+</style>
 
 
