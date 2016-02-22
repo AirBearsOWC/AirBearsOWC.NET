@@ -68,8 +68,10 @@
                 address = null;
 
                 var radius = (vm.distance.value / 3963.1676) * 6378100;
+                var scale = radius / 500;
+                var zoomLevel = Math.round(16.5 - Math.log(scale) / Math.log(2)) - 1;
 
-                vm.map = { center: { latitude: lat, longitude: lng }, zoom: 10 };
+                vm.map = { center: { latitude: lat, longitude: lng }, zoom: zoomLevel };
                 vm.circle = {
                     center: {
                         latitude: lat,
