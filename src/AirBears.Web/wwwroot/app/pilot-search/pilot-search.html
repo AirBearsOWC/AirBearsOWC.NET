@@ -54,6 +54,7 @@
 
     <div class="col-sm-7">
         <ui-gmap-google-map ng-show="vm.map && vm.results" center="vm.map.center" zoom="vm.map.zoom">
+            <ui-gmap-circle center="vm.circle.center" stroke="vm.circle.stroke" fill="vm.circle.fill" radius="vm.circle.radius"></ui-gmap-circle>
             <ui-gmap-marker ng-repeat="pilot in vm.results"
                             idkey="pilot.id"
                             click="vm.toggleMarkerWindow()"

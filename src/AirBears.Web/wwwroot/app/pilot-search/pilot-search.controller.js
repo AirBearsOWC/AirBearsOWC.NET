@@ -62,12 +62,30 @@
 
             //var address = angular.isObject(vm.address) ? vm.address.formatted_address : vm.address;
 
-            if (angular.isObject(vm.address)){
+            if (angular.isObject(vm.address)) {
                 lat = vm.address.geometry.location.lat();
                 lng = vm.address.geometry.location.lng();
                 address = null;
 
-                vm.map = { center: { latitude: lat, longitude: lng }, zoom: 8 };
+                var radius = (vm.distance.value / 3963.1676) * 6378100;
+
+                vm.map = { center: { latitude: lat, longitude: lng }, zoom: 10 };
+                vm.circle = {
+                    center: {
+                        latitude: lat,
+                        longitude: lng
+                    },
+                    radius: radius,
+                    stroke: {
+                        color: "#08B21F",
+                        weight: 1,
+                        opacity: 0.5
+                    },
+                    fill: {
+                        color: "#08B21F",
+                        opacity: 0.2
+                    }
+                };
             }
 
             pilotService.search(address, vm.distance.value, lat, lng).then(function (resp) {
