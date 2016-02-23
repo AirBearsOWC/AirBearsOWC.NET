@@ -38,7 +38,7 @@
                 <h2 class="panel-title">Nearby Pilots</h2>
             </div>
             <ul class="list-group">
-                 <li class="list-group-item" ng-repeat="pilot in vm.results">
+                 <li class="list-group-item" ng-repeat="pilot in vm.results" ng-click="vm.selectPilot(pilot)">
                     <strong>{{ pilot.firstName }} {{ pilot.lastName }}</strong>
                     <span class="badge">{{ pilot.distance | number:2 }} miles</span>
                     <br />
@@ -58,6 +58,7 @@
             <ui-gmap-marker ng-repeat="pilot in vm.results"
                             idkey="pilot.id"
                             click="vm.toggleMarkerWindow()"
+                            control="vm.markerControl"
                             coords="{ latitude: pilot.latitude, longitude: pilot.longitude }" 
                             options="vm.markerOptions">
                 <ui-gmap-window options="vm.windowOptions" closeClick="vm.closeMarkerWindow()">

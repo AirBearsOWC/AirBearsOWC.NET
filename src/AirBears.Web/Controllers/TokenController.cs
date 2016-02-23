@@ -37,15 +37,13 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
+            //var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
+            var user = await _userManager.FindByNameAsync(model.Email);
 
-            // Obviously, at this point you need to validate the username and password against whatever system you wish.
-            if (result.Succeeded)
+            if (await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                DateTime? expires = DateTime.UtcNow.AddDays(5);
-                var token = GetToken(expires);
-
-                //return new { authenticated = true, entityId = 1, token = token, tokenExpires = expires };
+                var expires = DateTime.UtcNow.AddDays(5);
+                var token = await GetToken(model.Email, expires);
 
                 return Ok(new { authenticated = true, token = token, tokenExpires = expires });
             }
@@ -53,18 +51,18 @@ namespace AirBears.Web.Controllers
             return HttpBadRequest("Invalid login attempt.");
         }
 
-        private async Task<string> GetToken(DateTime? expires)
+        private async Task<string> GetToken(string username, DateTime? expires)
         {
             var handler = new JwtSecurityTokenHandler();
-            var user = await _userManager.FindByIdAsync(User.GetUserId());
+            var user = await _userManager.FindByNameAsync(username);
 
             var identity = User.Identity as ClaimsIdentity;
-            //var roles = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
 
-            //foreach (var r in roles) identity.AddClaim(new Claim(ClaimTypes.Role, r));
+            foreach (var r in roles) identity.AddClaim(new Claim(ClaimTypes.Role, r));
 
-            //identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
-            //identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, user.Id));
+            identity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
             identity.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
             identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
 

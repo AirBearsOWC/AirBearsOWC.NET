@@ -27,21 +27,6 @@ namespace AirBears.Web.Controllers
             _geocodeService = geocodeService;
         }
 
-        [HttpGet("lookup-address", Name = "Lookup Address")]
-        [AllowAnonymous]
-        public async Task<IActionResult> LookupAddress(string address)
-        {
-            var result = await _geocodeService.GetCoordsForAddress(address);
-
-            if (result.Status != GeocodeResponseStatus.OK)
-            {
-                ModelState.AddModelError("", result.Status.ToString());
-                return HttpBadRequest(ModelState);
-            }
-
-            return Ok(new { Longitude = result.Longitude, Latitude = result.Latitude });
-        }
-
         // POST: /api/accounts/pilot-registration
         [HttpPost("pilot-registration", Name = "Register Pilot")]
         [AllowAnonymous]

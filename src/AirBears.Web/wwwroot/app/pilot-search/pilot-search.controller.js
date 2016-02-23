@@ -31,16 +31,23 @@
         vm.windowOptions = {
             visible: false
         };
+        vm.markerControl = {};
         vm.isSearching = false;
 
         vm.toggleMarkerWindow = toggleMarkerWindow;
         vm.closeMarkerWindow = closeMarkerWindow;
+        vm.selectPilot = selectPilot;
         vm.search = search;
 
         activate();
 
         function activate() {
+            // Set default distance to 10 miles.
             vm.distance = vm.distances[2];
+        }
+
+        function selectPilot(pilot) {
+            var markers = vm.markerControl.getGMarkers();
         }
 
         function toggleMarkerWindow() {
