@@ -22,20 +22,9 @@
             { value: 500, name: "500 miles" },
             { value: 1000, name: "1000 miles" }
         ];
-        vm.markerOptions = {
-            icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 4
-            }
-        };
-        vm.windowOptions = {
-            visible: false
-        };
-        vm.markerControl = {};
         vm.isSearching = false;
 
         vm.toggleMarkerWindow = toggleMarkerWindow;
-        vm.closeMarkerWindow = closeMarkerWindow;
         vm.selectPilot = selectPilot;
         vm.search = search;
 
@@ -47,15 +36,11 @@
         }
 
         function selectPilot(pilot) {
-            var markers = vm.markerControl.getGMarkers();
+            pilot.show = !pilot.show;
         }
 
-        function toggleMarkerWindow() {
-            vm.windowOptions.visible = !vm.windowOptions.visible;
-        };
-
-        function closeMarkerWindow() {
-            vm.windowOptions.visible = false;
+        function toggleMarkerWindow(marker, eventName, model) {
+            selectPilot(model);
         };
 
         function search(isValid) {
@@ -98,6 +83,14 @@
             }
 
             pilotService.search(address, vm.distance.value, lat, lng).then(function (resp) {
+                //angular.forEach(resp.data, function (pilot) {
+                //    pilot.options = {
+                //        icon: {
+                //            path: google.maps.SymbolPath.CIRCLE,
+                //            scale: 4
+                //        }
+                //    };
+                //});
                 vm.results = resp.data;
                 vm.isSearching = false;
             }, 

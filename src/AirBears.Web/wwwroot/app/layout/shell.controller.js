@@ -18,7 +18,9 @@
         activate();
 
         function activate() {
-            getCurrentUser();
+            if (authService.getAuthToken()) {
+                getCurrentUser();
+            }
         }
 
         function openRegistationOptions() {

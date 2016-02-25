@@ -13,6 +13,7 @@
 
         service.authenticate = authenticate;
         service.logout = logout;
+        service.getAuthToken = getAuthToken;
 
         return service;
 
@@ -27,6 +28,10 @@
 
         function logout() {
             store.remove("auth_token");
+        }
+
+        function getAuthToken() {
+            return store.get("auth_token");
         }
     }
 })();

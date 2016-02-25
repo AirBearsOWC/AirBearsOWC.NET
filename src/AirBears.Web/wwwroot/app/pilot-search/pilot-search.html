@@ -38,7 +38,7 @@
                 <h2 class="panel-title">Nearby Pilots</h2>
             </div>
             <ul class="list-group">
-                 <li class="list-group-item" ng-repeat="pilot in vm.results" ng-click="vm.selectPilot(pilot)">
+                <li class="list-group-item" ng-repeat="pilot in vm.results" ng-click="vm.selectPilot(pilot)" ng-class="{ active: pilot.show }">
                     <strong>{{ pilot.firstName }} {{ pilot.lastName }}</strong>
                     <span class="badge">{{ pilot.distance | number:2 }} miles</span>
                     <br />
@@ -55,28 +55,23 @@
     <div class="col-sm-7">
         <ui-gmap-google-map ng-show="vm.map && vm.results" center="vm.map.center" zoom="vm.map.zoom">
             <ui-gmap-circle center="vm.circle.center" stroke="vm.circle.stroke" fill="vm.circle.fill" radius="vm.circle.radius"></ui-gmap-circle>
-            <ui-gmap-marker ng-repeat="pilot in vm.results"
-                            idkey="pilot.id"
-                            click="vm.toggleMarkerWindow()"
-                            control="vm.markerControl"
-                            coords="{ latitude: pilot.latitude, longitude: pilot.longitude }" 
-                            options="vm.markerOptions">
-                <ui-gmap-window options="vm.windowOptions" closeClick="vm.closeMarkerWindow()">
-                    <div>
+            <ui-gmap-markers models="vm.results" coords="'self'" options="'options'" click="vm.toggleMarkerWindow">
+                <ui-gmap-windows show="show">
+                    <div ng-non-bindable>
                         <p>
-                            <strong>{{ pilot.firstName }} {{ pilot.lastName }}</strong>
+                            <strong>{{ firstName }} {{ lastName }}</strong>
                         </p>
-                        <span><i class="glyphicon glyphicon-envelope"></i> {{ pilot.email }}</span><br />
-                        <span><i class="glyphicon glyphicon-phone-alt"></i> {{ pilot.phoneNumber }}</span>
+                        <span><i class="glyphicon glyphicon-envelope"></i> {{ email }}</span><br />
+                        <span><i class="glyphicon glyphicon-phone-alt"></i> {{ phoneNumber }}</span>
                     </div>
-                </ui-gmap-window>
-            </ui-gmap-marker>
+                </ui-gmap-windows>
+            </ui-gmap-markers>
         </ui-gmap-google-map>
     </div>
 </div>
 
 <style>
-    .angular-google-map-container { height: 450px; width: 100%; }
+    .angular-google-map-container { height: 500px; width: 100%; }
 </style>
 
 
