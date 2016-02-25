@@ -5,11 +5,12 @@
         .module("app")
         .controller("PilotSearchController", PilotSearchController);
 
-    PilotSearchController.$inject = ["pilotService", "toast"];
+    PilotSearchController.$inject = ["pilotService", "toast", "authService", "userService"]; 
 
-    function PilotSearchController(pilotService, toast) {
+    function PilotSearchController(pilotService, toast, authService, userService) {
         var vm = this;
 
+        vm.user = null;
         vm.results = null;
         vm.distances = [
             { value: 1, name: "1 mile" },
@@ -33,6 +34,9 @@
         function activate() {
             // Set default distance to 10 miles.
             vm.distance = vm.distances[2];
+            if (authService.getAuthToken()) {
+                getCurrentUser();
+            }
         }
 
         function selectPilot(pilot) {
@@ -97,6 +101,12 @@
             function (resp) {
                 vm.isSearching = false;
                 toast.pop("error", "Search Error", "", resp.data);
+            });
+        }
+
+        function getCurrentUser() {
+            return userService.getCurrentUser().then(function (user) {
+                vm.user = user;
             });
         }
     }

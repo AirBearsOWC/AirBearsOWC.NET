@@ -39,6 +39,11 @@ namespace AirBears.Web.Models
 
         public bool HasAgreedToTerms { get; set; }
 
+        /// <summary>
+        /// Identifies an account as an authority account, regardless if the account has been granted the Authority role.
+        /// </summary>
+        public bool IsAuthorityAccount { get; set; }
+
         #region Lazy Properties
 
         public virtual TeeShirtSize TeeShirtSize { get; set; }
@@ -47,13 +52,6 @@ namespace AirBears.Web.Models
         /// State or province depending on the country.
         /// </summary>
         public virtual State State { get; set; }
-
-        //public virtual Country Country { get; set; }
-
-        /// <summary>
-        /// Identifies an account as an authority account, regardless if the account has been granted the Authority role.
-        /// </summary>
-        public bool IsAuthorityAccount { get; set; }
 
         #endregion
     }

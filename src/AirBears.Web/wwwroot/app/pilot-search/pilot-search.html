@@ -27,7 +27,12 @@
                     </div>
 
                     <div class="form-group">
-                        <button type="submit" class="form-control btn btn-success" ng-disabled="vm.isSearching"><i class="glyphicon glyphicon-search"></i> Search</button>
+                        <button type="submit" class="form-control btn btn-success" 
+                                ng-disabled="vm.isSearching"
+                                uib-tooltip="Only available to Air Bears members. Log in or register to use pilot search."
+                                tooltip-enable="!vm.user">
+                            <i class="glyphicon glyphicon-search"></i> Search
+                        </button>
                     </div>
                 </form>
             </div>
@@ -53,7 +58,7 @@
     </div>
 
     <div class="col-sm-7">
-        <ui-gmap-google-map ng-show="vm.map && vm.results" center="vm.map.center" zoom="vm.map.zoom">
+        <ui-gmap-google-map ng-show="vm.map && vm.results && vm.user" center="vm.map.center" zoom="vm.map.zoom">
             <ui-gmap-circle center="vm.circle.center" stroke="vm.circle.stroke" fill="vm.circle.fill" radius="vm.circle.radius"></ui-gmap-circle>
             <ui-gmap-markers models="vm.results" coords="'self'" options="'options'" click="vm.toggleMarkerWindow">
                 <ui-gmap-windows show="show">
@@ -67,6 +72,11 @@
                 </ui-gmap-windows>
             </ui-gmap-markers>
         </ui-gmap-google-map>
+
+        <div ng-hide="vm.user">
+            <p>Use the Air Bears search tool to locate SAR pilots.</p>
+            <p>The Air Bears pilot database is only available to registered members. Log in or register to begin searching.</p>
+        </div>
     </div>
 </div>
 
