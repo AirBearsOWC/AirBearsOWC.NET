@@ -60,6 +60,7 @@
         function getCurrentUser() {
             return userService.getCurrentUser().then(function (user) {
                 vm.user = user;
+                return user;
             });
         }
     }

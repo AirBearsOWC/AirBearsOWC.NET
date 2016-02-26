@@ -5,9 +5,9 @@
         .module("app")
         .controller("PilotSearchController", PilotSearchController);
 
-    PilotSearchController.$inject = ["pilotService", "toast", "authService", "userService"]; 
+    PilotSearchController.$inject = ["$scope", "pilotService", "toast", "authService", "userService"]; 
 
-    function PilotSearchController(pilotService, toast, authService, userService) {
+    function PilotSearchController($scope, pilotService, toast, authService, userService) {
         var vm = this;
 
         vm.user = null;
@@ -37,6 +37,10 @@
             if (authService.getAuthToken()) {
                 getCurrentUser();
             }
+
+            authService.onLogin($scope, function () {
+                getCurrentUser();
+            });
         }
 
         function selectPilot(pilot) {
