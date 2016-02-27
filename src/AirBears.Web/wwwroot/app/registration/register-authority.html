@@ -67,9 +67,9 @@
             <div class="col-sm-5">
                 <div class="form-group" ab-client-validate>
                     <label for="confirmedPassword">Password Confirmed</label>
-                    <input id="confirmedPassword" name="confirmedPassword" type="password" class="form-control" required ng-pattern="vm.registration.password" ng-model="vm.registration.confirmPassword" />
+                    <input id="confirmedPassword" name="confirmedPassword" type="password" class="form-control" required ab-compare-to="vm.registration.password" ng-model="vm.registration.confirmPassword" />
                     <div class="help-block validation" ng-show="regForm.confirmedPassword.$error.required">Confirmed Password is required.</div>
-                    <div class="help-block validation" ng-show="regForm.confirmedPassword.$error.pattern">Passwords don't match.</div>
+                    <div class="help-block validation" ng-show="regForm.confirmedPassword.$error.compareTo">Passwords don't match.</div>
                 </div>
             </div>
         </div>
