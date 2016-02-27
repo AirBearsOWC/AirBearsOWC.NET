@@ -68,7 +68,11 @@
         <div class="row">
             <div class="col-sm-5">
                 <div class="form-group" ab-client-validate>
-                    <label for="password">Password</label>
+                    <label for="password">
+                        Password
+                        <small class="glyphicon glyphicon-question-sign"
+                               uib-tooltip="Must be at least 6 characters. Must use both uppercase and lowercase letters. Must contain at least one number and one special character."></small>
+                    </label>
                     <input id="password" name="password" type="password" class="form-control" required ng-model="vm.registration.password" />
                     <div class="help-block validation" ng-show="regForm.password.$error.required">Password is required.</div>
                 </div>
