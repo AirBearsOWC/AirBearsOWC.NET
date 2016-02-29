@@ -38,9 +38,12 @@
   "frameworks": {
     "dnx451": {
       "frameworkAssemblies": {
+      },
+      "dependencies": {
+        "MimeKit": "1.3.0-beta1",
+        "MailKit": "1.3.0-beta1"
       }
-    },
-    "dnxcore50": { }
+    }
   },
 
   "exclude": [

@@ -18,13 +18,15 @@ namespace AirBears.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IGeocodeService _geocodeService;
+        private readonly IMailer _mailer;
 
-        public AccountsController(AppDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, IGeocodeService geocodeService)
+        public AccountsController(AppDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, IGeocodeService geocodeService, IMailer mailer)
         {
             _context = context;
             _userManager = userManager;
             _signInManager = signInManager;
             _geocodeService = geocodeService;
+            _mailer = mailer;
         }
 
         // POST: /api/accounts/pilot-registration
@@ -66,7 +68,8 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            await _signInManager.SignInAsync(user, isPersistent: false);
+            ///await _signInManager.SignInAsync(user, isPersistent: false);
+            await SendPilotWelcomeEmail(user);
 
             var responseUser = await _context.Users
                 .Include(u => u.TeeShirtSize)
@@ -74,6 +77,18 @@ namespace AirBears.Web.Controllers
                 .SingleAsync(u => u.UserName == model.Email);
 
             return Ok(Mapper.Map<UserViewModel>(responseUser));
+        }
+
+        private async Task SendPilotWelcomeEmail(User user)
+        {
+            var message = $"Congratulations {user.FirstName}!\n\n"
+                + "Thanks you for joining the team. Your exclusive volunteer pilot T-shirt will arrive shortly. The shirt is special. It is not for sale, "
+                + "and will eventually grant you access to restricted areas like fire and crime scenes. "
+                + "Feel free to wear it as much as you'd like to help spread the word and raise awareness of our cause. "
+                + "Note that it must be worn if or when you decide to answer a call for help. "
+                + "\n\nWe look forward to making a difference with your help,\nAir Bears";
+
+            await _mailer.SendAsync(user.Email, "Welcome to Air Bears", message);
         }
 
         // POST: /api/accounts/authority-registration
