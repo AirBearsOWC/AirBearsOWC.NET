@@ -5,7 +5,6 @@ using System.Net;
 using System.Threading.Tasks;
 using MailKit.Net.Smtp;
 using MimeKit;
-using MailKit;
 
 namespace AirBears.Web.Services
 {
