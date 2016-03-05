@@ -45,6 +45,8 @@ namespace AirBears.Web.ViewModels
         public string TeeShirtSize { get; set; }
 
         public DateTime? TeeShirtMailedDate { get; set; }
+
+        public DateTime DateRegistered { get; set; }
     }
 
     public class IdentityViewModel : UserViewModel

@@ -5,9 +5,9 @@
         .module("app")
         .controller("PilotSearchController", PilotSearchController);
 
-    PilotSearchController.$inject = ["$scope", "pilotService", "toast", "authService", "userService"]; 
+    PilotSearchController.$inject = ["$scope", "toast", "pilotService", "authService", "userService", "registrationService"];
 
-    function PilotSearchController($scope, pilotService, toast, authService, userService) {
+    function PilotSearchController($scope, toast, pilotService, authService, userService, registrationService) {
         var vm = this;
 
         vm.user = null;
@@ -28,6 +28,8 @@
         vm.toggleMarkerWindow = toggleMarkerWindow;
         vm.selectPilot = selectPilot;
         vm.search = search;
+        vm.openRegistationOptions = registrationService.openRegistationOptions;
+        vm.openLogin = authService.openLogin;
 
         activate();
 

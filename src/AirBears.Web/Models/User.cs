@@ -44,6 +44,8 @@ namespace AirBears.Web.Models
         /// </summary>
         public bool IsAuthorityAccount { get; set; }
 
+        public DateTime DateRegistered { get; set; }
+
         #region Lazy Properties
 
         public virtual TeeShirtSize TeeShirtSize { get; set; }

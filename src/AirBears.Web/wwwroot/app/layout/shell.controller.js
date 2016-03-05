@@ -5,14 +5,14 @@
         .module("app")
         .controller("ShellController", ShellController);
 
-    ShellController.$inject = ["$state", "$uibModal", "authService", "userService"]; 
+    ShellController.$inject = ["$scope", "$state", "registrationService", "authService", "userService"]; 
 
-    function ShellController($state, $uibModal, authService, userService) {
+    function ShellController($scope, $state, registrationService, authService, userService) {
         var vm = this;
 
         vm.user = null;
-        vm.openRegistationOptions = openRegistationOptions;
-        vm.openLogin = openLogin;
+        vm.openRegistationOptions = registrationService.openRegistationOptions;
+        vm.openLogin = authService.openLogin;
         vm.logout = logout;
 
         activate();
@@ -21,33 +21,9 @@
             if (authService.getAuthToken()) {
                 getCurrentUser();
             }
-        }
 
-        function openRegistationOptions() {
-            var modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: "app/registration/register-options-modal.html",
-                controller: "RegisterOptionsModalController as vm",
-                size: "md"
-            });
-
-            modalInstance.result.then(function (result) {
-                
-            });
-        }
-
-        function openLogin() {
-            var modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: "app/auth/login-modal.html",
-                controller: "LoginModalController as vm",
-                size: "sm"
-            });
-
-            modalInstance.result.then(function (result) {
-                if (result.loginSuccess) {
-                    getCurrentUser();
-                }
+            authService.onLogin($scope, function () {
+                getCurrentUser();
             });
         }
 

@@ -6,6 +6,7 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using System;
 using System.Threading.Tasks;
 
 namespace AirBears.Web.Controllers
@@ -59,6 +60,7 @@ namespace AirBears.Web.Controllers
             user.Longitude = coords.Longitude;
             user.Latitude = coords.Latitude;
             user.GeocodeAddress = coords.GeocodeAddress;
+            user.DateRegistered = DateTime.UtcNow;
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
@@ -68,7 +70,6 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            ///await _signInManager.SignInAsync(user, isPersistent: false);
             await SendPilotWelcomeEmail(user);
 
             var responseUser = await _context.Users
@@ -102,6 +103,7 @@ namespace AirBears.Web.Controllers
             }
 
             var user = Mapper.Map<User>(model);
+            user.DateRegistered = DateTime.UtcNow;
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -109,8 +111,6 @@ namespace AirBears.Web.Controllers
                 AddErrors(result);
                 return HttpBadRequest(ModelState);
             }
-
-            await _signInManager.SignInAsync(user, isPersistent: false);
 
             var responseUser = await _context.Users.SingleAsync(u => u.UserName == model.Email);
 
