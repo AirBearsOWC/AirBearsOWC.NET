@@ -104,7 +104,26 @@ input, select, textarea {
     margin-top: 125px;
 }
 
+.vertical-align {
+    display: flex;
+    flex-direction: row;
+}
 
+.vertical-align > [class^="col-"],
+.vertical-align > [class*=" col-"] {
+    display: flex;
+    align-items: center; /* Align the flex-items vertically */
+    justify-content: center; /* Optional, to align inner flex-items 
+                            horizontally within the column  */
+}
+
+.sponsors a {
+    transition: opacity 0.3s ease;
+}
+
+.sponsors a:hover {
+    opacity: 0.6;
+}
 
 /*
     Validation
