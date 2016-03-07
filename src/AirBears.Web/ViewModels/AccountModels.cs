@@ -112,4 +112,31 @@ namespace AirBears.Web.ViewModels
         [Display(Name = "Organization")]
         public string Organization { get; set; }
     }
+
+    public class ForgotPasswordViewModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+    }
+
+    public class ResetPasswordViewModel
+    {
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+
+        [Required]
+        public string Code { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The new password must be at least 6 characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "new password")]
+        public string NewPassword { get; set; }
+
+        [DataType(DataType.Password)]
+        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
+    }
 }

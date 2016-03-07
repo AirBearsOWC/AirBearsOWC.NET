@@ -117,6 +117,82 @@ namespace AirBears.Web.Controllers
             return Ok(Mapper.Map<UserViewModel>(responseUser));
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("api/accounts/forgot-password")]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                // Don't reveal that the user doen't exist.
+                return HttpBadRequest();
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
+            await SendForgotPasswordEmail(user, code);
+
+            return Ok();
+        }
+
+        private async Task SendForgotPasswordEmail(User user, string code)
+        {
+            var callbackUrl = Url.Action("ResetPassword", "Accounts", new { code = code }, protocol: HttpContext.Request.Scheme);
+            var message = string.Format("Hello {0},\n\nA request was submitted to reset your Air Bears password.", user.FirstName);
+            message += string.Format("If this was not your doing, please reply to this message so we can protect your account.");
+            message += string.Format("<a href='{0}' target='_blank'>Click here</a> to reset your password or browse to the address below.", callbackUrl);
+            message += string.Format("\n\n<a href='{0}' target='_blank'>{1}</a>", callbackUrl, callbackUrl);
+            message += string.Format("\n\nThanks,\nAir Bears Team");
+
+            await _mailer.SendAsync(user.Email, "Air Bears Password Recovery", message);
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("api/accounts/reset-password")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var user = await _userManager.FindByNameAsync(model.Email);
+            if (user == null)
+            {
+                return HttpBadRequest();
+            }
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Code, model.NewPassword);
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return HttpBadRequest(ModelState);
+            }
+
+            await SendResetPasswordEmail(user);
+
+            return Ok();
+        }
+
+        private async Task SendResetPasswordEmail(User user)
+        {
+            var message = string.Format("Hello {0},\n\nYour Air Bears account password was recently reset. ", user.FirstName);
+            message += string.Format("If you did not authorize this reset, please reply to this message so we can protect your account. ");
+            message += string.Format("Simply ignore this message if you have authorized the password reset.");
+            message += string.Format("\n\nThanks,\nAir Bears Team");
+
+            await _mailer.SendAsync(user.Email, "Air Bears Password Reset", message);
+        }
+
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
