@@ -59,7 +59,7 @@
         </div>
 
         <div class="col-sm-7">
-            <ui-gmap-google-map ng-show="vm.map && vm.results && vm.user" center="vm.map.center" zoom="vm.map.zoom">
+            <ui-gmap-google-map ng-if="vm.map && vm.results && vm.user" center="vm.map.center" zoom="vm.map.zoom">
                 <ui-gmap-circle center="vm.circle.center" stroke="vm.circle.stroke" fill="vm.circle.fill" radius="vm.circle.radius"></ui-gmap-circle>
                 <ui-gmap-markers models="vm.results" coords="'self'" options="'options'" click="vm.toggleMarkerWindow">
                     <ui-gmap-windows show="show">
