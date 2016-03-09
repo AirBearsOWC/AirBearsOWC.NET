@@ -26,24 +26,13 @@ namespace AirBears.Web.Services
             using (var client = new SmtpClient())
             {
                 await client.ConnectAsync("smtp.gmail.com", 587, false);
-                //smtp.Host = "smtp.gmail.com";
-                //smtp.Port = 587; // Gmail can use ports 25, 465 & 587; but must be 25 for medium trust environment.
-                //smtp.EnableSsl = true;
-                //smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-                //smtp.UseDefaultCredentials = false;
-                //client.Credentials = new NetworkCredential("airbears.uav@gmail.com", "mickey5356t6*");
+                await client.AuthenticateAsync("airbearswebsite@gmail.com", "ab@2674**");
 
-                await client.AuthenticateAsync("airbears.uav@gmail.com", "mickey5356t6*");
-
-                message.From.Add(new MailboxAddress("Air Bears", "airbears.uav@leaguestone.com"));
+                message.From.Add(new MailboxAddress("Air Bears", "airbearswebsite@gmail.com"));
                 message.Bcc.Add(new MailboxAddress("Air Bears", "airbears.uav@gmail.com"));
-                //message.IsBodyHtml = true;
-
-                //message.Body = message.Body.Replace("\n", "<br />");
 
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
-                //await smtp.SendMailAsync(message);
             }
         }
     }
