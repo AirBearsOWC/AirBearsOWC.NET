@@ -23,6 +23,7 @@ input, select, textarea {
     display: inline-block;
     position: relative;
     top: -10px;
+    -webkit-filter: brightness(155%);
 }
 
 .navbar-brand > span {
@@ -123,6 +124,15 @@ input, select, textarea {
 
 .sponsors a:hover {
     opacity: 0.6;
+}
+
+.img-responsive {
+    display: inline-block;
+}
+
+.img-modal {
+    max-height: 170px;
+    display: inline-block;
 }
 
 /*
