@@ -60,6 +60,11 @@
                 templateUrl: "app/pilot-search/pilot-search.html",
                 controller: "PilotSearchController as vm"
             })
+            .state("root.reset-password", {
+                url: "/reset-password?code",
+                templateUrl: "app/reset-password/reset-password.html",
+                controller: "ResetPasswordController as vm"
+            })
             .state("root.manage-users", {
                 url: "/manage-users",
                 templateUrl: "app/manage-users/manage-users.html",
