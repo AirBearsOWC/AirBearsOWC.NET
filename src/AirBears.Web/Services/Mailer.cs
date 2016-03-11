@@ -30,8 +30,8 @@ namespace AirBears.Web.Services
                 await client.AuthenticateAsync("airbearswebsite@gmail.com", "ab@2674**");
 
                 message.From.Add(new MailboxAddress("Air Bears", "airbearswebsite@gmail.com"));
-                //message.Bcc.Add(new MailboxAddress("Air Bears", "airbears.uav@gmail.com"));
-                message.Bcc.Add(new MailboxAddress("Tom Faltesek", "tomfaltesek@gmail.com"));
+                message.Bcc.Add(new MailboxAddress("Air Bears", "airbears.uav@gmail.com"));
+                //message.Bcc.Add(new MailboxAddress("Tom Faltesek", "tomfaltesek@gmail.com"));
 
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
