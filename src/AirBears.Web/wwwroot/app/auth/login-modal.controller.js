@@ -10,7 +10,6 @@
     function LoginModalController($uibModalInstance, authService, userService, toast) {
         var vm = this;
 
-        vm.messages = [];
         vm.showRecoverPassword = false;
 
         vm.login = login;
@@ -31,7 +30,7 @@
             authService.authenticate(vm.username, vm.password).then(function () {
                 $uibModalInstance.close({ loginSuccess: true });
             }, function (resp) {
-                vm.messages = [];
+                vm.message = null;
                 if (resp && resp.data) {
                     vm.message = resp.data;
                 }
@@ -51,7 +50,7 @@
         }
 
         function toggleRecoverPassword() {
-            vm.messages = [];
+            vm.message = null;
             vm.showRecoverPassword = !vm.showRecoverPassword;
         }
 
@@ -62,7 +61,7 @@
                 toast.pop("success", "Email Sent!", "Check your email for a password recovery link.");
                 $uibModalInstance.close({ loginSuccess: false });
             }, function (resp) {
-                vm.messages = [];
+                vm.message = null;
                 if (resp && resp.data) {
                     vm.message = resp.data;
                 }

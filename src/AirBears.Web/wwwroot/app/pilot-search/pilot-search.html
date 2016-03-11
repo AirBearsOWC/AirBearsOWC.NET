@@ -7,13 +7,12 @@
         <div class="col-sm-5">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <form name="searchForm" role="form" novalidate ng-submit="vm.search(searchForm.$valid)">
+                    <form name="searchForm" role="form" novalidate ng-submit="vm.search(searchForm.$valid && vm.user)">
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group" ab-client-validate>
                                     <label for="address">Address</label>
                                     <input id="address" name="address" type="text" class="form-control" required autocomplete="off" g-places-autocomplete ng-model="vm.address" />
-                                    <div class="help-block validation" ng-show="searchForm.address.$error.required">Address is required.</div>
                                 </div>
                             </div>
                         </div>
