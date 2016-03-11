@@ -8,6 +8,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.WebEncoders;
 
 namespace AirBears.Web.Controllers
 {
@@ -169,7 +170,7 @@ namespace AirBears.Web.Controllers
 
         private async Task SendForgotPasswordEmail(User user, string code)
         {
-            var callbackUrl = $"https://{Request.Host.Value}/#reset-password?code={code}";
+            var callbackUrl = $"https://{Request.Host.Value}/#reset-password?code={UrlEncoder.Default.UrlEncode(code)}";
             var message = string.Format("Hello {0},<br /><br />A request was submitted to reset your Air Bears password.", user.FirstName);
             message += string.Format("If this was not your doing, please reply to this message so we can protect your account.");
             message += string.Format("<a href='{0}' target='_blank'>Click here</a> to reset your password or browse to the address below.", callbackUrl);

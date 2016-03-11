@@ -135,6 +135,24 @@ input, select, textarea {
     display: inline-block;
 }
 
+.btn .glyphicon {
+    top: 2px;
+}
+
+.bottom-margin {
+    margin-bottom: 20px;
+}
+
+
+/*
+    Toast Overrides
+*/
+
+.toast-top-right {
+    top: 70px;
+}
+
+
 /*
     Validation
 */
@@ -159,6 +177,11 @@ input, select, textarea {
 @media (min-width: 768px) {
     .modal-dialog {
         margin: 135px auto;
+    }
+
+    .modal-sm {
+        /* We want the small modal to be a bit bigger */
+        width: 400px;
     }
 }
 

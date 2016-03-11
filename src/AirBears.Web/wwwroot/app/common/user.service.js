@@ -14,6 +14,7 @@
         service.getCurrentUser = getCurrentUser;
         service.getUsers = getUsers;
         service.markTeeShirtMailed = markTeeShirtMailed;
+        service.recoverPassword = recoverPassword;
         service.resetPassword = resetPassword;
 
         return service;
@@ -43,6 +44,10 @@
 
         function markTeeShirtMailed(userId, isMailed) {
             return $http.put("/api/pilots/" + userId + "/tee-shirt-mailed", isMailed);
+        }
+
+        function recoverPassword(email) {
+            return $http.post("/api/accounts/forgot-password", { email: email });
         }
 
         function resetPassword(resetData) {

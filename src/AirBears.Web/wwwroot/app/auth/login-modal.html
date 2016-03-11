@@ -3,23 +3,27 @@
     <h4 class="modal-title">Air Bears Login</h4>
 </div>
 <div class="modal-body">
-    <form name="loginForm" ng-submit="vm.login()">
+    <form name="loginForm" novalidate ng-submit="vm.login(loginForm.$valid)" ng-hide="vm.showRecoverPassword">
         <div class="alert alert-warning fadein" ng-show="vm.message">
             <a href="#" class="close" ng-click="vm.clear()">&times;</a>
             {{ vm.message }}
         </div>
-        <div class="form-group">
+
+        <div class="form-group" ab-client-validate>
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                <input type="email" class="form-control" placeholder="Email" autofocus required ng-model="vm.username">
-            </div>        
+                <input type="email" name="email" class="form-control" placeholder="Email" autofocus required ng-model="vm.username">               
+            </div>
+            <div class="help-block validation" ng-show="loginForm.email.$error.email">Email must be valid.</div>  
         </div>
-        <div class="form-group">
+
+        <div class="form-group bottom-margin" ab-client-validate>
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                <input type="password" class="form-control" placeholder="Password" required ng-model="vm.password">
-            </div>   
+                <input type="password" name="password" class="form-control" placeholder="Password" required ng-model="vm.password">              
+            </div>
         </div>
+
         <!--<div class="checkbox">
             <label>
                 <input type="checkbox">
@@ -27,7 +31,28 @@
                 <span class="glyphicon glyphicon-question-sign" tooltip-placement="right" uib-tooltip="Leaguestone will remember you for 5 days on this device."></span>
             </label>
         </div>-->
-        <button type="submit" class="btn btn-primary" ng-disabled="vm.isLoggingIn || !loginForm.$valid">Log In</button>
-        <a href="" class="pointer" style="margin-left: 10px;" ng-click="vm.openResetPassword()">Forgot Password?</a>
+
+        <button type="submit" class="btn btn-primary" ng-disabled="vm.isSubmitting">Log In</button>
+        <a href="" class="pointer" style="margin-left: 10px;" ng-click="vm.toggleRecoverPassword()">Forgot Password?</a>
+    </form>
+
+    <form name="recoverPasswordForm" novalidate ng-submit="vm.recoverPassword(recoverPasswordForm.$valid)" ng-show="vm.showRecoverPassword">
+        <p class="bottom-margin">Enter your email address and we'll send you a password recover link that you can use to reset your password.</p>
+
+        <div class="alert alert-warning fadein" ng-show="vm.message">
+            <a href="#" class="close" ng-click="vm.clear()">&times;</a>
+            {{ vm.message }}
+        </div>
+
+        <div class="form-group bottom-margin" ab-client-validate>
+            <div class="input-group">
+                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                <input type="email" name="email" class="form-control" placeholder="Email" autofocus required ng-model="vm.username">               
+            </div>
+            <div class="help-block validation" ng-show="recoverPasswordForm.email.$error.email">Email must be valid.</div>
+        </div>
+
+        <button type="button" class="btn btn-default" ng-click="vm.toggleRecoverPassword()">Cancel</button>
+        <button type="submit" class="btn btn-primary" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-envelope"></i> Recover Password</button>
     </form>
 </div>

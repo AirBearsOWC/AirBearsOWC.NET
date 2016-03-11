@@ -5,14 +5,16 @@
         .module("app")
         .controller("ResetPasswordController", ResetPasswordController);
 
-    ResetPasswordController.$inject = ["$state", "$stateParams","toast", "userService"];
+    ResetPasswordController.$inject = ["$state", "$stateParams","toast", "userService", "authService"];
 
-    function ResetPasswordController($state, $stateParams, toast, userService) {
+    function ResetPasswordController($state, $stateParams, toast, userService, authService) {
         var vm = this;
 
         vm.reset = {};
         vm.isSubmitting = false;
+        vm.resetSucceeded = false;
         vm.submit = submit;
+        vm.openLogin = authService.openLogin;
 
         activate();
 
