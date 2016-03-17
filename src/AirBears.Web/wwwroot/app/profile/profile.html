@@ -1,0 +1,70 @@
+﻿<div class="container body-content">
+    <h1>Pilot Profile</h1>
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="row">
+                <h3 class="col-sm-6">
+                    <span ng-bind="vm.pilot.firstName"></span> <span ng-bind="vm.pilot.lastName"></span>
+                </h3>
+                <h3 class="col-sm-6">
+                    <small><a href="#"><i class="glyphicon glyphicon-pencil"></i> Edit Profile</a></small>
+                </h3>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>Pilot Bio</h3>
+                    <p>
+                        <a href="#"><i class="glyphicon glyphicon-plus"></i> Add Bio</a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <h3>Contact Information</h3>
+                    <i class="glyphicon glyphicon-envelope pad-right"></i> <span ng-bind="vm.pilot.email"></span><br />
+                    <i class="glyphicon glyphicon-phone-alt pad-right"></i><span ng-bind="vm.pilot.phoneNumber"></span>
+                </div>
+                <div class="col-sm-6">
+                    <h3>Address</h3>
+                    <div ng-bind="vm.pilot.street1"></div>
+                    <div ng-if="vm.pilot.street2" ng-bind="vm.pilot.street2"></div>
+                    <span ng-bind="vm.pilot.city"></span>, <span ng-bind="vm.pilot.state.abbr"></span> <span ng-bind="vm.pilot.zip"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <p class="col-sm-12">
+                    <strong>Air Bears member since <span ng-bind="vm.pilot.dateRegistered | date : mediumDate"></span>.</strong>
+                </p>               
+            </div>
+            <div class="row">
+                <p class="col-sm-12">
+                    <a href="#"><i class="glyphicon glyphicon-pencil"></i> Change Password</a>
+                </p>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>Skills</h3>
+                    <p>
+                        <a href="#"><i class="glyphicon glyphicon-plus"></i> Add Skills</a>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3>Certifications</h3>
+                    <p>
+                        <a href="#"><i class="glyphicon glyphicon-plus"></i> Add Certifications</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -139,6 +139,10 @@ input, select, textarea {
     top: 2px;
 }
 
+.glyphicon.pad-right {
+    padding-right: 10px;
+}
+
 .bottom-margin {
     margin-bottom: 20px;
 }

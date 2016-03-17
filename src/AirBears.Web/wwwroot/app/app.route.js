@@ -65,6 +65,11 @@
                 templateUrl: "app/reset-password/reset-password.html",
                 controller: "ResetPasswordController as vm"
             })
+            .state("root.profile", {
+                url: "/profile",
+                templateUrl: "app/profile/profile.html",
+                controller: "ProfileController as vm"
+            })
             .state("root.manage-users", {
                 url: "/manage-users",
                 templateUrl: "app/manage-users/manage-users.html",
