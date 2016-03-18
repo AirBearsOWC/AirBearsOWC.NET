@@ -3,11 +3,11 @@
 
     angular
         .module("app")
-        .controller("ChangePasswordController", ChangePasswordController);
+        .controller("ChangePasswordModalController", ChangePasswordModalController);
 
-    ChangePasswordController.$inject = ["$uibModalInstance", "userService", "toast"];
+    ChangePasswordModalController.$inject = ["$uibModalInstance", "userService", "toast"];
 
-    function ChangePasswordController($uibModalInstance, userService, toast) {
+    function ChangePasswordModalController($uibModalInstance, userService, toast) {
         var vm = this;
 
         vm.save = save;

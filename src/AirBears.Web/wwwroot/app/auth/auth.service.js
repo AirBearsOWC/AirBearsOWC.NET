@@ -5,9 +5,9 @@
         .module("app")
         .factory("authService", authService);
 
-    authService.$inject = ["$rootScope", "$http", "$uibModal", "store"];
+    authService.$inject = ["$rootScope", "$state", "$http", "$uibModal", "store"];
 
-    function authService($rootScope, $http, $uibModal, store) {
+    function authService($rootScope, $state, $http, $uibModal, store) {
         var service = {};
         var urlBase = "/api/";
 
@@ -29,6 +29,8 @@
 
             modalInstance.result.then(function (result) {
                 if (callback) { callback(result); }
+            }, function () {
+                $state.go("root.home");
             });
         }
 

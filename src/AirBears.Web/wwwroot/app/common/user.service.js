@@ -5,9 +5,9 @@
         .module("app")
         .factory("userService", userService);
 
-    userService.$inject = ["$http"];
+    userService.$inject = ["$http", "$q"];
 
-    function userService($http) {
+    function userService($http, $q) {
         var service = {};
         var urlBase = "/api/users/";
 
@@ -16,6 +16,7 @@
         service.markTeeShirtMailed = markTeeShirtMailed;
         service.recoverPassword = recoverPassword;
         service.resetPassword = resetPassword;
+        service.changePassword = changePassword;
 
         return service;
 
@@ -33,6 +34,8 @@
                 }
 
                 return user;
+            }, function (resp) {
+                return $q.reject(resp);
             });
         }
 
@@ -52,6 +55,10 @@
 
         function resetPassword(resetData) {
             return $http.post("/api/accounts/reset-password", resetData);
+        }
+
+        function changePassword(passwordData) {
+            return $http.post("/api/me/password", passwordData);
         }
     }
 })();

@@ -3,11 +3,13 @@
     <div class="row">
         <div class="col-sm-8">
             <div class="row">
+                <div class="col-sm-6">
+                    <h3><span ng-bind="vm.pilot.firstName"></span> <span ng-bind="vm.pilot.lastName"></span></h3>    
+                    Air Bears member since <span ng-bind="vm.pilot.dateRegistered | date : mediumDate"></span>
+                </div>
                 <h3 class="col-sm-6">
-                    <span ng-bind="vm.pilot.firstName"></span> <span ng-bind="vm.pilot.lastName"></span>
-                </h3>
-                <h3 class="col-sm-6">
-                    <small><a href="#"><i class="glyphicon glyphicon-pencil"></i> Edit Profile</a></small>
+                    <small><a href><i class="glyphicon glyphicon-pencil"></i> Edit Profile</a></small><br />
+                    <small><a href ng-click="vm.openChangePasswordModal()"><i class="glyphicon glyphicon-pencil"></i> Change Password</a></small>
                 </h3>
             </div>
 
@@ -39,16 +41,6 @@
             </div>
         </div>
         <div class="col-sm-4">
-            <div class="row">
-                <p class="col-sm-12">
-                    <strong>Air Bears member since <span ng-bind="vm.pilot.dateRegistered | date : mediumDate"></span>.</strong>
-                </p>               
-            </div>
-            <div class="row">
-                <p class="col-sm-12">
-                    <a href="#"><i class="glyphicon glyphicon-pencil"></i> Change Password</a>
-                </p>
-            </div>
             <div class="row">
                 <div class="col-sm-12">
                     <h3>Skills</h3>
