@@ -1,12 +1,14 @@
-/// <binding AfterBuild='build' Clean='clean' />
+/// <binding AfterBuild="build" Clean="clean" />
 "use strict";
 
 var gulp = require("gulp"),
     rimraf = require("rimraf"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
+    htmlmin = require("gulp-htmlmin"),
     uglify = require("gulp-uglify"),
     rename = require("gulp-rename"),
+    templateCache = require("gulp-angular-templatecache"),
     rev = require("gulp-rev"),
     revReplace = require("gulp-rev-replace"),
     sourcemaps = require("gulp-sourcemaps");
@@ -80,7 +82,14 @@ gulp.task("move:fonts", ["clean"], function () {
         .pipe(gulp.dest(paths.webroot + "dist/fonts"));
 });
 
-gulp.task("rev-assets", ["min:js", "min:css"], function () {
+gulp.task("templatecache", ["clean"], function () {
+    return gulp.src(paths.webroot + "app/**/*.html")
+        .pipe(htmlmin())
+        .pipe(templateCache())
+        .pipe(gulp.dest("./wwwroot/dist/js"));
+});
+
+gulp.task("rev-assets", ["min:js", "min:css", "templatecache"], function () {
     return gulp.src([paths.concatJsDest, paths.concatCssDest], { base: "./wwwroot/dist" })
        .pipe(rev())
        .pipe(gulp.dest("./wwwroot/dist"))  // write rev'd assets to build dir
@@ -97,4 +106,4 @@ gulp.task("revreplace", ["rev-assets"], function () {
       .pipe(gulp.dest(paths.webroot));
 });
 
-gulp.task("build", ["min:js", "min:css", "move:fonts", "rev-assets", "revreplace"]);
+gulp.task("build", ["min:js", "min:css", "move:fonts", "templatecache", "rev-assets", "revreplace"]);
