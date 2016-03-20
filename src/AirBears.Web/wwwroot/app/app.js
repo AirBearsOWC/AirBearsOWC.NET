@@ -9,6 +9,9 @@
          "google.places",
          "uiGmapgoogle-maps",
          "angular-loading-bar",
-         "angular-storage"
+         "angular-storage",
+         "templates"
     ]);
+
+    angular.module("templates", []);
 })();

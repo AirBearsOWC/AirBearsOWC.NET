@@ -85,7 +85,7 @@ gulp.task("move:fonts", ["clean"], function () {
 gulp.task("templatecache", ["clean"], function () {
     return gulp.src(paths.webroot + "app/**/*.html")
         .pipe(htmlmin())
-        .pipe(templateCache())
+        .pipe(templateCache({ root: "app/" }))
         .pipe(gulp.dest("./wwwroot/dist/js"));
 });
 
