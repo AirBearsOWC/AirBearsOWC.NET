@@ -212,5 +212,5 @@ _Pvt_Extensions/
 ModelManifest.xml
 
 /src/AirBears.Web/wwwroot/lib
-/src/AirBears.Web/wwwroot/css/combined.css
-/src/AirBears.Web/wwwroot/js/combined.js
+/src/AirBears.Web/wwwroot/dist
+/src/AirBears.Web/wwwroot/index.html
