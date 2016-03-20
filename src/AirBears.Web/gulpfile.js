@@ -1,4 +1,4 @@
-/// <binding AfterBuild='min' Clean='clean' />
+/// <binding AfterBuild='build' Clean='clean' />
 "use strict";
 
 var gulp = require("gulp"),
@@ -6,6 +6,9 @@ var gulp = require("gulp"),
     concat = require("gulp-concat"),
     cssmin = require("gulp-cssmin"),
     uglify = require("gulp-uglify"),
+    rename = require("gulp-rename"),
+    rev = require("gulp-rev"),
+    revReplace = require("gulp-rev-replace"),
     sourcemaps = require("gulp-sourcemaps");
 
 var paths = {
@@ -16,8 +19,8 @@ paths.app = paths.webroot + "app/**/*.js";
 paths.minJs = paths.webroot + "js/**/*.min.js";
 paths.css = paths.webroot + "css/**/*.css";
 paths.minCss = paths.webroot + "css/**/*.min.css";
-paths.concatJsDest = paths.webroot + "js/combined.js";
-paths.concatCssDest = paths.webroot + "css/combined.css";
+paths.concatJsDest = paths.webroot + "dist/js/*.js";
+paths.concatCssDest = paths.webroot + "dist/css/*.css";
 
 paths.thirdPartyJs = [
     paths.webroot + "lib/angular/angular.js",
@@ -43,46 +46,55 @@ paths.thirdPartyCss = [
     paths.webroot + "lib/bootstrap/dist/css/bootstrap.css"
 ];
 
-gulp.task("clean:js", function (cb) {
-    rimraf(paths.concatJsDest, cb);
+gulp.task("clean", function (cb) {
+    rimraf(paths.webroot + "dist", cb);
 });
 
-gulp.task("clean:css", function (cb) {
-    rimraf(paths.concatCssDest, cb);
-});
-
-gulp.task("clean", ["clean:js", "clean:css"]);
-
-gulp.task("min:js", function () {
+gulp.task("min:js", ["clean"], function () {
     var scriptPaths = paths.thirdPartyJs;
     scriptPaths.push(paths.webroot + "app/app.js");
     scriptPaths.push(paths.app);
-    scriptPaths.push("!" + paths.concatJsDest);
 
     return gulp.src(scriptPaths, { base: "." })
         .pipe(sourcemaps.init())
         .pipe(concat("combined.js"))
         .pipe(uglify())
         .pipe(sourcemaps.write())
-        .pipe(gulp.dest("./wwwroot/js"));
+        .pipe(gulp.dest("./wwwroot/dist/js"));
 });
 
-gulp.task("min:css", function () {
+gulp.task("min:css", ["clean"], function () {
     var stylePaths = paths.thirdPartyCss;
     stylePaths.push(paths.css);
-    stylePaths.push("!" + paths.concatCssDest);
 
-    return gulp.src(stylePaths)
-        .pipe(concat(paths.concatCssDest))
+    return gulp.src(stylePaths, { base: "." })
+        .pipe(concat("combined.css"))
         .pipe(cssmin())
-        .pipe(gulp.dest("."));
+        .pipe(gulp.dest("./wwwroot/dist/css"));
 });
 
-gulp.task("move:fonts", function () {
+gulp.task("move:fonts", ["clean"], function () {
     var fontPaths = paths.webroot + "lib/bootstrap/dist/fonts/*";
 
     return gulp.src(fontPaths)
-        .pipe(gulp.dest(paths.webroot + "fonts"));
+        .pipe(gulp.dest(paths.webroot + "dist/fonts"));
 });
 
-gulp.task("min", ["min:js", "min:css", "move:fonts"]);
+gulp.task("rev-assets", ["min:js", "min:css"], function () {
+    return gulp.src([paths.concatJsDest, paths.concatCssDest], { base: "./wwwroot/dist" })
+       .pipe(rev())
+       .pipe(gulp.dest("./wwwroot/dist"))  // write rev'd assets to build dir
+       .pipe(rev.manifest())
+       .pipe(gulp.dest("./wwwroot/dist")); // write manifest to build dir
+});
+
+gulp.task("revreplace", ["rev-assets"], function () {
+    var manifest = gulp.src(paths.webroot + "dist/rev-manifest.json");
+
+    return gulp.src(paths.webroot + "/src.html")
+      .pipe(revReplace({ manifest: manifest }))
+      .pipe(rename("index.html"))
+      .pipe(gulp.dest(paths.webroot));
+});
+
+gulp.task("build", ["min:js", "min:css", "move:fonts", "rev-assets", "revreplace"]);
