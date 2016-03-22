@@ -6,6 +6,7 @@ using AirBears.Web.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System;
+using Braintree;
 
 namespace AirBears.Web.Controllers
 {
@@ -15,13 +16,13 @@ namespace AirBears.Web.Controllers
     {
         private readonly TokenAuthOptions _tokenOptions;
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly IBraintreeGateway _gateway;
 
-        public TokenController(TokenAuthOptions tokenOptions, UserManager<User> userManager, SignInManager<User> signInManager)
+        public TokenController(TokenAuthOptions tokenOptions, UserManager<User> userManager, IBraintreeGateway gateway)
         {
             _tokenOptions = tokenOptions;
             _userManager = userManager;
-            _signInManager = signInManager;
+            _gateway = gateway;
         }
 
         /// <summary>
@@ -37,7 +38,6 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            //var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, lockoutOnFailure: false);
             var user = await _userManager.FindByNameAsync(model.Email);
 
             if (await _userManager.CheckPasswordAsync(user, model.Password))
@@ -49,6 +49,14 @@ namespace AirBears.Web.Controllers
             }
 
             return HttpBadRequest("Invalid login attempt.");
+        }
+
+        [HttpGet("/api/payment-token", Name = "Get Payment Token")]
+        public async Task<IActionResult> GetPaymentToken()
+        {
+            var clientToken = _gateway.ClientToken.generate();
+
+            return Ok(clientToken);
         }
 
         private async Task<string> GetToken(string username, DateTime? expires)

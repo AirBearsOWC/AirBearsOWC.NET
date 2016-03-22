@@ -5,9 +5,9 @@
         .module("app")
         .controller("RegisterPilotController", RegisterPilotController);
 
-    RegisterPilotController.$inject = ["$state", "$uibModal", "resourceService", "registrationService", "toast"];
+    RegisterPilotController.$inject = ["$state", "$uibModal", "braintreeService", "resourceService", "registrationService", "toast"];
 
-    function RegisterPilotController($state, $uibModal, resourceService, registrationService, toast) {
+    function RegisterPilotController($state, $uibModal, braintreeService, resourceService, registrationService, toast) {
         var vm = this;
 
         vm.states = [];
@@ -15,6 +15,7 @@
         vm.registration = {};
         vm.isSubmitting = false;
         vm.openTermsAndConditions = openTermsAndConditions;
+        vm.openPaypal = openPaypal;
         vm.submit = submit;
 
         activate();
@@ -26,6 +27,12 @@
 
             resourceService.getTeeShirtSizes().then(function (sizes) {
                 vm.teeShirtSizes = sizes;
+            });
+
+            braintreeService.setupHeadlessPaypal(25.00, function (data) {
+                vm.registration.nonce = data.nonce;
+                vm.paymentDetails = data.details;
+                console.log(data);
             });
         }
 
@@ -42,8 +49,12 @@
             });
         }
 
+        function openPaypal() {
+            braintreeService.startAuthFlow();
+        }
+
         function submit(isValid) {
-            if (!isValid) { return; }
+            if (!isValid || !vm.registration.nonce) { return; }
 
             vm.isSubmitting = true;
 

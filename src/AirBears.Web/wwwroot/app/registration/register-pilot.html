@@ -132,7 +132,7 @@
 
         <div class="row vert-margin">
             <div class="col-sm-3">
-                <input type="button" class="btn btn-sm btn-default" value="Terms & Conditions" ng-click="vm.openTermsAndConditions()"/>
+                <input type="button" class="btn btn-sm btn-default" value="View Terms & Conditions" ng-click="vm.openTermsAndConditions()"/>
             </div>
             <div class="col-sm-9">
                 <div class="form-group" ab-client-validate>
@@ -144,8 +144,38 @@
             </div>
         </div>
 
-        <div class="form-group">             
-            <input type="submit" class="form-control btn btn-success" value="Pay and Complete Registration" ng-disabled="vm.isSubmitting" />
+        <div class="row">
+            <div class="col-sm-5">
+                <h4>Pilot Registration Fee: $25</h4>
+            </div>
+
+            <div class="col-sm-7">
+                <div class="form-group" ng-hide="vm.registration.nonce">
+                    <input type="button" class="form-control btn btn-primary" value="Pay with Paypal" ng-click="vm.openPaypal()" />
+                </div>
+                <div ng-show="vm.registration.nonce">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <img src="../../images/paypal.png" class="img-responsive" />
+                                </div>
+                                <div class="col-sm-9">
+                                    <p>
+                                        <strong ng-bind="vm.paymentDetails.firstName"></strong>
+                                        <strong ng-bind="vm.paymentDetails.lastName"></strong><br />
+                                        <span ng-bind="vm.paymentDetails.email"></span>
+                                    </p>                                 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group vert-margin" ng-show="vm.registration.nonce">
+            <input type="submit" class="form-control btn btn-success" value="Complete Registration" ng-disabled="vm.isSubmitting" />
         </div>
     </form>
 </div>

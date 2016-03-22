@@ -34,6 +34,7 @@ paths.thirdPartyJs = [
     paths.webroot + "lib/angular-google-places-autocomplete/dist/autocomplete.min.js",
     paths.webroot + "lib/angular-google-maps/dist/angular-google-maps.min.js",
     paths.webroot + "lib/angular-simple-logger/dist/angular-simple-logger.min.js",
+    paths.webroot + "lib/braintree-web/dist/braintree.js",
     paths.webroot + "lib/lodash/dist/lodash.min.js",
     paths.webroot + "lib/angularjs-toaster/toaster.js",
     paths.webroot + "lib/angular-ui-router/release/angular-ui-router.js",

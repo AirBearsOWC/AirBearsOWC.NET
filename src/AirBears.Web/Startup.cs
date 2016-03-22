@@ -1,5 +1,6 @@
 ﻿using AirBears.Web.Models;
 using AirBears.Web.Services;
+using Braintree;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Builder;
@@ -89,11 +90,24 @@ namespace AirBears.Web
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
 
+            services.AddInstance(GetBraintreeGateway());
+
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IGeocodeService, GeocodeService>();
             services.AddTransient<IMailer, Mailer>();
+        }
+
+        private IBraintreeGateway GetBraintreeGateway()
+        {
+            return new BraintreeGateway
+            {
+                Environment = Braintree.Environment.SANDBOX,
+                MerchantId = "wmp95y7xfnjrww8r",
+                PublicKey = "g3rwxd8d54j5qgsy",
+                PrivateKey = "d6a80dd07f0ce1eef52e149e2b1819c3"
+            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

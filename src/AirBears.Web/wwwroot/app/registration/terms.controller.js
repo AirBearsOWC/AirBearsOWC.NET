@@ -5,9 +5,9 @@
         .module("app")
         .controller("TermsController", TermsController);
 
-    TermsController.$inject = ["$modalInstance"];
+    TermsController.$inject = ["$uibModalInstance"];
 
-    function TermsController($modalInstance) {
+    function TermsController($uibModalInstance) {
         var vm = this;
 
         vm.agree = agree;

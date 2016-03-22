@@ -47,6 +47,9 @@ namespace AirBears.Web.ViewModels
         public string PhoneNumber { get; set; }
 
         [Required]
+        public string Nonce { get; set; }
+
+        [Required]
         [Display(Name = "T-Shirt Size")]
         public Guid? TeeShirtSizeId { get; set; }
 

@@ -9,6 +9,7 @@ using Microsoft.Data.Entity;
 using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.WebEncoders;
+using Braintree;
 
 namespace AirBears.Web.Controllers
 {
@@ -18,17 +19,17 @@ namespace AirBears.Web.Controllers
     {
         private readonly AppDbContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         private readonly IGeocodeService _geocodeService;
         private readonly IMailer _mailer;
+        private readonly IBraintreeGateway _gateway;
 
-        public AccountsController(AppDbContext context, UserManager<User> userManager, SignInManager<User> signInManager, IGeocodeService geocodeService, IMailer mailer)
+        public AccountsController(AppDbContext context, UserManager<User> userManager, IGeocodeService geocodeService, IMailer mailer, IBraintreeGateway gateway)
         {
             _context = context;
             _userManager = userManager;
-            _signInManager = signInManager;
             _geocodeService = geocodeService;
             _mailer = mailer;
+            _gateway = gateway;
         }
 
         // POST: /api/accounts/pilot-registration
@@ -53,8 +54,29 @@ namespace AirBears.Web.Controllers
 
             if (coords.Status != GeocodeResponseStatus.OK)
             {
-                ModelState.AddModelError("", coords.Status.ToString());
+                ModelState.AddModelError(string.Empty, coords.Status.ToString());
                 return HttpBadRequest(ModelState);
+            }
+
+            var request = new TransactionRequest
+            {
+                Amount = 25.00M,
+                PaymentMethodNonce = model.Nonce,
+                Options = new TransactionOptionsRequest
+                {
+                    SubmitForSettlement = true
+                }
+            };
+
+            var transactionResult = _gateway.Transaction.Sale(request);
+
+            if (!transactionResult.IsSuccess())
+            {
+                foreach (var error in transactionResult.Errors.All())
+                {
+                    ModelState.AddModelError(string.Empty, error.Message);
+                    return HttpBadRequest(ModelState);
+                }
             }
 
             var user = Mapper.Map<User>(model);
@@ -146,10 +168,7 @@ namespace AirBears.Web.Controllers
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.NewPassword);
             if (!result.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                AddErrors(result);
                 return HttpBadRequest(ModelState);
             }
 
