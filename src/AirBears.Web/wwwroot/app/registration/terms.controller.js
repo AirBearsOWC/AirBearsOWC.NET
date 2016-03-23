@@ -18,11 +18,11 @@
         function activate() { }
 
         function agree() {
-            $modalInstance.close({ hasAgreed: true });
+            $uibModalInstance.close({ hasAgreed: true });
         }
 
         function cancel() {
-            $modalInstance.dismiss("cancel");
+            $uibModalInstance.dismiss("cancel");
         }
     }
 })();
