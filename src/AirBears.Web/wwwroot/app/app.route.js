@@ -70,10 +70,10 @@
                 templateUrl: "app/profile/profile.html",
                 controller: "ProfileController as vm"
             })
-            .state("root.manage-users", {
-                url: "/manage-users",
-                templateUrl: "app/manage-users/manage-users.html",
-                controller: "ManageUsersController as vm"
+            .state("root.manage-pilots", {
+                url: "/manage-pilots",
+                templateUrl: "app/manage/manage-pilots.html",
+                controller: "ManagePilotsController as vm"
             });
 
         $httpProvider.interceptors.push("authInterceptor");

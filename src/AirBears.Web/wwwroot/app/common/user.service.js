@@ -9,11 +9,8 @@
 
     function userService($http, $q) {
         var service = {};
-        var urlBase = "/api/users/";
 
         service.getCurrentUser = getCurrentUser;
-        service.getUsers = getUsers;
-        service.markTeeShirtMailed = markTeeShirtMailed;
         service.recoverPassword = recoverPassword;
         service.resetPassword = resetPassword;
         service.changePassword = changePassword;
@@ -37,16 +34,6 @@
             }, function (resp) {
                 return $q.reject(resp);
             });
-        }
-
-        function getUsers() {
-            return $http.get("/api/users").then(function (resp) {
-                return resp.data;
-            });
-        }
-
-        function markTeeShirtMailed(userId, isMailed) {
-            return $http.put("/api/pilots/" + userId + "/tee-shirt-mailed", isMailed);
         }
 
         function recoverPassword(email) {

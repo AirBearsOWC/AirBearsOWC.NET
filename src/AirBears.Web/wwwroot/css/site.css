@@ -105,6 +105,10 @@ input, select, textarea {
     margin-top: 125px;
 }
 
+.vertical-center.table > tbody > tr > td {
+    vertical-align: middle;
+}
+
 .vertical-align {
     display: flex;
     flex-direction: row;

@@ -1,0 +1,48 @@
+﻿<div class="container body-content">
+    <div class="page-header">
+        <h1>Manage Pilots</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Pilots</h2>
+                </div>
+                <table class="table table-striped table-bordered table-condensed vertical-center">
+                    <thead>
+                        <tr>
+                            <th>Last Name</th>
+                            <th>First Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Address</th>
+                            <th>Registration Date</th>
+                            <th>Tee-Shirt Mailed?</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr ng-repeat="pilot in vm.pilots">
+                            <td>{{ pilot.lastName }}</td>
+                            <td>{{ pilot.firstName }}</td>
+                            <td>{{ pilot.email }}</td>
+                            <td>{{ pilot.phoneNumber }}</td>
+                            <td>
+                                <div ng-bind="pilot.street1"></div>
+                                <div ng-if="pilot.street2" ng-bind="pilot.street2"></div>
+                                <span ng-bind="pilot.city"></span>, <span ng-bind="pilot.state.abbr"></span> <span ng-bind="pilot.zip"></span>
+                            </td>
+                            <td>{{ pilot.dateRegistered | date:"MMM dd, yyyy" }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-info" ng-hide="pilot.teeShirtMailedDate" ng-click="vm.markTeeShirtMailed($index, 'true')">Mark Shirt Mailed</button>
+                                <span ng-show="pilot.teeShirtMailedDate">{{ pilot.teeShirtMailedDate | date:"MMM dd, yyyy" }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
