@@ -44,6 +44,10 @@ namespace AirBears.Web.Models
         /// </summary>
         public bool IsAuthorityAccount { get; set; }
 
+        public bool AllowsPilotSearch { get; set; }
+
+        public bool SubscribesToUpdates { get; set; }
+
         public DateTime DateRegistered { get; set; }
 
         #region Lazy Properties

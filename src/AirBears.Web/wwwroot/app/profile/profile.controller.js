@@ -5,9 +5,9 @@
         .module("app")
         .controller("ProfileController", ProfileController);
 
-    ProfileController.$inject = ["$uibModal", "resourceService", "userService", "authService", "toast"];
+    ProfileController.$inject = ["$uibModal", "resourceService", "userService", "pilotService", "authService", "toast"];
 
-    function ProfileController($uibModal, resourceService, userService, authService, toast) {
+    function ProfileController($uibModal, resourceService, userService, pilotService, authService, toast) {
         var vm = this;
 
         vm.states = [];
@@ -15,6 +15,8 @@
         vm.pilot = {};
 
         vm.openChangePasswordModal = openChangePasswordModal;
+        vm.toggleAllowsPilotSearch = privacySettings();
+        vm.toggleSubscribesToUpdates = privacySettings();
 
         activate();
 
@@ -37,6 +39,12 @@
                 authService.openLogin(function () {
                     getCurrentUser();
                 });
+            });
+        }
+
+        function privacySettings() {
+            pilotService.updateProfile(vm.pilot).then(function () {
+                toast.pop("success", "Update Success!", "Your privacy settings have been updated.");
             });
         }
 

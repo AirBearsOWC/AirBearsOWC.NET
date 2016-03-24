@@ -28,6 +28,10 @@ namespace AirBears.Web
                 .ForMember(dest => dest.IsAuthorityAccount, mapper => mapper.UseValue(true))
                 .IgnoreAllNonExisting();
 
+            Mapper.CreateMap<UpdatePilotViewModel, User>()
+                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.Ignore())
+                .IgnoreAllNonExisting();
+
             Mapper.AssertConfigurationIsValid();
         }
 

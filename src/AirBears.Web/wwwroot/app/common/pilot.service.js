@@ -13,6 +13,7 @@
 
         service.search = search;
         service.getPilots = getPilots;
+        service.updateProfile = updateProfile;
         service.markTeeShirtMailed = markTeeShirtMailed;
 
         return service;
@@ -31,6 +32,10 @@
             return $http.get(urlBase).then(function (resp) {
                 return resp.data;
             });
+        }
+
+        function updateProfile(pilot) {
+            return $http.put(urlBase + "/me", pilot);
         }
 
         function markTeeShirtMailed(userId, isMailed) {

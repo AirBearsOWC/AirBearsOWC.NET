@@ -105,7 +105,7 @@ namespace AirBears.Web.Controllers
         }
 
         // GET: api/pilots/5
-        [HttpGet("{id}", Name = "GetPilot")]
+        [HttpGet("{id}", Name = "Get Pilot")]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> GetPilot([FromRoute] string id)
         {
@@ -120,7 +120,7 @@ namespace AirBears.Web.Controllers
         }
 
         // PUT: api/pilots/5/tee-shirt-mailed
-        [HttpPut("{id}/tee-shirt-mailed", Name = "MarkTeeShirtMailed")]
+        [HttpPut("{id}/tee-shirt-mailed", Name = "Mark T-Shirt Mailed")]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> MarkTeeShirtMailed([FromRoute] string id, [FromBody] bool teeShirtMailed)
         {
@@ -134,6 +134,26 @@ namespace AirBears.Web.Controllers
             user.TeeShirtMailedDate = teeShirtMailed ? DateTime.UtcNow : default(DateTime?);
             _context.Users.Update(user, GraphBehavior.SingleObject);
             _context.SaveChanges();
+
+            return Ok(Mapper.Map<UserViewModel>(user));
+        }
+
+        // GET: api/pilots/me
+        [HttpPut("me", Name = "Update Pilot")]
+        [Authorize(AuthPolicies.Bearer)]
+        public async Task<IActionResult> UpdatePilot([FromBody] UpdatePilotViewModel model)
+        {
+            if(!ModelState.IsValid)
+            {
+                return HttpBadRequest(ModelState);
+            }
+
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == User.GetUserId());
+
+            user = Mapper.Map(model, user);
+
+            _context.Attach(user);
+            await _context.SaveChangesAsync();
 
             return Ok(Mapper.Map<UserViewModel>(user));
         }
