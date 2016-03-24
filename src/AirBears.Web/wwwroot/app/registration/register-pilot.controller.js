@@ -32,7 +32,6 @@
             braintreeService.setupHeadlessPaypal(25.00, function (data) {
                 vm.registration.nonce = data.nonce;
                 vm.paymentDetails = data.details;
-                console.log(data);
             });
         }
 

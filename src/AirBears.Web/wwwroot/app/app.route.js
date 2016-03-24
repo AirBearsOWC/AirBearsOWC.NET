@@ -5,9 +5,9 @@
         .module("app")
         .config(configureRoutes);
 
-    configureRoutes.$inject = ["$stateProvider", "$urlRouterProvider", "$httpProvider", "uiGmapGoogleMapApiProvider"];
+    configureRoutes.$inject = ["$locationProvider", "$stateProvider", "$urlRouterProvider", "$httpProvider", "uiGmapGoogleMapApiProvider"];
 
-    function configureRoutes($stateProvider, $urlRouterProvider, $httpProvider, uiGmapGoogleMapApiProvider) {
+    function configureRoutes($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, uiGmapGoogleMapApiProvider) {
         $urlRouterProvider.otherwise("/");
 
         $stateProvider
@@ -75,6 +75,8 @@
                 templateUrl: "app/manage/manage-pilots.html",
                 controller: "ManagePilotsController as vm"
             });
+
+        $locationProvider.html5Mode(true);
 
         $httpProvider.interceptors.push("authInterceptor");
 
