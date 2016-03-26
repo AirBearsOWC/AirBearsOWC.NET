@@ -15,6 +15,7 @@
         service.logout = logout;
         service.getAuthToken = getAuthToken;
         service.onLogin = onLogin;
+        service.onUnauthenticated = onUnauthenticated;
         service.openLogin = openLogin;
 
         return service;
@@ -54,6 +55,11 @@
 
         function onLogin(scope, callback) {
             var handler = $rootScope.$on("LOG_IN", callback);
+            scope.$on("$destroy", handler);
+        }
+
+        function onUnauthenticated(scope, callback) {
+            var handler = $rootScope.$on("UNAUTHENTICATED", callback);
             scope.$on("$destroy", handler);
         }
     }

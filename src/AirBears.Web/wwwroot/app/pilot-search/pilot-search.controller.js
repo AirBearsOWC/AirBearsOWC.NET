@@ -34,11 +34,13 @@
         activate();
 
         function activate() {
-            // Set default distance to 10 miles.
-            vm.distance = vm.distances[2];
             if (authService.getAuthToken()) {
                 getCurrentUser();
             }
+            else { vm.user = null; }
+
+            // Set default distance to 10 miles.
+            vm.distance = vm.distances[2];
 
             authService.onLogin($scope, function () {
                 getCurrentUser();
@@ -93,26 +95,22 @@
             }
 
             pilotService.search(address, vm.distance.value, lat, lng).then(function (resp) {
-                //angular.forEach(resp.data, function (pilot) {
-                //    pilot.options = {
-                //        icon: {
-                //            path: google.maps.SymbolPath.CIRCLE,
-                //            scale: 4
-                //        }
-                //    };
-                //});
                 vm.results = resp.data;
                 vm.isSearching = false;
             }, 
             function (resp) {
                 vm.isSearching = false;
-                toast.pop("error", "Search Error", "", resp.data);
+                if (resp.status !== 401) {
+                    toast.pop("error", "Search Error", "", resp.data);
+                }
             });
         }
 
         function getCurrentUser() {
             return userService.getCurrentUser().then(function (user) {
                 vm.user = user;
+            }, function (error) {
+                vm.user = null;
             });
         }
     }

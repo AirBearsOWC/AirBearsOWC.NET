@@ -5,9 +5,9 @@
         .module("app")
         .factory("authInterceptor", authInterceptor);
 
-    authInterceptor.$inject = ["$rootScope", "$q", "store"];
+    authInterceptor.$inject = ["$rootScope", "$location", "$q", "store", "toast"];
 
-    function authInterceptor($rootScope, $q, store) {
+    function authInterceptor($rootScope, $location, $q, store, toast) {
         var service = {};
         var urlBase = "/api/";
 
@@ -28,8 +28,10 @@
 
         function responseError(response) {
             if (response.status === 401) {
-                $rootScope.$broadcast("unauthorized");
+                $rootScope.$broadcast("UNAUTHENTICATED");
                 store.remove("auth_token");
+                $location.path("/");
+                toast.pop("warning", "Session Expired", "Your session has ended. Please log in to access your Air Bears account.");
             }
 
             return $q.reject(response);

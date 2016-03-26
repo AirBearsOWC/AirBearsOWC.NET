@@ -25,6 +25,10 @@
             authService.onLogin($scope, function () {
                 getCurrentUser();
             });
+
+            authService.onUnauthenticated($scope, function () {
+                vm.user = null;
+            });
         }
 
         function logout() {
