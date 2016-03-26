@@ -153,6 +153,7 @@ namespace AirBears.Web.Controllers
             user = Mapper.Map(model, user);
 
             _context.Attach(user);
+
             await _context.SaveChangesAsync();
 
             return Ok(Mapper.Map<UserViewModel>(user));

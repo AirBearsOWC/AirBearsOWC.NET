@@ -5,9 +5,9 @@
         .module("app")
         .factory("pilotService", pilotService);
 
-    pilotService.$inject = ["$http"];
+    pilotService.$inject = ["$http", "$q"];
 
-    function pilotService($http) {
+    function pilotService($http, $q) {
         var service = {};
         var urlBase = "/api/pilots";
 
@@ -35,7 +35,11 @@
         }
 
         function updateProfile(pilot) {
-            return $http.put(urlBase + "/me", pilot);
+            return $http.put(urlBase + "/me", pilot).then(function (resp) {
+                return resp.data;
+            }, function (resp) {
+                return $q.reject(resp);
+            });
         }
 
         function markTeeShirtMailed(userId, isMailed) {

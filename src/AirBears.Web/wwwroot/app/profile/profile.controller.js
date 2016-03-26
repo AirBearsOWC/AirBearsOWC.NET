@@ -15,8 +15,8 @@
         vm.pilot = {};
 
         vm.openChangePasswordModal = openChangePasswordModal;
-        vm.toggleAllowsPilotSearch = privacySettings();
-        vm.toggleSubscribesToUpdates = privacySettings();
+        vm.toggleAllowsPilotSearch = privacySettings;
+        vm.toggleSubscribesToUpdates = privacySettings;
 
         activate();
 
@@ -45,6 +45,8 @@
         function privacySettings() {
             pilotService.updateProfile(vm.pilot).then(function () {
                 toast.pop("success", "Update Success!", "Your privacy settings have been updated.");
+            }, function (resp) {
+                toast.pop("error", "Update Failed", "", resp.data);
             });
         }
 
