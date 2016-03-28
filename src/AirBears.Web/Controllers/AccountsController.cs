@@ -83,6 +83,8 @@ namespace AirBears.Web.Controllers
             user.Longitude = coords.Longitude;
             user.Latitude = coords.Latitude;
             user.GeocodeAddress = coords.GeocodeAddress;
+            user.AllowsPilotSearch = true;
+            user.SubscribesToUpdates = true;
             user.DateRegistered = DateTime.UtcNow;
 
             var result = await _userManager.CreateAsync(user, model.Password);
