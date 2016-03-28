@@ -39,6 +39,8 @@ namespace AirBears.Web.Controllers
                 .Where(u => !u.IsAuthorityAccount)
                 .Include(u => u.TeeShirtSize)
                 .Include(u => u.State)
+                .Include(u => u.FlightTime)
+                .Include(u => u.Payload)
                 .OrderBy(u => u.LastName)
                 .ToListAsync();
 
@@ -116,7 +118,7 @@ namespace AirBears.Web.Controllers
                 return HttpNotFound();
             }
 
-            return Ok(Mapper.Map<UserViewModel>(user));
+            return Ok(Mapper.Map<PilotViewModel>(user));
         }
 
         // PUT: api/pilots/5/tee-shirt-mailed
@@ -135,28 +137,31 @@ namespace AirBears.Web.Controllers
             _context.Users.Update(user, GraphBehavior.SingleObject);
             _context.SaveChanges();
 
-            return Ok(Mapper.Map<UserViewModel>(user));
+            return Ok(Mapper.Map<PilotViewModel>(user));
         }
 
         // GET: api/pilots/me
         [HttpPut("me", Name = "Update Pilot")]
         [Authorize(AuthPolicies.Bearer)]
-        public async Task<IActionResult> UpdatePilot([FromBody] UpdatePilotViewModel model)
+        public async Task<IActionResult> UpdatePilot([FromBody] PilotViewModel model)
         {
             if(!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == User.GetUserId());
+            var user = await _context.Users
+                //.Include(u => u.TeeShirtSize)
+                //.Include(u => u.State)
+                //.Include(u => u.FlightTime)
+                //.Include(u => u.Payload)
+                .SingleOrDefaultAsync(u => u.Id == User.GetUserId());
 
             user = Mapper.Map(model, user);
 
-            _context.Attach(user);
-
             await _context.SaveChangesAsync();
 
-            return Ok(Mapper.Map<UserViewModel>(user));
+            return Ok();
         }
 
         protected override void Dispose(bool disposing)

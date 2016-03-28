@@ -12,8 +12,7 @@ namespace AirBears.Web
             Mapper.CreateMap<User, UserViewModel>()
                 .ForMember(dest => dest.TeeShirtSize, mapper => mapper.MapFrom(src => src.TeeShirtSize.Name));
 
-            Mapper.CreateMap<User, IdentityViewModel>()
-                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.MapFrom(src => src.TeeShirtSize.Name));
+            Mapper.CreateMap<User, IdentityViewModel>();
 
             Mapper.CreateMap<User, PilotSearchResultViewModel>()
                 .ForMember(dest => dest.TeeShirtSize, mapper => mapper.MapFrom(src => src.TeeShirtSize.Name))
@@ -28,8 +27,15 @@ namespace AirBears.Web
                 .ForMember(dest => dest.IsAuthorityAccount, mapper => mapper.UseValue(true))
                 .IgnoreAllNonExisting();
 
-            Mapper.CreateMap<UpdatePilotViewModel, User>()
-                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.Ignore())
+            Mapper.CreateMap<PilotViewModel, User>()
+                .ForMember(dest => dest.StateId, mapper => mapper.MapFrom(s => s.State.Id))
+                .ForMember(dest => dest.FlightTimeId, mapper => mapper.MapFrom(s => s.FlightTime.Id))
+                .ForMember(dest => dest.PayloadId, mapper => mapper.MapFrom(s => s.Payload.Id))
+                .ForMember(dest => dest.TeeShirtSizeId, mapper => mapper.MapFrom(s => s.TeeShirtSize.Id))
+                .ForMember(dest => dest.State, mapper => mapper.UseValue(null))
+                .ForMember(dest => dest.FlightTime, mapper => mapper.UseValue(null))
+                .ForMember(dest => dest.Payload, mapper => mapper.UseValue(null))
+                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.UseValue(null))
                 .IgnoreAllNonExisting();
 
             Mapper.AssertConfigurationIsValid();

@@ -15,7 +15,9 @@ namespace AirBears.Web.Models
 
         public DbSet<TeeShirtSize> TeeShirtSizes { get; set; }
 
-        //public DbSet<Country> Countries { get; set; }
+        public DbSet<Payload> Payloads { get; set; }
+
+        public DbSet<FlightTime> FlightTimes { get; set; }
 
         public DbSet<State> States { get; set; }
     }

@@ -13,6 +13,8 @@
 
         service.getStates = getStates;
         service.getTeeShirtSizes = getTeeShirtSizes;
+        service.getPayloads = getPayloads;
+        service.getFlightTimes = getFlightTimes;
 
         return service;
 
@@ -24,6 +26,18 @@
 
         function getTeeShirtSizes() {
             return $http.get(urlBase + "tee-shirt-sizes").then(function (resp) {
+                return resp.data;
+            });
+        }
+
+        function getPayloads() {
+            return $http.get(urlBase + "payloads").then(function (resp) {
+                return resp.data;
+            });
+        }
+
+        function getFlightTimes() {
+            return $http.get(urlBase + "flight-times").then(function (resp) {
                 return resp.data;
             });
         }

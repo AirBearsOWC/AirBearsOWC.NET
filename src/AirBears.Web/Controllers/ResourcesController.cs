@@ -30,6 +30,18 @@ namespace AirBears.Web.Controllers
             return await _context.TeeShirtSizes.OrderBy(t => t.SortOrder).ToListAsync();
         }
 
+        [HttpGet("payloads")]
+        public async Task<IEnumerable<Payload>> GetPayloads()
+        {
+            return await _context.Payloads.OrderBy(t => t.SortOrder).ToListAsync();
+        }
+
+        [HttpGet("flight-times")]
+        public async Task<IEnumerable<FlightTime>> GetFlightTimes()
+        {
+            return await _context.FlightTimes.OrderBy(t => t.SortOrder).ToListAsync();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

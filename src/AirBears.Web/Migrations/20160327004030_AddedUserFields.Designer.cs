@@ -8,9 +8,10 @@ using AirBears.Web.Models;
 namespace AirBears.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20160327004030_AddedUserFields")]
+    partial class AddedUserFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
@@ -117,8 +118,6 @@ namespace AirBears.Web.Migrations
 
                     b.Property<double?>("Longitude");
 
-                    b.Property<bool>("NightVisionCapable");
-
                     b.Property<string>("NormalizedEmail")
                         .HasAnnotation("MaxLength", 256);
 
@@ -146,8 +145,6 @@ namespace AirBears.Web.Migrations
                     b.Property<DateTime?>("TeeShirtMailedDate");
 
                     b.Property<Guid?>("TeeShirtSizeId");
-
-                    b.Property<bool>("ThermalVisionCapable");
 
                     b.Property<bool>("TwoFactorEnabled");
 

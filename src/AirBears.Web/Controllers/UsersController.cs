@@ -36,6 +36,8 @@ namespace AirBears.Web.Controllers
             var user = await _context.Users
                 .Include(u => u.TeeShirtSize)
                 .Include(u => u.State)
+                .Include(u => u.FlightTime)
+                .Include(u => u.Payload)
                 .FirstOrDefaultAsync(u => u.Id == User.GetUserId());
 
             var resp = Mapper.Map<IdentityViewModel>(user);

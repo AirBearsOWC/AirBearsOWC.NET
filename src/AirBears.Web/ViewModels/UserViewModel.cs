@@ -50,12 +50,24 @@ namespace AirBears.Web.ViewModels
 
         public string TeeShirtSize { get; set; }
 
+        public Guid TeeShirtSizeId { get; set; }
+
+        public bool FemaIcsCertified { get; set; }
+
+        public bool HamRadioLicensed { get; set; }
+
+        public Guid? PayloadId { get; set; }
+
+        public Guid? FlightTimeId { get; set; }
+
+        public string Bio { get; set; }
+
         public DateTime? TeeShirtMailedDate { get; set; }
 
         public DateTime DateRegistered { get; set; }
     }
 
-    public class IdentityViewModel : UserViewModel
+    public class IdentityViewModel : PilotViewModel
     {
         public IEnumerable<string> Roles { get; set; }
     }
@@ -68,7 +80,7 @@ namespace AirBears.Web.ViewModels
         public double Distance { get; set; }
     }
 
-    public class UpdatePilotViewModel
+    public class PilotViewModel
     {
         public string FirstName { get; set; }
 
@@ -82,19 +94,31 @@ namespace AirBears.Web.ViewModels
 
         public string City { get; set; }
 
-        public Guid StateId { get; set; }
-
-        ///// <summary>
-        ///// State or province depending on the country.
-        ///// </summary>
-        //public virtual State State { get; set; }
+        /// <summary>
+        /// State or province depending on the country.
+        /// </summary>
+        public State State { get; set; }
 
         public string Zip { get; set; }
+
+        public TeeShirtSize TeeShirtSize { get; set; }
 
         public bool AllowsPilotSearch { get; set; }
 
         public bool SubscribesToUpdates { get; set; }
 
-        public string TeeShirtSize { get; set; }
+        public bool NightVisionCapable { get; set; }
+
+        public bool ThermalVisionCapable { get; set; }
+
+        public bool FemaIcsCertified { get; set; }
+
+        public bool HamRadioLicensed { get; set; }
+
+        public Payload Payload { get; set; }
+
+        public FlightTime FlightTime { get; set; }
+
+        public string Bio { get; set; }
     }
 }

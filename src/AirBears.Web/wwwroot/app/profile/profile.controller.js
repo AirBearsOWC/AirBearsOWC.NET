@@ -15,8 +15,12 @@
         vm.pilot = {};
 
         vm.openChangePasswordModal = openChangePasswordModal;
-        vm.toggleAllowsPilotSearch = privacySettings;
-        vm.toggleSubscribesToUpdates = privacySettings;
+        vm.toggleAllowsPilotSearch = updatePrivacySettings;
+        vm.toggleSubscribesToUpdates = updatePrivacySettings;
+        vm.toggleNightVision = updatePlatformCapabilities;
+        vm.toggleThermal = updatePlatformCapabilities;
+        vm.chooseFlightTime = updatePlatformCapabilities;
+        vm.choosePayload = updatePlatformCapabilities;
 
         activate();
 
@@ -30,6 +34,13 @@
             resourceService.getTeeShirtSizes().then(function (sizes) {
                 vm.teeShirtSizes = sizes;
             });
+
+            resourceService.getPayloads().then(function (payloads) {
+                vm.payloads = payloads;
+            });
+            resourceService.getFlightTimes().then(function (flightTimes) {
+                vm.flightTimes = flightTimes;
+            });
         }
 
         function getCurrentUser() {
@@ -42,9 +53,17 @@
             });
         }
 
-        function privacySettings() {
+        function updatePrivacySettings() {
             pilotService.updateProfile(vm.pilot).then(function () {
                 toast.pop("success", "Update Success!", "Your privacy settings have been updated.");
+            }, function (resp) {
+                toast.pop("error", "Update Failed", "", resp.data);
+            });
+        }
+
+        function updatePlatformCapabilities() {
+            pilotService.updateProfile(vm.pilot).then(function () {
+                toast.pop("success", "Update Success!", "Your platform capabilities have been updated.");
             }, function (resp) {
                 toast.pop("error", "Update Failed", "", resp.data);
             });

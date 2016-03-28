@@ -33,6 +33,40 @@ namespace AirBears.Web.Models
                 context.SeedRoles();
                 context.SeedStates();
                 context.SeedTeeShirtSizes();
+                context.SeedPayloads();
+                context.SeedFlightTimes();
+            }
+        }
+
+        private static void SeedPayloads(this AppDbContext context)
+        {
+            if (!context.Payloads.Any())
+            {
+                context.Payloads.AddRange(
+                    new Payload { Name = "None", SortOrder = 0 },
+                    new Payload { Name = "10 Pounds", SortOrder = 1 },
+                    new Payload { Name = "20 Pounds", SortOrder = 2 },
+                    new Payload { Name = "40 Pounds", SortOrder = 3 },
+                    new Payload { Name = "60 Pounds", SortOrder = 4 },
+                    new Payload { Name = "60+ Pounds", SortOrder = 5 }
+                );
+
+                context.SaveChanges();
+            }
+        }
+
+        private static void SeedFlightTimes(this AppDbContext context)
+        {
+            if (!context.FlightTimes.Any())
+            {
+                context.FlightTimes.AddRange(
+                    new FlightTime { Name = "1-2 Minutes", SortOrder = 0 },
+                    new FlightTime { Name = "2-5 Minutes", SortOrder = 1 },
+                    new FlightTime { Name = "5-10 Minutes", SortOrder = 2 },
+                    new FlightTime { Name = "10+ Minutes", SortOrder = 3 }
+                );
+
+                context.SaveChanges();
             }
         }
 

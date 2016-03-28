@@ -39,6 +39,9 @@ namespace AirBears.Web.Models
 
         public bool HasAgreedToTerms { get; set; }
 
+        [MaxLength(500)]
+        public string Bio { get; set; }
+
         /// <summary>
         /// Identifies an account as an authority account, regardless if the account has been granted the Authority role.
         /// </summary>
@@ -47,6 +50,18 @@ namespace AirBears.Web.Models
         public bool AllowsPilotSearch { get; set; }
 
         public bool SubscribesToUpdates { get; set; }
+
+        public bool NightVisionCapable { get; set; }
+
+        public bool ThermalVisionCapable { get; set; }
+
+        public bool FemaIcsCertified { get; set; }
+
+        public bool HamRadioLicensed { get; set; }
+
+        public Guid? PayloadId { get; set; }
+
+        public Guid? FlightTimeId { get; set; }
 
         public DateTime DateRegistered { get; set; }
 
@@ -58,6 +73,10 @@ namespace AirBears.Web.Models
         /// State or province depending on the country.
         /// </summary>
         public virtual State State { get; set; }
+
+        public virtual Payload Payload { get; set; }
+
+        public virtual FlightTime FlightTime { get; set; }
 
         #endregion
     }
