@@ -66,15 +66,15 @@
                     <div class="form-group">
                         <label for="flightTime">Flight Time</label>
                         <select id="flightTime" name="flightTime" class="form-control" required 
-                                ng-model="vm.flightTime" 
-                                ng-options="t.name for t in vm.flightTimes"
+                                ng-model="vm.pilot.flightTime" 
+                                ng-options="t.name for t in vm.flightTimes track by t.id"
                                 ng-change="vm.chooseFlightTime()"></select>
                     </div>
                     <div class="form-group">
                         <label for="payload">Payload</label>
                         <select id="payload" name="payload" class="form-control" required
-                                ng-model="vm.payload"
-                                ng-options="p.name for p in vm.payloads" 
+                                ng-model="vm.pilot.payload"
+                                ng-options="p.name for p in vm.payloads track by p.id" 
                                 ng-change="vm.choosePayload()"></select>
                     </div>
                 </div>
