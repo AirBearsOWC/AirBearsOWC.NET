@@ -1,5 +1,7 @@
-﻿<!--<video autoplay="autoplay" loop="loop" class="bg-vid hidden-xs" src="/videos/airbears-header-vid.mp4"></video>-->
-<!--<iframe frameborder="0" allowfullscreen class="bg-vid" src="https://www.youtube.com/embed/cr62Ov6HKBg?controls=0&amp;showinfo=0&amp;autoplay=1&amp;loop=1"></iframe>-->
+﻿<div class="bg-vid hidden-xs">
+    <iframe frameborder="0" height="100%" width="100%"
+            src="https://www.youtube.com/embed/cr62Ov6HKBg?controls=0&amp;showinfo=0&amp;autoplay=1&amp;loop=1&amp;playlist=cr62Ov6HKBg&amp;autohide=1"></iframe>
+</div>
 
 <div class="container body-content">
     <div class="jumbotron">
@@ -200,12 +202,12 @@
         left: 0;
     }
 
-    video.bg-vid, iframe.bg-vid {
+    .bg-vid {
         position: absolute;
-        top: 0;
-        left: 0;
+        z-index: -99;
         width: 100%;
-        z-index: 0;
+        height: 200%;
+        top: -50%;
     }
 
     .jumbotron {
