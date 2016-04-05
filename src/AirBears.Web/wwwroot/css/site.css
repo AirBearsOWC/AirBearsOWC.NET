@@ -151,6 +151,10 @@ input, select, textarea {
     margin-bottom: 20px;
 }
 
+.form-group .checkbox {
+    top: -5px;
+}
+
 
 /*
     Toast Overrides

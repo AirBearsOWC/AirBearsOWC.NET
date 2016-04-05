@@ -18,9 +18,11 @@
         vm.toggleAllowsPilotSearch = updatePrivacySettings;
         vm.toggleSubscribesToUpdates = updatePrivacySettings;
         vm.toggleNightVision = updatePlatformCapabilities;
-        vm.toggleThermal = updatePlatformCapabilities;
+        vm.toggleThermal = updatePlatformCapabilities;       
         vm.chooseFlightTime = updatePlatformCapabilities;
         vm.choosePayload = updatePlatformCapabilities;
+        vm.toggleFemaIcsCertified = updateCertifications;
+        vm.toggleHamRadioLicensed = updateCertifications;
 
         activate();
 
@@ -64,6 +66,14 @@
         function updatePlatformCapabilities() {
             pilotService.updateProfile(vm.pilot).then(function () {
                 toast.pop("success", "Update Success!", "Your platform capabilities have been updated.");
+            }, function (resp) {
+                toast.pop("error", "Update Failed", "", resp.data);
+            });
+        }
+
+        function updateCertifications() {
+            pilotService.updateProfile(vm.pilot).then(function () {
+                toast.pop("success", "Update Success!", "Your certifications have been updated.");
             }, function (resp) {
                 toast.pop("error", "Update Failed", "", resp.data);
             });
