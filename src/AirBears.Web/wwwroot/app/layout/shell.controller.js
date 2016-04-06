@@ -34,7 +34,7 @@
         function logout() {
             authService.logout();
             vm.user = null;
-            $state.go("root.home");
+            if (!$state.is("root.home")) { $state.go("root.home"); }
         }
 
         function getCurrentUser() {
