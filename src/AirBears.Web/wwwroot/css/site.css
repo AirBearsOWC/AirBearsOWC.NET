@@ -155,6 +155,18 @@ input, select, textarea {
     top: -5px;
 }
 
+.social-icon {
+    transition: opacity 0.3s ease;
+}
+
+.social-icon:hover {
+    opacity: 0.4;
+}
+
+.social-icon img {
+    height: 50px;
+}
+
 
 /*
     Toast Overrides

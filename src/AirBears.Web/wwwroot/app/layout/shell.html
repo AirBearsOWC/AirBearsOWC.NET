@@ -16,7 +16,7 @@
             <ul class="nav navbar-nav">
                 <li><a ui-sref="root.pilot-search">Pilot Search</a></li>
                 <li><a href>News</a></li>
-                <li><a href>Contact</a></li>
+                <li><a href>Contact</a></li>               
                 <li class="dropdown" ng-show="vm.user && vm.user.isAdmin">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         Manage <span class="caret"></span>
@@ -28,7 +28,7 @@
                         <li><a href="#">Inventory</a></li>
                     </ul>
                 </li>
-            </ul>
+            </ul>            
             <ul class="nav navbar-nav navbar-right" ng-hide="vm.user">
                 <li><a ng-click="vm.openRegistationOptions()">Register</a></li>
                 <li><a ng-click="vm.openLogin()">Login</a></li>
@@ -44,6 +44,11 @@
                     </ul>
                 </li>
             </ul>
+            <div class="nav navbar-nav navbar-right" style="margin-right: 25px;">
+                <a href="https://www.facebook.com/Air-Bears-830111767019340/" class="social-icon" target="_blank" title="View Air Bears on Facebook">
+                    <img src="../../images/facebook-icon.png" />
+                </a>
+            </div>
         </div>
     </div>
 </div>
