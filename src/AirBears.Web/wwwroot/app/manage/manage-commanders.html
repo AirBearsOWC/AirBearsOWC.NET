@@ -32,9 +32,7 @@
                             </td>
                             <td>{{ pilot.dateRegistered | date:"MMM dd, yyyy" }}</td>
                             <td>
-                                <button class="btn btn-sm btn-success" ng-hide="pilot.teeShirtMailedDate" ng-click="vm.markTeeShirtMailed($index, 'true')">
-                                    <i class="glyphicon glyphicon-check"></i> Mark Shirt Mailed
-                                </button>
+                                <button class="btn btn-sm btn-info" ng-hide="pilot.teeShirtMailedDate" ng-click="vm.markTeeShirtMailed($index, 'true')">Mark Shirt Mailed</button>
                                 <span ng-show="pilot.teeShirtMailedDate">{{ pilot.teeShirtMailedDate | date:"MMM dd, yyyy" }}</span>
                             </td>
                         </tr>

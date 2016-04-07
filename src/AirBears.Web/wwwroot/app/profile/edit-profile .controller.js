@@ -3,11 +3,11 @@
 
     angular
         .module("app")
-        .controller("EditProfileController", EditProfileController);
+        .controller("ProfileController", ProfileController);
 
-    EditProfileController.$inject = ["$uibModal", "resourceService", "userService", "pilotService", "authService", "toast"];
+    ProfileController.$inject = ["$uibModal", "resourceService", "userService", "pilotService", "authService", "toast"];
 
-    function EditProfileController($uibModal, resourceService, userService, pilotService, authService, toast) {
+    function ProfileController($uibModal, resourceService, userService, pilotService, authService, toast) {
         var vm = this;
 
         vm.states = [];

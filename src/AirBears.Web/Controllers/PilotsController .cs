@@ -30,12 +30,45 @@ namespace AirBears.Web.Controllers
             _geocodeService = geocodeService;
         }
 
+        // GET: api/pilots/5
+        [HttpGet("{id}", Name = "Get Pilot")]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
+        public async Task<IActionResult> GetPilot([FromRoute] string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return Ok(Mapper.Map<PilotViewModel>(user));
+        }
+
+        [Route("me")]
+        [HttpGet]
+        public async Task<IActionResult> GetCurrentUser()
+        {
+            var user = await _context.Users
+                .Include(u => u.TeeShirtSize)
+                .Include(u => u.State)
+                .Include(u => u.FlightTime)
+                .Include(u => u.Payload)
+                .FirstOrDefaultAsync(u => u.Id == User.GetUserId());
+
+            var resp = Mapper.Map<IdentityPilotViewModel>(user);
+
+            resp.Roles = User.GetRoles();
+
+            return Ok(resp);
+        }
+
         // GET: api/pilots
         [HttpGet]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IEnumerable<UserViewModel>> GetPilots()
+        public async Task<IEnumerable<PilotViewModel>> GetPilots()
         {
-            var users = await _context.Users
+            var pilots = await _context.Users
                 .Where(u => !u.IsAuthorityAccount)
                 .Include(u => u.TeeShirtSize)
                 .Include(u => u.State)
@@ -44,28 +77,8 @@ namespace AirBears.Web.Controllers
                 .OrderBy(u => u.LastName)
                 .ToListAsync();
 
-            return Mapper.Map<IEnumerable<UserViewModel>>(users);
-        }
-
-        private async Task<IEnumerable<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude)
-        {
-            var sqlQuery = "SELECT * FROM dbo.AspNetUsers "
-               + $"WHERE (3959 * acos(cos(radians({latitude})) * cos(radians(Latitude)) "
-               + $"* cos(radians(Longitude) - radians({longitude})) + sin(radians({latitude})) * sin(radians(Latitude)))) < {distance}";
-
-            var results = _context.Users.FromSql(sqlQuery).ToList();
-            var users = Mapper.Map<List<PilotSearchResultViewModel>>(results);
-
-            users.ForEach(u =>
-            {
-                u.Distance = (3959 *
-                    Math.Acos((Math.Cos(latitude.ToRadians())) * Math.Cos(u.Latitude.Value.ToRadians()) *
-                    Math.Cos(u.Longitude.Value.ToRadians() - longitude.ToRadians()) +
-                    Math.Sin(latitude.ToRadians()) * Math.Sin(u.Latitude.Value.ToRadians())));
-            });
-
-            return users.OrderBy(u => u.Distance);
-        }
+            return Mapper.Map<IEnumerable<PilotViewModel>>(pilots);
+        }       
 
         /// <summary>
         /// Returns a list of pilots that are within a particular distance (in miles) from the address or coordinates.
@@ -73,7 +86,6 @@ namespace AirBears.Web.Controllers
         /// <returns></returns>
         // GET: api/pilots/search?address=xyz&distance=25&latitude=10&longitude=-5.5
         [HttpGet("search", Name = "Pilot Search")]
-        //[Authorize(AuthPolicies.Bearer, Roles = Roles.Admin_And_Authority)]
         public async Task<IActionResult> Search(string address, int distance, double? latitude, double? longitude)
         {
             if (distance > 1000)
@@ -104,21 +116,6 @@ namespace AirBears.Web.Controllers
             }
 
             return Ok(await FindPilotsWithinRadius(distance, coords.Latitude, coords.Longitude));
-        }
-
-        // GET: api/pilots/5
-        [HttpGet("{id}", Name = "Get Pilot")]
-        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IActionResult> GetPilot([FromRoute] string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-
-            return Ok(Mapper.Map<PilotViewModel>(user));
         }
 
         // PUT: api/pilots/5/tee-shirt-mailed
@@ -162,6 +159,33 @@ namespace AirBears.Web.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        private async Task<IEnumerable<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude)
+        {
+            var sqlQuery = "SELECT Id FROM dbo.AspNetUsers "
+               + $"WHERE (3959 * acos(cos(radians({latitude})) * cos(radians(Latitude)) "
+               + $"* cos(radians(Longitude) - radians({longitude})) + sin(radians({latitude})) * sin(radians(Latitude)))) < {distance}";
+
+            var pilotIds = _context.Users.FromSql(sqlQuery).Select(u => u.Id).ToList();
+            var results = _context.Users.Include(u => u.TeeShirtSize)
+                                        .Include(u => u.State)
+                                        .Include(u => u.FlightTime)
+                                        .Include(u => u.Payload)
+                                        .Where(u => pilotIds.Contains(u.Id))
+                                        .ToList();
+
+            var users = Mapper.Map<List<PilotSearchResultViewModel>>(results);
+
+            users.ForEach(u =>
+            {
+                u.Distance = (3959 *
+                    Math.Acos((Math.Cos(latitude.ToRadians())) * Math.Cos(u.Latitude.Value.ToRadians()) *
+                    Math.Cos(u.Longitude.Value.ToRadians() - longitude.ToRadians()) +
+                    Math.Sin(latitude.ToRadians()) * Math.Sin(u.Latitude.Value.ToRadians())));
+            });
+
+            return users.OrderBy(u => u.Distance);
         }
 
         protected override void Dispose(bool disposing)

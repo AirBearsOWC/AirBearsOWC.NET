@@ -15,9 +15,11 @@
 /// <reference path="app/common/user.service.js" />
 /// <reference path="app/dashboard/home.controller.js" />
 /// <reference path="app/layout/shell.controller.js" />
+/// <reference path="app/manage/manage-commanders.controller.js" />
 /// <reference path="app/manage/manage-pilots.controller.js" />
 /// <reference path="app/pilot-search/pilot-search.controller.js" />
 /// <reference path="app/profile/change-password-modal.controller.js" />
+/// <reference path="app/profile/edit-profile .controller.js" />
 /// <reference path="app/profile/profile.controller.js" />
 /// <reference path="app/registration/authority-confirmation.controller.js" />
 /// <reference path="app/registration/pilot-confirmation.controller.js" />

@@ -31,7 +31,7 @@ namespace AirBears.Web.Controllers
 
         [Route("/api/me")]
         [HttpGet]
-        public async Task<IdentityViewModel> GetCurrentUser()
+        public async Task<IActionResult> GetCurrentUser()
         {
             var user = await _context.Users
                 .Include(u => u.TeeShirtSize)
@@ -40,11 +40,21 @@ namespace AirBears.Web.Controllers
                 .Include(u => u.Payload)
                 .FirstOrDefaultAsync(u => u.Id == User.GetUserId());
 
-            var resp = Mapper.Map<IdentityViewModel>(user);
+            object resp;
 
-            resp.Roles = User.GetRoles();
+            if (user.IsAuthorityAccount)
+            {
+                var authorityUser = Mapper.Map<IdentityViewModel>(user);
+                authorityUser.Roles = User.GetRoles();
 
-            return resp;
+                // Return an authority user object if that is who is currently authenticated.
+                return Ok(authorityUser);
+            }
+
+            var pilotUser = Mapper.Map<IdentityPilotViewModel>(user);
+            pilotUser.Roles = User.GetRoles();
+
+            return Ok(pilotUser);
         }
 
         /// <summary>
@@ -91,28 +101,6 @@ namespace AirBears.Web.Controllers
             }
 
             return Ok(Mapper.Map<UserViewModel>(user));
-        }
-
-        // PUT: /api/users/5/authority-approval
-        [HttpPut("{id}/authority-approval", Name = "Approve Authority")]
-        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IActionResult> ApproveAuthority([FromRoute] string id, [FromBody] bool isAuthorityApproved)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-
-            if (await _userManager.IsInRoleAsync(user, Roles.Authority))
-            {
-                return HttpBadRequest($"{user.UserName} already has the {Roles.Authority} role!");
-            }
-
-            await _userManager.AddToRoleAsync(user, Roles.Authority);
-
-            return Ok();
         }
 
         private async Task SendChangePasswordEmail(User user)

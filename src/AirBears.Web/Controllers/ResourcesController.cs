@@ -7,6 +7,9 @@ using AirBears.Web.Models;
 
 namespace AirBears.Web.Controllers
 {
+    /// <summary>
+    /// Returns various pseudo-static resources like states and shirt sizes.
+    /// </summary>
     [Produces("application/json")]
     [Route("api/resources")]
     public class ResourcesController : Controller

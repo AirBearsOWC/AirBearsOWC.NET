@@ -70,10 +70,20 @@
                 templateUrl: "app/profile/profile.html",
                 controller: "ProfileController as vm"
             })
+            .state("root.edit-profile", {
+                url: "/profile/edit",
+                templateUrl: "app/profile/edit-profile.html",
+                controller: "EditProfileController as vm"
+            })
             .state("root.manage-pilots", {
                 url: "/manage-pilots",
                 templateUrl: "app/manage/manage-pilots.html",
                 controller: "ManagePilotsController as vm"
+            })
+            .state("root.manage-commanders", {
+                url: "/manage-commanders",
+                templateUrl: "app/manage/manage-commanders.html",
+                controller: "ManageCommandersController as vm"
             });
 
         $locationProvider.html5Mode(true);
