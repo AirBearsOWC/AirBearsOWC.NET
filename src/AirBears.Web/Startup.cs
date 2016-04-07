@@ -81,9 +81,17 @@ namespace AirBears.Web
                     .RequireAuthenticatedUser().Build());
             });
 
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<Models.AppDbContext>()
-                .AddDefaultTokenProviders();
+            services.AddIdentity<User, IdentityRole>(i =>
+            {
+                // configure identity passwor policy options
+                i.Password.RequireDigit = true;
+                i.Password.RequireLowercase = true;
+                i.Password.RequireUppercase = true;
+                i.Password.RequireNonLetterOrDigit = false;
+                i.Password.RequiredLength = 6;
+            })
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
             services.AddMvc().AddJsonOptions(options =>
             {
