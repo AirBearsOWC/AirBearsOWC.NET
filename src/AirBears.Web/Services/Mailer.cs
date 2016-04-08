@@ -29,7 +29,7 @@ namespace AirBears.Web.Services
                 await client.ConnectAsync("smtp.gmail.com", 587, false);
                 await client.AuthenticateAsync("airbearswebsite@gmail.com", "ab@2674**");
 
-                message.From.Add(new MailboxAddress("Air Bears", "airbearswebsite@gmail.com"));
+                message.From.Add(new MailboxAddress("Air Bears Team", "teamcentral@airbears.org"));
                 message.Bcc.Add(new MailboxAddress("Air Bears", "airbears.uav@gmail.com"));
                 //message.Bcc.Add(new MailboxAddress("Tom Faltesek", "tomfaltesek@gmail.com"));
 
