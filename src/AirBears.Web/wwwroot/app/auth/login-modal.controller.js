@@ -31,6 +31,7 @@
                 $uibModalInstance.close({ loginSuccess: true });
             }, function (resp) {
                 vm.message = null;
+                vm.password = null;
                 if (resp && resp.data) {
                     vm.message = resp.data;
                 }
@@ -61,7 +62,7 @@
                 toast.pop("success", "Email Sent!", "Check your email for a password recovery link.");
                 $uibModalInstance.close({ loginSuccess: false });
             }, function (resp) {
-                vm.message = null;
+                vm.message = null;z
                 if (resp && resp.data) {
                     vm.message = resp.data;
                 }

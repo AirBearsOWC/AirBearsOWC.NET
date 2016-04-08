@@ -34,9 +34,7 @@
         function flattenMessage(data) {
             var msg = "";
 
-            if (!data) { return msg; }
-
-            // TODO: check if object or a string.
+            if (!data || !angular.isObject(data)) { return data; }
 
             if (Object.keys(data).length === 1) {
                 // There is only one error, so don't create UL.

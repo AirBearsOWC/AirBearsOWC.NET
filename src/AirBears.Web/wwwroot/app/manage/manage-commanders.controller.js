@@ -5,25 +5,25 @@
         .module("app")
         .controller("ManageCommandersController", ManageCommandersController);
 
-    ManageCommandersController.$inject = ["pilotService", "toast"];
+    ManageCommandersController.$inject = ["authorityService", "toast"];
 
-    function ManageCommandersController(pilotService, toast) {
+    function ManageCommandersController(authorityService, toast) {
         var vm = this;
 
-        vm.pilots = [];
-        vm.markTeeShirtMailed = markTeeShirtMailed;
+        vm.users = [];
+        vm.markApproved = markApproved;
 
         activate();
 
         function activate() {
-            pilotService.getPilots().then(function (pilots) {
-                vm.pilots = pilots;
+            authorityService.getUsers().then(function (users) {
+                vm.users = users;
             });
         }
 
-        function markTeeShirtMailed(index, isMailed) {
-            pilotService.markTeeShirtMailed(vm.pilots[index].id, isMailed).then(function (resp) {
-                vm.pilots[index] = resp.data;
+        function markApproved(index, isApproved) {
+            authorityService.markApproved(vm.users[index].id, isApproved).then(function (resp) {
+                vm.users[index] = resp.data;
             },
             function (resp) {
                 toast.pop("error", "Update Failed", "", resp.data);

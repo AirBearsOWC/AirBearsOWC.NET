@@ -29,23 +29,45 @@ namespace AirBears.Web.Controllers
             _mailer = mailer;
         }
 
-        // GET: api/users/5
         [HttpGet("{id}", Name = "Get Authority User")]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> GetAuthorityUser([FromRoute] string id)
         {
-            var user = await _context.Users.Where(u => !u.IsAuthorityAccount).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(u => u.Id == id && u.IsAuthorityAccount).FirstOrDefaultAsync();
 
             if (user == null)
             {
                 return HttpNotFound();
             }
 
-            return Ok(Mapper.Map<IdentityViewModel>(user));
+            var resp = Mapper.Map<IdentityViewModel>(user);
+
+            resp.Roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(resp);
         }
 
-        // PUT: /api/users/5/authority-approval
-        [HttpPut("{id}/authority-approval", Name = "Approve Authority")]
+        [HttpGet(Name = "Get Authority Users")]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
+        public async Task<IEnumerable<IdentityViewModel>> GetAuthorityUsers()
+        {
+            var users = await _context.Users.Include(u => u.Roles).Where(u => u.IsAuthorityAccount).ToListAsync();
+            var roles = await _context.Roles.ToListAsync();
+            var resp = new List<IdentityViewModel>();
+
+            foreach (var u in users)
+            {
+                var user = Mapper.Map<IdentityViewModel>(u);
+
+                user.Roles = roles.Where(r => u.Roles.Select(x => x.RoleId).Contains(r.Id)).Select(r => r.Name).ToList();
+                resp.Add(user);            
+            }
+
+            return resp;
+        }
+
+        // PUT: /api/authority-users/5/approve
+        [HttpPut("{id}/approve", Name = "Approve Authority")]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> ApproveAuthority([FromRoute] string id, [FromBody] bool isAuthorityApproved)
         {
@@ -63,7 +85,10 @@ namespace AirBears.Web.Controllers
 
             await _userManager.AddToRoleAsync(user, Roles.Authority);
 
-            return Ok();
+            var resp = Mapper.Map<IdentityViewModel>(user);
+            resp.Roles = await _userManager.GetRolesAsync(user);
+
+            return Ok(resp);
         }
 
         private async Task SendChangePasswordEmail(User user)
