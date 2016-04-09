@@ -40,16 +40,16 @@
 
             <div class="panel panel-default" ng-show="vm.results">
                 <div class="panel-heading">
-                    <h2 class="panel-title">Nearby Pilots</h2>
+                    <h2 class="panel-title">{{ vm.results.totalCount }} Results <span ng-if="vm.results.totalCount != vm.results.items.length">(Showing {{ vm.results.items.length }})</span></h2>
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="pilot in vm.results" ng-click="vm.selectPilot(pilot)" ng-class="{ active: pilot.show }">
+                    <li class="list-group-item" ng-repeat="pilot in vm.results.items" ng-click="vm.selectPilot(pilot)" ng-class="{ active: pilot.show }">
                         <strong>{{ pilot.firstName }} {{ pilot.lastName }}</strong>
                         <span class="badge">{{ pilot.distance | number:2 }} miles</span>
                         <br />
                         <em>{{ pilot.email }}</em>
                     </li>
-                    <li class="list-group-item" ng-show="vm.results.length === 0">
+                    <li class="list-group-item" ng-show="vm.results.totalCount === 0">
                         No pilots were found. Try expanding your search distance.
                     </li>
                 </ul>
@@ -58,9 +58,9 @@
         </div>
 
         <div class="col-sm-7">
-            <ui-gmap-google-map ng-if="vm.map && vm.results && vm.user" center="vm.map.center" zoom="vm.map.zoom">
+            <ui-gmap-google-map ng-if="vm.map && vm.results && vm.results.items && vm.user" center="vm.map.center" zoom="vm.map.zoom">
                 <ui-gmap-circle center="vm.circle.center" stroke="vm.circle.stroke" fill="vm.circle.fill" radius="vm.circle.radius"></ui-gmap-circle>
-                <ui-gmap-markers models="vm.results" coords="'self'" options="'options'" click="vm.toggleMarkerWindow">
+                <ui-gmap-markers models="vm.results.items" coords="'self'" options="'options'" click="vm.toggleMarkerWindow">
                     <ui-gmap-windows show="show">
                         <div ng-non-bindable>
                             <p>

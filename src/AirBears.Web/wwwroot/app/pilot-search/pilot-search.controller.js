@@ -57,29 +57,27 @@
 
         function search(isValid) {
             if (!isValid) { return; }
+
+            var searchCriteria = { distance: vm.distance.value, address: vm.address, latitude: null, longitude: null, page: 1, pageSize: 10 };
             
             vm.isSearching = true;
-
-            var lat = null;
-            var lng = null;
-            var address = vm.address;
 
             //var address = angular.isObject(vm.address) ? vm.address.formatted_address : vm.address;
 
             if (angular.isObject(vm.address)) {
-                lat = vm.address.geometry.location.lat();
-                lng = vm.address.geometry.location.lng();
-                address = null;
+                searchCriteria.latitude = vm.address.geometry.location.lat();
+                searchCriteria.longitude = vm.address.geometry.location.lng();
+                searchCriteria.address = null;
 
                 var radius = (vm.distance.value / 3963.1676) * 6378100;
                 var scale = radius / 500;
                 var zoomLevel = Math.round(16.5 - Math.log(scale) / Math.log(2)) - 1;
 
-                vm.map = { center: { latitude: lat, longitude: lng }, zoom: zoomLevel };
+                vm.map = { center: { latitude: searchCriteria.latitude, longitude: searchCriteria.longitude }, zoom: zoomLevel };
                 vm.circle = {
                     center: {
-                        latitude: lat,
-                        longitude: lng
+                        latitude: searchCriteria.latitude,
+                        longitude: searchCriteria.longitude
                     },
                     radius: radius,
                     stroke: {
@@ -92,10 +90,10 @@
                         opacity: 0.2
                     }
                 };
-            }
+            }           
 
-            pilotService.search(address, vm.distance.value, lat, lng).then(function (resp) {
-                vm.results = resp.data;
+            pilotService.search(searchCriteria).then(function (data) {
+                vm.results = data;
                 vm.isSearching = false;
             }, 
             function (resp) {

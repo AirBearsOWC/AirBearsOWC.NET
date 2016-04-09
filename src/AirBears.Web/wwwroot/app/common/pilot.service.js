@@ -18,14 +18,12 @@
 
         return service;
 
-        function search(address, distance, latitude, longitude) {
-            // Send coordinates if the address is null.
-            if (!address) {
-                return $http.get(urlBase + "/search?distance=" + distance + "&latitude=" + latitude + "&longitude=" + longitude);
-            }
-
-            // Otherwise send the address.
-            return $http.get(urlBase + "/search?address=" + address + "&distance=" + distance);
+        function search(criteria) {
+            return $http.post(urlBase + "/search", criteria).then(function (resp) {
+                return resp.data;
+            }, function (resp) {
+                return $q.reject(resp);
+            });
         }
 
         function getPilots() {

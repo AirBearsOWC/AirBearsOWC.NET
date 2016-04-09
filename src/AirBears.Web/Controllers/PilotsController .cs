@@ -81,33 +81,25 @@ namespace AirBears.Web.Controllers
         }
 
         /// <summary>
-        /// Returns a list of pilots that are within a particular distance (in miles) from the address or coordinates.
-        /// GET: api/pilots/search?address=xyz&distance=25&latitude=10&longitude=-5.5
+        /// Returns a list of pilots that match the search criteria and are within a particular distance (in miles) from the address or coordinates.
         /// </summary>
         /// <returns></returns>
-        [HttpGet("search", Name = "Pilot Search")]
-        public async Task<IActionResult> Search(string address, int distance, double? latitude, double? longitude)
+        [HttpPost("search", Name = "Pilot Search")]
+        public async Task<IActionResult> Search([FromBody]PilotSearchViewModel model)
         {
-            if (distance > 1000)
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("distance", "The distance cannot exceed 1000 miles.");
                 return HttpBadRequest(ModelState);
             }
 
             // If lat/lng were provided, use them to perform the distance query.
-            if(latitude.HasValue && longitude.HasValue)
+            if(model.Latitude.HasValue && model.Longitude.HasValue)
             {
-                return Ok(await FindPilotsWithinRadius(distance, latitude.Value, longitude.Value));
-            }
-
-            if (string.IsNullOrWhiteSpace(address))
-            {
-                ModelState.AddModelError("address", "Address or coordinates are required.");
-                return HttpBadRequest(ModelState);
+                return Ok(await FindPilotsWithinRadius(model.Distance, model.Latitude.Value, model.Longitude.Value, model.Page, model.PageSize));
             }
 
             // Otherwise we have to ask the Geocode service to find the lat/lng for the given address.
-            var coords = await _geocodeService.GetCoordsForAddress(address);
+            var coords = await _geocodeService.GetCoordsForAddress(model.Address);
 
             if (coords.Status != GeocodeResponseStatus.OK)
             {
@@ -115,7 +107,7 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            return Ok(await FindPilotsWithinRadius(distance, coords.Latitude, coords.Longitude));
+            return Ok(await FindPilotsWithinRadius(model.Distance, coords.Latitude, coords.Longitude, model.Page, model.PageSize));
         }
 
         // PUT: api/pilots/5/tee-shirt-mailed
@@ -190,31 +182,39 @@ namespace AirBears.Web.Controllers
             return coords.Status;
         }
 
-        private async Task<IEnumerable<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude)
+        private async Task<QueryResult<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, int page, int pageSize)
         {
             var sqlQuery = "SELECT Id FROM dbo.AspNetUsers "
                + $"WHERE (3959 * acos(cos(radians({latitude})) * cos(radians(Latitude)) "
                + $"* cos(radians(Longitude) - radians({longitude})) + sin(radians({latitude})) * sin(radians(Latitude)))) < {distance}";
 
             var pilotIds = _context.Users.FromSql(sqlQuery).Select(u => u.Id).ToList();
-            var results = _context.Users.Include(u => u.TeeShirtSize)
+            var users = await _context.Users.Include(u => u.TeeShirtSize)
                                         .Include(u => u.State)
                                         .Include(u => u.FlightTime)
                                         .Include(u => u.Payload)
                                         .Where(u => !u.IsAuthorityAccount && pilotIds.Contains(u.Id))
-                                        .ToList();
+                                        .ToListAsync();
 
-            var users = Mapper.Map<List<PilotSearchResultViewModel>>(results);
+            var pilots = Mapper.Map<List<PilotSearchResultViewModel>>(users);
 
-            users.ForEach(u =>
+            pilots.ForEach(p =>
             {
-                u.Distance = (3959 *
-                    Math.Acos((Math.Cos(latitude.ToRadians())) * Math.Cos(u.Latitude.Value.ToRadians()) *
-                    Math.Cos(u.Longitude.Value.ToRadians() - longitude.ToRadians()) +
-                    Math.Sin(latitude.ToRadians()) * Math.Sin(u.Latitude.Value.ToRadians())));
+                p.Distance = (3959 *
+                    Math.Acos((Math.Cos(latitude.ToRadians())) * Math.Cos(p.Latitude.Value.ToRadians()) *
+                    Math.Cos(p.Longitude.Value.ToRadians() - longitude.ToRadians()) +
+                    Math.Sin(latitude.ToRadians()) * Math.Sin(p.Latitude.Value.ToRadians())));
             });
 
-            return users.OrderBy(u => u.Distance);
+            var result = new QueryResult<PilotSearchResultViewModel>()
+            {
+                Items = pilots.OrderBy(p => p.Distance).Skip((page - 1) * pageSize).Take(pageSize),
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = pilotIds.Count
+            };
+
+            return result;
         }
 
         protected override void Dispose(bool disposing)
