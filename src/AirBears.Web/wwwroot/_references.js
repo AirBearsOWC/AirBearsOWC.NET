@@ -22,6 +22,7 @@
 /// <reference path="app/profile/change-password-modal.controller.js" />
 /// <reference path="app/profile/edit-bio-modal.controller.js" />
 /// <reference path="app/profile/edit-profile .controller.js" />
+/// <reference path="app/profile/edit-profile-modal.controller.js" />
 /// <reference path="app/profile/profile.controller.js" />
 /// <reference path="app/registration/authority-confirmation.controller.js" />
 /// <reference path="app/registration/pilot-confirmation.controller.js" />

@@ -142,23 +142,52 @@ namespace AirBears.Web.Controllers
         [Authorize(AuthPolicies.Bearer)]
         public async Task<IActionResult> UpdatePilot([FromBody] PilotViewModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
             }
 
-            var user = await _context.Users
-                //.Include(u => u.TeeShirtSize)
-                //.Include(u => u.State)
-                //.Include(u => u.FlightTime)
-                //.Include(u => u.Payload)
-                .SingleOrDefaultAsync(u => u.Id == User.GetUserId());
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == User.GetUserId());
+
+            if (AddressHasChanged(user, model))
+            {
+                //if the pilot's address has changed, get the updated coords from Google.
+
+                var status = await UpdatePilotCoordinates(user, model.State.Name);
+
+                if (status != GeocodeResponseStatus.OK)
+                {
+                    ModelState.AddModelError(string.Empty, status.ToString());
+                    return HttpBadRequest(ModelState);
+                }
+            }
 
             user = Mapper.Map(model, user);
 
             await _context.SaveChangesAsync();
 
             return Ok();
+        }
+
+        private bool AddressHasChanged(User user, PilotViewModel pilot)
+        {
+            return user.StateId != pilot.State.Id || user.City != pilot.City || user.Street1 != pilot.Street1 || user.Street2 != pilot.Street2;
+        }
+
+        private async Task<GeocodeResponseStatus> UpdatePilotCoordinates(User pilot, string state)
+        {
+            var coords = await _geocodeService.GetCoordsForAddress(pilot.GetAddress(state));
+
+            if (coords.Status != GeocodeResponseStatus.OK)
+            {
+                return coords.Status;
+            }
+
+            pilot.Longitude = coords.Longitude;
+            pilot.Latitude = coords.Latitude;
+            pilot.GeocodeAddress = coords.GeocodeAddress;
+
+            return coords.Status;
         }
 
         private async Task<IEnumerable<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude)

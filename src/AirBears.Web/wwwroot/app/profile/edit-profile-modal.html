@@ -1,0 +1,102 @@
+﻿<form name="profileForm" ng-submit="vm.save(profileForm.$valid)" novalidate>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="vm.cancel()">&times;</button>
+        <h4 class="modal-title"><span ng-bind="vm.pilot.firstName"></span>'s Pilot Profile</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="form-group" ab-client-validate>
+                    <label for="firstName">First Name</label>
+                    <input id="firstName" name="firstName" type="text" class="form-control" required ng-model="vm.pilot.firstName" />
+                    <div class="help-block validation" ng-show="profileForm.firstName.$error.required">First Name is required.</div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group" ab-client-validate>
+                    <label for="lastName">Last Name</label>
+                    <input id="lastName" name="lastName" type="text" class="form-control" required ng-model="vm.pilot.lastName" />
+                    <div class="help-block validation" ng-show="profileForm.lastName.$error.required">Last Name is required.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group" ab-client-validate>
+                    <label for="phone">Phone Number</label>
+                    <input id="phone" name="phone" type="text" class="form-control" required ng-model="vm.pilot.phoneNumber" />
+                    <div class="help-block validation" ng-show="profileForm.phone.$error.required">Phone Number is required.</div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" ab-client-validate>
+                    <label for="teeShirt">T-Shirt Size</label>
+                    <select id="teeShirt" name="teeShirt" class="form-control" required 
+                            ng-model="vm.pilot.teeShirtSize" 
+                            ng-options="t.name for t in vm.teeShirtSizes track by t.id">
+                        <option value="">Select a Size</option>
+                    </select>
+                    <div class="help-block validation" ng-show="profileForm.teeShirt.$error.required">Shirt Size is required.</div>
+                </div>
+            </div>
+        </div>
+
+        <h3>Address <small class="glyphicon glyphicon-question-sign" uib-tooltip="Your address will be used for delivery of your Air Bears t-shirt and to help authorities locate the nearest pilot during an emergency."></small></h3>
+
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group" ab-client-validate>
+                    <label for="street1">Street</label>
+                    <input id="street1" name="street1" type="text" class="form-control" placeholder="Street Line 1" required ng-model="vm.pilot.street1" />
+                    <div class="help-block validation" ng-show="profileForm.street1.$error.required">Street is required.</div>
+                </div>
+                <div class="form-group">
+                    <input id="street2" name="street2" type="text" class="form-control" placeholder="Street Line 2" ng-model="vm.pilot.street2" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" ab-client-validate>
+                    <label for="city">City</label>
+                    <input id="city" name="city" type="text" class="form-control" required ng-model="vm.pilot.city" />
+                    <div class="help-block validation" ng-show="profileForm.street1.$error.required">Street is required.</div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group" ab-client-validate>
+                    <label for="state">State</label>
+                    <select id="state" name="state" class="form-control" required 
+                            ng-model="vm.pilot.state" 
+                            ng-options="s.name for s in vm.states track by s.id">
+                        <option value="">Select a State</option>
+                    </select>
+                    <div class="help-block validation" ng-show="profileForm.state.$error.required">State is required.</div>
+                </div>
+            </div>
+
+            <div class="col-sm-4">
+                <div class="form-group" ab-client-validate>
+                    <label for="zip">Zip Code</label>
+                    <input id="zip" name="zip" type="text" class="form-control" required ng-model="vm.pilot.zip" />
+                    <div class="help-block validation" ng-show="profileForm.zip.$error.required">Zip Code is required.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-sm-6">
+                <input type="button" class="btn btn-default pull-left" value="Cancel" ng-click="vm.cancel()" />
+            </div>
+            <div class="col-sm-6">
+                <div class="pull-right form-inline">
+                    <button class="btn btn-success" type="submit" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

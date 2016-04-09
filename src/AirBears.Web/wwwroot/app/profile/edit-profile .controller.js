@@ -104,20 +104,24 @@
         }
 
         function openEditProfileModal() {
+            var oldPilot = angular.copy(vm.pilot);
             var modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: "app/profile/edit-bio-modal.html",
-                controller: "EditBioModalController as vm",
+                templateUrl: "app/profile/edit-profile-modal.html",
+                controller: "EditProfileModalController as vm",
                 resolve: {
                     pilot: function () {
                         return vm.pilot;
                     }
                 },
-                size: "md"
+                size: "lg"
             });
 
             modalInstance.result.then(function (result) {
-                vm.pilot.bio = result;
+                vm.pilot = result;
+            }, function () {
+                // put the pilot back to what it was in case they cancel the modal window.
+                vm.pilot = oldPilot;
             });
         }
 

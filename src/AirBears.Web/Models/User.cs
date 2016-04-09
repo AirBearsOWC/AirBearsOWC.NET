@@ -80,4 +80,17 @@ namespace AirBears.Web.Models
 
         #endregion
     }
+
+    public static class UserExtensions
+    {
+        public static string GetAddress(this User user, string state)
+        {
+            if (!string.IsNullOrWhiteSpace(user.Street2))
+            {
+                return $"{user.Street1}, {user.Street2}, {user.City}, {state} {user.Zip}";
+            }
+
+            return $"{user.Street1}, {user.City}, {state} {user.Zip}";
+        }
+    }
 }
