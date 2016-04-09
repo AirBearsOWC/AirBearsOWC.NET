@@ -1,0 +1,33 @@
+﻿<form name="bioForm" ng-submit="vm.save(bioForm.$valid)" novalidate>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="vm.cancel()">&times;</button>
+        <h4 class="modal-title"><span ng-bind="vm.pilot.firstName"></span>'s Pilot Bio</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <p class="col-sm-12">
+                Tell us more about yourself. Include any information you find relevant for the Air Bears community.
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group" ab-client-validate>
+                    <textarea id="bio" name="bio" class="form-control" rows="7" ng-maxlength="500" ng-model="vm.pilot.bio"></textarea>
+                    <div class="help-block validation" ng-show="bioForm.bio.$error.maxlength">Your pilot bio cannot exceed 500 characters.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-sm-6">
+                <input type="button" class="btn btn-default pull-left" value="Cancel" ng-click="vm.cancel()" />
+            </div>
+            <div class="col-sm-6">
+                <div class="pull-right form-inline">
+                    <button class="btn btn-success" type="submit" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

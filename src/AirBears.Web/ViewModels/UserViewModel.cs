@@ -1,6 +1,7 @@
 ﻿using AirBears.Web.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace AirBears.Web.ViewModels
 {
@@ -56,6 +57,7 @@ namespace AirBears.Web.ViewModels
 
         public FlightTime FlightTime { get; set; }
 
+        [MaxLength(500)]
         public string Bio { get; set; }
     }
 

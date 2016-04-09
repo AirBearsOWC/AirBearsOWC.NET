@@ -78,13 +78,13 @@ namespace AirBears.Web.Controllers
                 .ToListAsync();
 
             return Mapper.Map<IEnumerable<PilotViewModel>>(pilots);
-        }       
+        }
 
         /// <summary>
         /// Returns a list of pilots that are within a particular distance (in miles) from the address or coordinates.
+        /// GET: api/pilots/search?address=xyz&distance=25&latitude=10&longitude=-5.5
         /// </summary>
         /// <returns></returns>
-        // GET: api/pilots/search?address=xyz&distance=25&latitude=10&longitude=-5.5
         [HttpGet("search", Name = "Pilot Search")]
         public async Task<IActionResult> Search(string address, int distance, double? latitude, double? longitude)
         {
@@ -94,7 +94,7 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            // If lat/lng were provided, us them to perform the distance query.
+            // If lat/lng were provided, use them to perform the distance query.
             if(latitude.HasValue && longitude.HasValue)
             {
                 return Ok(await FindPilotsWithinRadius(distance, latitude.Value, longitude.Value));
@@ -172,7 +172,7 @@ namespace AirBears.Web.Controllers
                                         .Include(u => u.State)
                                         .Include(u => u.FlightTime)
                                         .Include(u => u.Payload)
-                                        .Where(u => pilotIds.Contains(u.Id))
+                                        .Where(u => !u.IsAuthorityAccount && pilotIds.Contains(u.Id))
                                         .ToList();
 
             var users = Mapper.Map<List<PilotSearchResultViewModel>>(results);

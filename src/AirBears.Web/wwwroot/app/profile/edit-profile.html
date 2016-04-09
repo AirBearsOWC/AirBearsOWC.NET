@@ -1,23 +1,27 @@
 ﻿<div class="container body-content">
-    <h1>Pilot Profile</h1>
     <div class="row">
-        <div class="col-sm-8">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3><span ng-bind="vm.pilot.firstName"></span> <span ng-bind="vm.pilot.lastName"></span></h3>    
-                    Air Bears member since <span ng-bind="vm.pilot.dateRegistered | date : mediumDate"></span>
-                </div>
-                <h3 class="col-sm-6">
-                    <small><a href><i class="glyphicon glyphicon-pencil"></i> Edit Profile</a></small><br />
-                    <small><a href ng-click="vm.openChangePasswordModal()"><i class="glyphicon glyphicon-pencil"></i> Change Password</a></small>
-                </h3>
-            </div>
-
+        <div class="col-sm-5">
+            <h1><span ng-bind="vm.pilot.firstName"></span> <span ng-bind="vm.pilot.lastName"></span></h1>
+            Air Bears member since <span ng-bind="vm.pilot.dateRegistered | date : mediumDate"></span>
+        </div>
+        <h3 class="col-sm-6">
+            <small><a href ng-click="vm.openEditProfileModal()"><i class="glyphicon glyphicon-pencil"></i> Edit Profile</a></small><br />
+            <small><a href ng-click="vm.openChangePasswordModal()"><i class="glyphicon glyphicon-pencil"></i> Change Password</a></small>
+        </h3>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-8">        
             <div class="row">
                 <div class="col-sm-12">
                     <h3>Pilot Bio</h3>
-                    <p>
-                        <a href="#"><i class="glyphicon glyphicon-plus"></i> Add Bio</a>
+                    <p ng-hide="vm.pilot.bio">
+                        Let the Air Bears community know more about yourself. <br />
+                        <a href ng-click="vm.openEditBioModal()"><i class="glyphicon glyphicon-plus"></i> Add Bio</a>
+                    </p>
+                    <p ng-show="vm.pilot.bio" ng-bind="vm.pilot.bio" style="white-space: pre-wrap;"></p>
+                    <p ng-show="vm.pilot.bio">
+                        <a href ng-click="vm.openEditBioModal()"><i class="glyphicon glyphicon-pencil"></i> Edio Bio</a>
                     </p>
                 </div>
             </div>

@@ -3,11 +3,11 @@
 
     angular
         .module("app")
-        .controller("ProfileController", ProfileController);
+        .controller("EditProfileController", EditProfileController);
 
-    ProfileController.$inject = ["$uibModal", "resourceService", "userService", "pilotService", "authService", "toast"];
+    EditProfileController.$inject = ["$uibModal", "resourceService", "userService", "pilotService", "authService", "toast"];
 
-    function ProfileController($uibModal, resourceService, userService, pilotService, authService, toast) {
+    function EditProfileController($uibModal, resourceService, userService, pilotService, authService, toast) {
         var vm = this;
 
         vm.states = [];
@@ -15,6 +15,8 @@
         vm.pilot = {};
 
         vm.openChangePasswordModal = openChangePasswordModal;
+        vm.openEditBioModal = openEditBioModal;
+        vm.openEditProfileModal = openEditProfileModal;
         vm.toggleAllowsPilotSearch = updatePrivacySettings;
         vm.toggleSubscribesToUpdates = updatePrivacySettings;
         vm.toggleNightVision = updatePlatformCapabilities;
@@ -79,7 +81,47 @@
             });
         }
 
-        function openChangePasswordModal(callback) {
+        function openEditBioModal() {
+            var oldBio = vm.pilot.bio;
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: "app/profile/edit-bio-modal.html",
+                controller: "EditBioModalController as vm",
+                resolve: {
+                    pilot: function () {
+                        return vm.pilot;
+                    }
+                },
+                size: "md"
+            });
+
+            modalInstance.result.then(function (result) {
+                vm.pilot.bio = result;
+            }, function () {
+                // put the bio back to what it was in case they cancel the modal window.
+                vm.pilot.bio = oldBio;
+            });
+        }
+
+        function openEditProfileModal() {
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: "app/profile/edit-bio-modal.html",
+                controller: "EditBioModalController as vm",
+                resolve: {
+                    pilot: function () {
+                        return vm.pilot;
+                    }
+                },
+                size: "md"
+            });
+
+            modalInstance.result.then(function (result) {
+                vm.pilot.bio = result;
+            });
+        }
+
+        function openChangePasswordModal() {
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: "app/profile/change-password-modal.html",
