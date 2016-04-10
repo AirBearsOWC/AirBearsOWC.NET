@@ -50,39 +50,31 @@ namespace AirBears.Web.Controllers
             return Ok(Mapper.Map<PilotViewModel>(pilot));
         }
 
-        [Route("me")]
-        [HttpGet]
-        public async Task<IActionResult> GetCurrentUser()
-        {
-            var user = await _context.Users
-                .Include(u => u.TeeShirtSize)
-                .Include(u => u.State)
-                .Include(u => u.FlightTime)
-                .Include(u => u.Payload)
-                .FirstOrDefaultAsync(u => u.Id == User.GetUserId());
-
-            var resp = Mapper.Map<IdentityPilotViewModel>(user);
-
-            resp.Roles = User.GetRoles();
-
-            return Ok(resp);
-        }
-
         // GET: api/pilots
         [HttpGet]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IEnumerable<PilotViewModel>> GetPilots()
+        public async Task<QueryResult<PilotViewModel>> GetPilots(string name, int page, int? pageSize)
         {
-            var pilots = await _context.Users
+            var pilots = _context.Users
                 .Where(u => !u.IsAuthorityAccount)
                 .Include(u => u.TeeShirtSize)
                 .Include(u => u.State)
                 .Include(u => u.FlightTime)
                 .Include(u => u.Payload)
-                .OrderBy(u => u.LastName)
-                .ToListAsync();
+                .OrderBy(u => u.LastName);
 
-            return Mapper.Map<IEnumerable<PilotViewModel>>(pilots);
+            // Limit the page size to 200.
+            if (!pageSize.HasValue) { pageSize = 200; }
+
+            var result = new QueryResult<PilotViewModel>()
+            {
+                Items = (await pilots.Skip((page - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync()).Select(p => Mapper.Map<PilotViewModel>(p)),
+                Page = page,
+                PageSize = pageSize.Value,
+                TotalCount = pilots.Count()
+            };
+
+            return result;
         }
 
         /// <summary>

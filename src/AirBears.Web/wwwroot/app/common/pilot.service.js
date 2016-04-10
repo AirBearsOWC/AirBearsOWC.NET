@@ -35,8 +35,8 @@
             });
         }
 
-        function getPilots() {
-            return $http.get(urlBase).then(function (resp) {
+        function getPilots(page, pageSize) {
+            return $http.get(urlBase + "?page=" + page + "&pageSize=" + pageSize).then(function (resp) {
                 return resp.data;
             });
         }
