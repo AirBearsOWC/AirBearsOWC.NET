@@ -5,9 +5,9 @@
         .module("app")
         .controller("ProfileController", ProfileController);
 
-    ProfileController.$inject = ["$state", "pilotService", "toast"];
+    ProfileController.$inject = ["$state", "pilotService", "userService", "toast"];
 
-    function ProfileController($state, pilotService, toast) {
+    function ProfileController($state, pilotService, userService, toast) {
         var vm = this;
 
         activate();
@@ -26,6 +26,10 @@
                     }
                 });
             }
+
+            userService.getCurrentUser().then(function (user) {
+                vm.user = user;
+            });
         }
     }
 })();

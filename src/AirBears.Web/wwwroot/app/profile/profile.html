@@ -1,32 +1,32 @@
 ﻿<div class="container body-content">
-    <h1>Pilot Profile</h1>
+    <div class="row">
+        <div class="col-sm-5">
+            <h1><span ng-bind="vm.pilot.firstName"></span> <span ng-bind="vm.pilot.lastName"></span></h1>
+            Air Bears member since <span ng-bind="vm.pilot.dateRegistered | date : mediumDate"></span>
+        </div>
+        <h3 class="col-sm-6" ng-show="vm.user && vm.user.id === vm.pilot.id">
+            <small><a ui-sref="root.edit-profile"><i class="glyphicon glyphicon-pencil"></i> Edit My Profile</a></small><br />
+        </h3>
+    </div>
+    <hr />
     <div class="row">
         <div class="col-sm-8">
-            <div class="row">
-                <div class="col-sm-6">
-                    <h3><span ng-bind="vm.pilot.firstName"></span> <span ng-bind="vm.pilot.lastName"></span></h3>    
-                    Air Bears member since <span ng-bind="vm.pilot.dateRegistered | date : mediumDate"></span>
-                </div>
-                <h3 class="col-sm-6">
-                    <small><a href><i class="glyphicon glyphicon-pencil"></i> Edit Profile</a></small><br />
-                    <small><a href ng-click="vm.openChangePasswordModal()"><i class="glyphicon glyphicon-pencil"></i> Change Password</a></small>
-                </h3>
-            </div>
 
-            <div class="row">
+            <div class="row space-bottom">
                 <div class="col-sm-12">
                     <h3>Pilot Bio</h3>
-                    <p>
-                        <a href="#"><i class="glyphicon glyphicon-plus"></i> Add Bio</a>
+                    <p ng-show="vm.pilot.bio" ng-bind="vm.pilot.bio" style="white-space: pre-wrap;"></p>
+                    <p ng-hide="vm.pilot.bio">
+                        {{ vm.pilot.firstName }} has not written a bio.
                     </p>
                 </div>
             </div>
 
-            <div class="row">
+            <div class="row space-bottom">
                 <div class="col-sm-6">
                     <h3>Contact Information</h3>
                     <i class="glyphicon glyphicon-envelope pad-right"></i> <span ng-bind="vm.pilot.email"></span><br />
-                    <i class="glyphicon glyphicon-phone-alt pad-right"></i><span ng-bind="vm.pilot.phoneNumber"></span>
+                    <i class="glyphicon glyphicon-phone-alt pad-right"></i> <span ng-bind="vm.pilot.phoneNumber"></span>
                 </div>
                 <div class="col-sm-6">
                     <h3>Address</h3>
@@ -35,109 +35,44 @@
                     <span ng-bind="vm.pilot.city"></span>, <span ng-bind="vm.pilot.state.abbr"></span> <span ng-bind="vm.pilot.zip"></span>
                 </div>
             </div>
-
-            <div class="row">
-                
-            </div>
+          
         </div>
         <div class="col-sm-4">
-            <div class="row">
-                <div class="col-sm-12">
+            <div class="list-labels">
+                <div>
                     <h3>Platform Capabilities</h3>
-                    <div class="form-group">
-                        <label>Camera</label>
-                        <div class="checkbox" style="top: -5px">
-                            <label>
-                                <input name="nightVision" type="checkbox" required ng-model="vm.pilot.nightVisionCapable" ng-change="vm.toggleNightVision()">
-                                <span>
-                                    Night Vision
-                                </span>
-                            </label>
-                        </div>
-                        <div class="checkbox" style="top: -5px">
-                            <label>
-                                <input name="thermal" type="checkbox" required ng-model="vm.pilot.thermalVisionCapable" ng-change="vm.toggleThermal()">
-                                <span>
-                                    Thermal (FLIR)
-                                </span>
-                            </label>
-                        </div>
+                    <div class="label label-primary" ng-show="vm.pilot.nightVisionCapable">
+                        Night Vision
                     </div>
-                    <div class="form-group">
-                        <label for="flightTime">Flight Time</label>
-                        <select id="flightTime" name="flightTime" class="form-control" required 
-                                ng-model="vm.pilot.flightTime" 
-                                ng-options="t.name for t in vm.flightTimes track by t.id"
-                                ng-change="vm.chooseFlightTime()"></select>
+                    <div class="label label-primary" ng-show="vm.pilot.thermalVisionCapable">
+                        Thermal (FLIR)
                     </div>
-                    <div class="form-group">
-                        <label for="payload">Payload</label>
-                        <select id="payload" name="payload" class="form-control" required
-                                ng-model="vm.pilot.payload"
-                                ng-options="p.name for p in vm.payloads track by p.id" 
-                                ng-change="vm.choosePayload()"></select>
+                    <div class="label label-primary" ng-show="vm.pilot.flightTime">
+                        {{ vm.pilot.flightTime.name }} Flight Time
+                    </div>
+                    <div class="label label-primary" ng-show="vm.pilot.payload">
+                        {{ vm.pilot.payload.name }} Payload
                     </div>
                 </div>
-            </div>        
-            <div class="row">
-                <div class="col-sm-12">
+
+                <div>
                     <h3>Skills</h3>
-                    <p>
-                        <a href="#"><i class="glyphicon glyphicon-plus"></i> Add Skills</a>
-                    </p>
+                    <div class="label label-warning">
+                        Comming soon...
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
+
+                <div>
                     <h3>Certifications</h3>
-                    <p class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input name="femaIcsCertified" type="checkbox" required ng-model="vm.pilot.femaIcsCertified" ng-change="vm.toggleFemaIcsCertified()">
-                                <span>
-                                    FEMA ICS Certified
-                                </span>
-                            </label>
-                        </div>
-                    </p>
-                    <p class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input name="hamRadioLicensed" type="checkbox" required ng-model="vm.pilot.hamRadioLicensed" ng-change="vm.toggleHamRadioLicensed()">
-                                <span>
-                                    HAM Radio Licensed
-                                </span>
-                            </label>
-                        </div>
-                    </p>
-                    <p>
-                        <a href="#"><i class="glyphicon glyphicon-plus"></i> Add Other Certifications</a>
-                    </p>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-                    <h3>Privacy Settings</h3>
-                    <p class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input name="allowsPilotSearch" type="checkbox" required ng-model="vm.pilot.allowsPilotSearch" ng-change="vm.toggleAllowsPilotSearch()">
-                                <span uib-tooltip="The pilot search tool can be helpful for fellow pilots to locate community members.">
-                                    Allow other pilots to find me on the Pilot Search tool.
-                                </span>
-                            </label>
-                        </div>
-                    </p>
-                    <p class="form-group">
-                        <div class="checkbox">
-                            <label>
-                                <input name="subscribesToUpdates" type="checkbox" required ng-model="vm.pilot.subscribesToUpdates" ng-change="vm.toggleSubscribesToUpdates()">
-                                <span uib-tooltip="Occasionally the Air Bears team will feel the need to update the community on recent events. This will not be frequent spam-quality emails.">
-                                    Subscribe to important Air Bears updates regarding the community or SAR regulations.
-                                </span>
-                            </label>
-                        </div>
-                    </p>
+                    <div class="label label-info" ng-show="vm.pilot.femaIcsCertified">
+                        FEMA ICS Certified
+                    </div>
+                    <div class="label label-info" ng-show="vm.pilot.hamRadioLicensed">
+                        HAM Radio Licensed
+                    </div>
+                    <div class="label label-info">
+                        More comming soon...
+                    </div>
                 </div>
             </div>
         </div>
