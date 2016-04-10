@@ -93,6 +93,9 @@
             }           
 
             pilotService.search(searchCriteria).then(function (data) {
+                angular.forEach(data.items, function (item) {
+                    item.windowTemplate = "app/pilot-search/pilot-window.html";
+                });
                 vm.results = data;
                 vm.isSearching = false;
             }, 

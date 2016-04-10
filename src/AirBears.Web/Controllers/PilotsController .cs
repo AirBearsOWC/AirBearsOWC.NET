@@ -32,17 +32,22 @@ namespace AirBears.Web.Controllers
 
         // GET: api/pilots/5
         [HttpGet("{id}", Name = "Get Pilot")]
-        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> GetPilot([FromRoute] string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var pilot = await _context.Users
+               .Where(u => !u.IsAuthorityAccount && u.Id == id)
+               .Include(u => u.TeeShirtSize)
+               .Include(u => u.State)
+               .Include(u => u.FlightTime)
+               .Include(u => u.Payload)
+               .FirstOrDefaultAsync();
 
-            if (user == null)
+            if (pilot == null)
             {
                 return HttpNotFound();
             }
 
-            return Ok(Mapper.Map<PilotViewModel>(user));
+            return Ok(Mapper.Map<PilotViewModel>(pilot));
         }
 
         [Route("me")]

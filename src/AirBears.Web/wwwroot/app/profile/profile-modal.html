@@ -1,0 +1,93 @@
+﻿<div>
+    <div class="modal-header">
+        <button type="button" class="close" ng-click="vm.cancel()">&times;</button>
+        <h4 class="modal-title">Pilot Profile</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row space-bottom">
+            <div class="col-sm-7">
+                <h4 style="margin-top: 0;">
+                    <span ng-bind="vm.pilot.firstName"></span> <span ng-bind="vm.pilot.lastName"></span>
+                </h4>
+                Air Bears member since <span ng-bind="vm.pilot.dateRegistered | date : mediumDate"></span>
+            </div>
+            <div class="col-sm-5">
+                <a ui-sref="root.profile({pilotId: vm.pilot.id, pilot: vm.pilot})"><i class="glyphicon glyphicon-user"></i> View Profile Page</a>
+            </div>
+        </div>
+
+        <div class="row space-bottom">
+            <div class="col-sm-6">
+                <h4>Contact Information</h4>
+                <i class="glyphicon glyphicon-envelope pad-right"></i> <span ng-bind="vm.pilot.email"></span><br />
+                <i class="glyphicon glyphicon-phone-alt pad-right"></i><span ng-bind="vm.pilot.phoneNumber"></span>
+            </div>
+            <div class="col-sm-6">
+                <h4>Address</h4>
+                <div ng-bind="vm.pilot.street1"></div>
+                <div ng-if="vm.pilot.street2" ng-bind="vm.pilot.street2"></div>
+                <span ng-bind="vm.pilot.city"></span>, <span ng-bind="vm.pilot.state.abbr"></span> <span ng-bind="vm.pilot.zip"></span>
+            </div>
+        </div>
+
+        <div class="row space-bottom">
+            <div class="col-sm-12">
+                <h4>Pilot Bio</h4>
+                <p ng-show="vm.pilot.bio" ng-bind="vm.pilot.bio" style="white-space: pre-wrap;"></p>
+                <p ng-hide="vm.pilot.bio">
+                    {{ vm.pilot.firstName }} has not written a bio.
+                </p>
+            </div>
+        </div>
+
+        <div class="row list-labels">
+            <div class="col-sm-4">
+                <h4>Platform Capabilities</h4>
+                <div class="label label-primary" ng-show="vm.pilot.nightVisionCapable">
+                    Night Vision
+                </div>
+                <div class="label label-primary" ng-show="vm.pilot.thermalVisionCapable">
+                    Thermal (FLIR)
+                </div>
+                <div class="label label-primary" ng-show="vm.pilot.flightTime">
+                    {{ vm.pilot.flightTime.name }} Flight Time
+                </div>
+                <div class="label label-primary" ng-show="vm.pilot.payload">
+                    {{ vm.pilot.payload.name }} Payload
+                </div>               
+            </div>
+
+            <div class="col-sm-4">
+                <h4>Skills</h4>
+                <div class="label label-warning">
+                    Comming soon...
+                </div> 
+            </div>
+
+            <div class="col-sm-4">
+                <h4>Certifications</h4>
+                <div class="label label-info" ng-show="vm.pilot.femaIcsCertified">
+                    FEMA ICS Certified
+                </div>
+                <div class="label label-info" ng-show="vm.pilot.hamRadioLicensed">
+                    HAM Radio Licensed
+                </div>
+                <div class="label label-info">
+                    More comming soon...
+                </div>              
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-sm-6">
+                <input type="button" class="btn btn-default pull-left" value="Close" ng-click="vm.cancel()" />
+            </div>
+            <div class="col-sm-6">
+                <div class="pull-right form-inline">
+                    <a class="btn btn-primary" ui-sref="root.profile({pilotId: vm.pilot.id, pilot: vm.pilot})"><i class="glyphicon glyphicon-user"></i> Open Profile Page</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

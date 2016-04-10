@@ -122,6 +122,10 @@ input, select, textarea {
                             horizontally within the column  */
 }
 
+.row.space-bottom {
+    margin-bottom: 15px;
+}
+
 .sponsors a {
     transition: opacity 0.3s ease;
 }
@@ -149,6 +153,10 @@ input, select, textarea {
 
 .bottom-margin {
     margin-bottom: 20px;
+}
+
+.list-labels .label {
+    margin-right: 3px;
 }
 
 .form-group .checkbox {

@@ -1,0 +1,8 @@
+﻿<div ng-controller="PilotWindowController as vm">
+    <p>
+        <strong>{{ model.firstName }} {{ model.lastName }}</strong>
+    </p>
+    <a href ng-click="vm.openProfileModal(model)"><i class="glyphicon glyphicon-user pad-right"></i> View Profile</a><br />
+    <span><i class="glyphicon glyphicon-envelope pad-right"></i> {{ model.email }}</span><br />
+    <span><i class="glyphicon glyphicon-phone-alt pad-right"></i> {{model. phoneNumber }}</span>
+</div>

@@ -28,10 +28,9 @@
 
                         <div class="form-group">
                             <button type="submit" class="form-control btn btn-success"
-                                    ng-disabled="vm.isSearching"
-                                    uib-tooltip="Only available to Air Bears members. Log in or register to use pilot search."
-                                    tooltip-enable="!vm.user">
+                                    ng-disabled="vm.isSearching || !vm.user">
                                 <i class="glyphicon glyphicon-search"></i> Search
+                                <span ng-show="!vm.user">(Members Only)</span>
                             </button>
                         </div>
                     </form>
@@ -61,15 +60,7 @@
             <ui-gmap-google-map ng-if="vm.map && vm.results && vm.results.items && vm.user" center="vm.map.center" zoom="vm.map.zoom">
                 <ui-gmap-circle center="vm.circle.center" stroke="vm.circle.stroke" fill="vm.circle.fill" radius="vm.circle.radius"></ui-gmap-circle>
                 <ui-gmap-markers models="vm.results.items" coords="'self'" options="'options'" click="vm.toggleMarkerWindow">
-                    <ui-gmap-windows show="show">
-                        <div ng-non-bindable>
-                            <p>
-                                <strong>{{ firstName }} {{ lastName }}</strong>
-                            </p>
-                            <span><i class="glyphicon glyphicon-envelope pad-right"></i> {{ email }}</span><br />
-                            <span><i class="glyphicon glyphicon-phone-alt pad-right"></i> {{ phoneNumber }}</span>
-                        </div>
-                    </ui-gmap-windows>
+                    <ui-gmap-windows show="show" templateUrl="'windowTemplate'" templateParameter="model"></ui-gmap-windows>
                 </ui-gmap-markers>
             </ui-gmap-google-map>
 

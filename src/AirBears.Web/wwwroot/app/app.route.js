@@ -64,16 +64,19 @@
                 url: "/reset-password?code",
                 templateUrl: "app/reset-password/reset-password.html",
                 controller: "ResetPasswordController as vm"
-            })
-            .state("root.profile", {
-                url: "/profile",
-                templateUrl: "app/profile/profile.html",
-                controller: "ProfileController as vm"
-            })
+            })           
             .state("root.edit-profile", {
                 url: "/profile/edit",
                 templateUrl: "app/profile/edit-profile.html",
                 controller: "EditProfileController as vm"
+            })
+            .state("root.profile", {
+                url: "/profile/:pilotId",
+                templateUrl: "app/profile/profile.html",
+                controller: "ProfileController as vm",
+                params: {
+                    pilot: null
+                }
             })
             .state("root.manage-pilots", {
                 url: "/manage-pilots",

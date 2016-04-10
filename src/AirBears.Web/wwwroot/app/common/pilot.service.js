@@ -13,6 +13,7 @@
 
         service.search = search;
         service.getPilots = getPilots;
+        service.getPilot = getPilot;
         service.updateProfile = updateProfile;
         service.markTeeShirtMailed = markTeeShirtMailed;
 
@@ -20,6 +21,14 @@
 
         function search(criteria) {
             return $http.post(urlBase + "/search", criteria).then(function (resp) {
+                return resp.data;
+            }, function (resp) {
+                return $q.reject(resp);
+            });
+        }
+
+        function getPilot(id) {
+            return $http.get(urlBase + "/" + id).then(function (resp) {
                 return resp.data;
             }, function (resp) {
                 return $q.reject(resp);
