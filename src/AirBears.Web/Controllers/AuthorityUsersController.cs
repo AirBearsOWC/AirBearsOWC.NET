@@ -49,21 +49,50 @@ namespace AirBears.Web.Controllers
 
         [HttpGet(Name = "Get Authority Users")]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<IEnumerable<IdentityViewModel>> GetAuthorityUsers()
+        public async Task<QueryResult<IdentityViewModel>> GetAuthorityUsers(string name, string sortBy, bool ascending = true, bool onlyUnapproved = false, int page = 1, int? pageSize = 50)
         {
-            var users = await _context.Users.Include(u => u.Roles).Where(u => u.IsAuthorityAccount).ToListAsync();
+            var query = _context.Users.Include(u => u.Roles).Where(u => u.IsAuthorityAccount);
             var roles = await _context.Roles.ToListAsync();
             var resp = new List<IdentityViewModel>();
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                query = query.Where(u =>
+                            u.FirstName.ToLower().Contains(name.ToLower()) ||
+                            u.LastName.ToLower().Contains(name.ToLower()) ||
+                            u.Email.ToLower().Contains(name.ToLower()));
+            }
+
+            if (onlyUnapproved) { query = query.Where(u => u.Roles.Count == 0); } // Unapproved authorities have no roles.
+
+            if (ascending)
+                query = query.OrderBy(Static.GetSortExpression(sortBy));
+            else
+                query = query.OrderByDescending(Static.GetSortExpression(sortBy));            
+
+            // Limit the page size to 200.
+            if (!pageSize.HasValue) { pageSize = 200; }
+
+            var users = await query.Skip((page - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync();
 
             foreach (var u in users)
             {
                 var user = Mapper.Map<IdentityViewModel>(u);
 
+                // manually align the roles in memory.
                 user.Roles = roles.Where(r => u.Roles.Select(x => x.RoleId).Contains(r.Id)).Select(r => r.Name).ToList();
-                resp.Add(user);            
+                resp.Add(user);
             }
 
-            return resp;
+            var result = new QueryResult<IdentityViewModel>()
+            {
+                Items = resp,
+                Page = page,
+                PageSize = pageSize.Value,
+                TotalCount = users.Count()
+            };
+
+            return result;
         }
 
         // PUT: /api/authority-users/5/approve

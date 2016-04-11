@@ -74,9 +74,9 @@ namespace AirBears.Web.Controllers
             if (onlyShirtsNotSent) { pilots = pilots.Where(p => !p.TeeShirtMailedDate.HasValue); }
 
             if (ascending)
-                pilots = pilots.OrderBy(GetSortExpression(sortBy));
+                pilots = pilots.OrderBy(Static.GetSortExpression(sortBy));
             else
-                pilots = pilots.OrderByDescending(GetSortExpression(sortBy));
+                pilots = pilots.OrderByDescending(Static.GetSortExpression(sortBy));
 
             // Limit the page size to 200.
             if (!pageSize.HasValue) { pageSize = 200; }
@@ -90,29 +90,6 @@ namespace AirBears.Web.Controllers
             };
 
             return result;
-        }
-
-        private Expression<Func<User, object>> GetSortExpression(string sortBy)
-        {
-            if (string.IsNullOrWhiteSpace(sortBy))
-            {
-                //default sort by last name.
-                return u => u.LastName;
-            }
-            else if (sortBy.Equals("firstName", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return u => u.FirstName;
-            }
-            else if (sortBy.Equals("lastName", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return u => u.LastName;
-            }
-            else if (sortBy.Equals("dateRegistered", StringComparison.InvariantCultureIgnoreCase))
-            {
-                return u => u.DateRegistered;
-            }
-
-            return u => u.LastName;         
         }
 
         /// <summary>

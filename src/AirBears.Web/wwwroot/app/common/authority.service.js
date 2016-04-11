@@ -16,9 +16,18 @@
 
         return service;
 
-        function getUsers() {
-            return $http.get(urlBase).then(function (resp) {
+        function getUsers(page, pageSize, name, onlyUnapproved, sortBy, ascending) {
+            var url = urlBase + "?page=" + page + "&pageSize=" + pageSize;
+
+            if (name) { url += "&name=" + name; }
+            if (onlyUnapproved) { url += "&onlyUnapproved=" + onlyUnapproved; }
+            if (sortBy) { url += "&sortBy=" + sortBy; }
+            if (!ascending) { url += "&ascending=" + ascending; }
+
+            return $http.get(url).then(function (resp) {
                 return resp.data;
+            }, function (resp) {
+                return $q.reject(resp);
             });
         }
 
