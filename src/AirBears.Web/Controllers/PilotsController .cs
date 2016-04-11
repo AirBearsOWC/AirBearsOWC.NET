@@ -54,7 +54,7 @@ namespace AirBears.Web.Controllers
         // GET: api/pilots
         [HttpGet]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<QueryResult<PilotViewModel>> GetPilots(string name, string sortBy, bool ascending = true, int page = 1, int? pageSize = 50)
+        public async Task<QueryResult<PilotViewModel>> GetPilots(string name, string sortBy, bool ascending = true, bool onlyShirtsNotSent = false, int page = 1, int? pageSize = 50)
         {
             var pilots = _context.Users
                 .Include(u => u.TeeShirtSize)
@@ -70,6 +70,8 @@ namespace AirBears.Web.Controllers
                             p.LastName.ToLower().Contains(name.ToLower()) ||
                             p.Email.ToLower().Contains(name.ToLower()));
             }
+
+            if (onlyShirtsNotSent) { pilots = pilots.Where(p => !p.TeeShirtMailedDate.HasValue); }
 
             if (ascending)
                 pilots = pilots.OrderBy(GetSortExpression(sortBy));

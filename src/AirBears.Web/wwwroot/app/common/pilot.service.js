@@ -35,10 +35,11 @@
             });
         }
 
-        function getPilots(page, pageSize, name, sortBy, ascending) {
+        function getPilots(page, pageSize, name, onlyShirtsNotSent, sortBy, ascending) {
             var url = urlBase + "?page=" + page + "&pageSize=" + pageSize;
 
             if (name) { url += "&name=" + name; }
+            if (onlyShirtsNotSent) { url += "&onlyShirtsNotSent=" + onlyShirtsNotSent; }
             if (sortBy) { url += "&sortBy=" + sortBy; }
             if (!ascending) { url += "&ascending=" + ascending; }
 

@@ -12,11 +12,12 @@
 
         vm.results = {};       
         vm.sortOptions = [{ name: "First Name", value: "firstName" }, { name: "Last Name", value: "lastName" }, { name: "Registration Date", value: "dateRegistered" }];
-        vm.searchCriteria = { page: 1, pageSize: 50, sortBy: vm.sortOptions[1].value, ascending: true };
+        vm.searchCriteria = { page: 1, pageSize: 50, sortBy: vm.sortOptions[1].value, ascending: true, onlyShirtsNotSent: false };
 
         vm.markTeeShirtMailed = markTeeShirtMailed;
         vm.search = search;
         vm.toggleSortOrder = toggleSortOrder;
+        vm.toggleFilterShirts = toggleFilterShirts;
         vm.pageChanged = pageChanged;
 
         activate();
@@ -34,6 +35,7 @@
                 vm.searchCriteria.page,
                 vm.searchCriteria.pageSize,
                 vm.searchCriteria.name,
+                vm.searchCriteria.onlyShirtsNotSent,
                 vm.searchCriteria.sortBy,
                 vm.searchCriteria.ascending).then(function (results) {
                 vm.results = results;
@@ -42,6 +44,11 @@
 
         function toggleSortOrder() {
             vm.searchCriteria.ascending = !vm.searchCriteria.ascending;
+            search();
+        }
+
+        function toggleFilterShirts() {
+            vm.searchCriteria.onlyShirtsNotSent = !vm.searchCriteria.onlyShirtsNotSent;
             search();
         }
 

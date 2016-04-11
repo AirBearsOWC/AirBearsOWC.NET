@@ -26,6 +26,13 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
+                        <div class="input-group">
+                            <button class="btn btn-default" type="button" ng-class="{ active: vm.searchCriteria.onlyShirtsNotSent }" ng-click="vm.toggleFilterShirts()">
+                                <span><i class="glyphicon glyphicon-filter"></i> Filter Shirts</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
                         <div class="form-group">
                             <button type="submit" class="form-control btn btn-primary" ng-disabled="vm.isSearching">
                                 <i class="glyphicon glyphicon-search"></i> Search
@@ -76,7 +83,7 @@
                 </table>
             </div>
 
-            <uib-pagination total-items="vm.results.totalCount" ng-model="vm.searchCriteria.page" ng-change="vm.pageChanged()"></uib-pagination>
+            <uib-pagination total-items="vm.results.totalCount" ng-model="vm.searchCriteria.page" items-per-page="vm.searchCriteria.pageSize" ng-change="vm.pageChanged()"></uib-pagination>
         </div>
     </div>
 </div>
