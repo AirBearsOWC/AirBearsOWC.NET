@@ -11,6 +11,7 @@ using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 using System;
 using AirBears.Web.Services;
+using System.Linq.Expressions;
 
 namespace AirBears.Web.Controllers
 {
@@ -53,15 +54,27 @@ namespace AirBears.Web.Controllers
         // GET: api/pilots
         [HttpGet]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<QueryResult<PilotViewModel>> GetPilots(string name, int page, int? pageSize)
+        public async Task<QueryResult<PilotViewModel>> GetPilots(string name, string sortBy, bool ascending = true, int page = 1, int? pageSize = 50)
         {
             var pilots = _context.Users
-                .Where(u => !u.IsAuthorityAccount)
                 .Include(u => u.TeeShirtSize)
                 .Include(u => u.State)
                 .Include(u => u.FlightTime)
                 .Include(u => u.Payload)
-                .OrderBy(u => u.LastName);
+                .Where(u => !u.IsAuthorityAccount);             
+
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                pilots = pilots.Where(p => 
+                            p.FirstName.ToLower().Contains(name.ToLower()) || 
+                            p.LastName.ToLower().Contains(name.ToLower()) ||
+                            p.Email.ToLower().Contains(name.ToLower()));
+            }
+
+            if (ascending)
+                pilots = pilots.OrderBy(GetSortExpression(sortBy));
+            else
+                pilots = pilots.OrderByDescending(GetSortExpression(sortBy));
 
             // Limit the page size to 200.
             if (!pageSize.HasValue) { pageSize = 200; }
@@ -75,6 +88,29 @@ namespace AirBears.Web.Controllers
             };
 
             return result;
+        }
+
+        private Expression<Func<User, object>> GetSortExpression(string sortBy)
+        {
+            if (string.IsNullOrWhiteSpace(sortBy))
+            {
+                //default sort by last name.
+                return u => u.LastName;
+            }
+            else if (sortBy.Equals("firstName", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return u => u.FirstName;
+            }
+            else if (sortBy.Equals("lastName", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return u => u.LastName;
+            }
+            else if (sortBy.Equals("dateRegistered", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return u => u.DateRegistered;
+            }
+
+            return u => u.LastName;         
         }
 
         /// <summary>

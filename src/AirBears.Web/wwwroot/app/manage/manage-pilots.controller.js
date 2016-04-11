@@ -10,27 +10,38 @@
     function ManagePilotsController(pilotService, toast) {
         var vm = this;
 
-        vm.results = {};
-        vm.searchCriteria = { page: 1, pageSize: 50};
+        vm.results = {};       
+        vm.sortOptions = [{ name: "First Name", value: "firstName" }, { name: "Last Name", value: "lastName" }, { name: "Registration Date", value: "dateRegistered" }];
+        vm.searchCriteria = { page: 1, pageSize: 50, sortBy: vm.sortOptions[1].value, ascending: true };
+
         vm.markTeeShirtMailed = markTeeShirtMailed;
         vm.search = search;
+        vm.toggleSortOrder = toggleSortOrder;
         vm.pageChanged = pageChanged;
 
         activate();
 
         function activate() {
-            pilotService.getPilots(vm.searchCriteria.page, vm.searchCriteria.pageSize).then(function (results) {
-                vm.results = results;
-            });
-        }
-
-        function search() {
-            pilotService.getPilots(vm.searchCriteria.page, vm.searchCriteria.pageSize).then(function (results) {
-                vm.results = results;
-            });
+            search();
         }
 
         function pageChanged() {
+            search();
+        }
+
+        function search() {
+            pilotService.getPilots(
+                vm.searchCriteria.page,
+                vm.searchCriteria.pageSize,
+                vm.searchCriteria.name,
+                vm.searchCriteria.sortBy,
+                vm.searchCriteria.ascending).then(function (results) {
+                vm.results = results;
+            });
+        }
+
+        function toggleSortOrder() {
+            vm.searchCriteria.ascending = !vm.searchCriteria.ascending;
             search();
         }
 
