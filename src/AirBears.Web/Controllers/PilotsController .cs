@@ -97,7 +97,7 @@ namespace AirBears.Web.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost("search", Name = "Pilot Search")]
-        public async Task<IActionResult> Search([FromBody]PilotSearchViewModel model)
+        public async Task<IActionResult> Search([FromBody] PilotSearchViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -105,7 +105,7 @@ namespace AirBears.Web.Controllers
             }
 
             // If lat/lng were provided, use them to perform the distance query.
-            if(model.Latitude.HasValue && model.Longitude.HasValue)
+            if (model.Latitude.HasValue && model.Longitude.HasValue)
             {
                 return Ok(await FindPilotsWithinRadius(model.Distance, model.Latitude.Value, model.Longitude.Value, model.Page, model.PageSize));
             }

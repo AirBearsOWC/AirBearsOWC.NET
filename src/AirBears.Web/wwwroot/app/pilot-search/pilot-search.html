@@ -53,6 +53,12 @@
                 </ul>
             </div>
 
+            <uib-pagination total-items="vm.results.totalCount"                            
+                            items-per-page="8"
+                            ng-show="vm.results && vm.results.totalCount > 1"
+                            ng-model="vm.currentPage"
+                            ng-change="vm.pageChanged()"></uib-pagination>
+
         </div>
 
         <div class="col-sm-7">
@@ -97,5 +103,3 @@
 <style>
     .angular-google-map-container { height: 550px; width: 100%; }
 </style>
-
-

@@ -12,6 +12,7 @@
 
         vm.user = null;
         vm.results = null;
+        vm.currentPage = 1;
         vm.distances = [
             { value: 1, name: "1 mile" },
             { value: 5, name: "5 miles" },
@@ -28,6 +29,7 @@
         vm.toggleMarkerWindow = toggleMarkerWindow;
         vm.selectPilot = selectPilot;
         vm.search = search;
+        vm.pageChanged = pageChanged;
         vm.openRegistationOptions = registrationService.openRegistationOptions;
         vm.openLogin = authService.openLogin;
 
@@ -58,7 +60,7 @@
         function search(isValid) {
             if (!isValid) { return; }
 
-            var searchCriteria = { distance: vm.distance.value, address: vm.address, latitude: null, longitude: null, page: 1, pageSize: 10 };
+            var searchCriteria = { distance: vm.distance.value, address: vm.address, latitude: null, longitude: null, page: vm.currentPage, pageSize: 8 };
             
             vm.isSearching = true;
 
@@ -105,6 +107,10 @@
                     toast.pop("error", "Search Error", "", resp.data);
                 }
             });
+        }
+
+        function pageChanged() {
+            search(true);
         }
 
         function getCurrentUser() {
