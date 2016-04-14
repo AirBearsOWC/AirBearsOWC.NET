@@ -196,11 +196,21 @@ namespace AirBears.Web.Controllers
 
         private async Task<QueryResult<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, int page, int pageSize)
         {
-            var sqlQuery = "SELECT Id FROM dbo.AspNetUsers "
-               + $"WHERE (3959 * acos(cos(radians({latitude})) * cos(radians(Latitude)) "
-               + $"* cos(radians(Longitude) - radians({longitude})) + sin(radians({latitude})) * sin(radians(Latitude)))) < {distance}";
+            var countQuery = "SELECT Id FROM dbo.AspNetUsers "
+               + $"WHERE (3959 * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
+               + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) < { distance }";
 
-            var pilotIds = _context.Users.FromSql(sqlQuery).Select(u => u.Id).ToList();
+            var pagedSqlQuery = "SELECT Id FROM (SELECT Id, IsAuthorityAccount, "
+                   + $"(3959 * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
+                   + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) as Distance "
+                   + $"FROM dbo.AspNetUsers) as temp "
+                   + $"WHERE Distance <= { distance } AND IsAuthorityAccount = 0 "
+                   + $"ORDER BY Distance "
+                   + $" OFFSET {pageSize} * {page - 1} ROWS "
+                   + $"FETCH NEXT {pageSize} ROWS ONLY";
+
+            var totalCount = _context.Users.FromSql(countQuery).Count();
+            var pilotIds = _context.Users.FromSql(pagedSqlQuery).Select(u => u.Id).ToList();
             var users = await _context.Users.Include(u => u.TeeShirtSize)
                                         .Include(u => u.State)
                                         .Include(u => u.FlightTime)
@@ -220,10 +230,10 @@ namespace AirBears.Web.Controllers
 
             var result = new QueryResult<PilotSearchResultViewModel>()
             {
-                Items = pilots.OrderBy(p => p.Distance).Skip((page - 1) * pageSize).Take(pageSize),
+                Items = pilots.OrderBy(p => p.Distance),
                 Page = page,
                 PageSize = pageSize,
-                TotalCount = pilotIds.Count
+                TotalCount = totalCount
             };
 
             return result;

@@ -22,7 +22,7 @@
 /// <reference path="app/pilot-search/pilot-window.controller.js" />
 /// <reference path="app/profile/change-password-modal.controller.js" />
 /// <reference path="app/profile/edit-bio-modal.controller.js" />
-/// <reference path="app/profile/edit-profile .controller.js" />
+/// <reference path="app/profile/edit-profile.controller.js" />
 /// <reference path="app/profile/edit-profile-modal.controller.js" />
 /// <reference path="app/profile/profile.controller.js" />
 /// <reference path="app/profile/profile-modal.controller.js" />
