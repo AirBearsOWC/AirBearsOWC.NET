@@ -38,7 +38,7 @@
 
             <div class="panel panel-default" ng-show="vm.results">
                 <div class="panel-heading">
-                    <h2 class="panel-title">{{ vm.results.totalCount }} Results <span ng-if="vm.results.totalCount != vm.results.items.length">(Showing {{ vm.results.items.length }})</span></h2>
+                    <h2 class="panel-title">{{ vm.results.totalCount }} Pilots Found <span ng-if="vm.results.totalCount != vm.results.items.length">(Showing {{ vm.results.items.length }})</span></h2>
                 </div>
                 <ul class="list-group">
                     <li class="list-group-item" ng-repeat="pilot in vm.results.items" ng-click="vm.selectPilot(pilot)" ng-class="{ active: pilot.show }">
@@ -55,7 +55,7 @@
 
             <uib-pagination total-items="vm.results.totalCount"                            
                             items-per-page="8"
-                            ng-show="vm.results && vm.results.totalCount > 1"
+                            ng-show="vm.results && vm.results.totalCount > 8"
                             ng-model="vm.currentPage"
                             ng-change="vm.pageChanged()"></uib-pagination>
 

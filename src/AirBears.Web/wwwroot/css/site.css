@@ -9,6 +9,11 @@
     padding-bottom: 50px;
 }
 
+.page-view {
+    
+}
+
+
 input, select, textarea {
      max-width: 100% !important; 
 }
@@ -175,6 +180,10 @@ input, select, textarea {
     height: 50px;
 }
 
+.transition-container {
+    position: relative;
+}
+
 
 /*
     Toast Overrides
@@ -215,26 +224,4 @@ input, select, textarea {
         /* We want the small modal to be a bit bigger */
         width: 400px;
     }
-}
-
-
-/* 
-    Animations
-*/
-
-.reveal-animation.ng-enter {
-    transition: 0.5s ease all;
-    opacity: 0;
-}
-
-.reveal-animation.ng-leave {
-    transition: 0.3s ease all;
-}
-
-.reveal-animation.ng-enter.ng-enter-active {
-    opacity: 1;
-}
-
-.reveal-animation.ng-leave.ng-leave-active {
-    opacity: 0;
 }
