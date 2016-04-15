@@ -20,7 +20,7 @@
 
         return service;
 
-        function openLogin(callback) {
+        function openLogin(callback, requireLogin) {
             var modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: "app/auth/login-modal.html",
@@ -31,7 +31,7 @@
             modalInstance.result.then(function (result) {
                 if (callback) { callback(result); }
             }, function () {
-                $state.go("root.home");
+                if (requireLogin) { $state.go("root.home"); }
             });
         }
 

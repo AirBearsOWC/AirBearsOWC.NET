@@ -53,7 +53,7 @@
             }, function () {
                 authService.openLogin(function () {
                     getCurrentUser();
-                });
+                }, true);
             });
         }
 
