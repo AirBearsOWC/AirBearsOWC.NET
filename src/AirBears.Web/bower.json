@@ -12,7 +12,7 @@
     "a0-angular-storage": "~0.0.13",
     "angular-bootstrap": "0.14.3",
     "AngularJS-Toaster": "1.1.0",
-    "angular-google-places-autocomplete": "~0.2.7",
+    "angular-google-places-autocomplete": "https://github.com/joshleeb/AngularGooglePlacesAutocomplete/archive/0.2.7-drawerFix.zip",
     "angular-google-maps": "2.3.2"
   }
 }
