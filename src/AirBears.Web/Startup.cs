@@ -1,4 +1,5 @@
-﻿using AirBears.Web.Models;
+﻿using AirBears.Web.Filters;
+using AirBears.Web.Models;
 using AirBears.Web.Services;
 using Braintree;
 using Microsoft.AspNet.Authentication.JwtBearer;
@@ -96,6 +97,9 @@ namespace AirBears.Web
             services.AddMvc().AddJsonOptions(options =>
             {
                 options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            }).AddMvcOptions(options =>
+            {
+                options.Filters.Add(new NoCacheHeaderFilter());
             });
 
             services.AddInstance(GetBraintreeGateway());
