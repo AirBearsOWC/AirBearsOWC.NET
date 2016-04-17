@@ -152,8 +152,11 @@ namespace AirBears.Web.Controllers
             }
 
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == User.GetUserId());
+            var addressHasChanged = AddressHasChanged(user, model);
 
-            if (AddressHasChanged(user, model))
+            user = Mapper.Map(model, user);
+
+            if (addressHasChanged)
             {
                 //if the pilot's address has changed, get the updated coords from Google.
 
@@ -166,8 +169,6 @@ namespace AirBears.Web.Controllers
                 }
             }
 
-            user = Mapper.Map(model, user);
-
             await _context.SaveChangesAsync();
 
             return Ok();
@@ -175,7 +176,11 @@ namespace AirBears.Web.Controllers
 
         private bool AddressHasChanged(User user, PilotViewModel pilot)
         {
-            return user.StateId != pilot.State.Id || user.City != pilot.City || user.Street1 != pilot.Street1 || user.Street2 != pilot.Street2;
+            return user.StateId != pilot.State.Id
+                || user.City != pilot.City
+                || user.Street1 != pilot.Street1
+                || user.Street2 != pilot.Street2
+                || user.Zip != pilot.Zip;
         }
 
         private async Task<GeocodeResponseStatus> UpdatePilotCoordinates(User pilot, string state)

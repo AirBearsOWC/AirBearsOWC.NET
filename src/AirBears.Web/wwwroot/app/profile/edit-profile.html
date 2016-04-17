@@ -6,7 +6,8 @@
         </div>
         <h3 class="col-sm-6">
             <small><a href ng-click="vm.openEditProfileModal()"><i class="glyphicon glyphicon-pencil"></i> Edit Profile</a></small><br />
-            <small><a href ng-click="vm.openChangePasswordModal()"><i class="glyphicon glyphicon-pencil"></i> Change Password</a></small>
+            <small><a href ng-click="vm.openChangePasswordModal()"><i class="glyphicon glyphicon-pencil"></i> Change Password</a></small><br />
+            <small><a ui-sref="root.profile({pilotId: vm.pilot.id, pilot: vm.pilot})"><i class="glyphicon glyphicon-eye-open"></i> View What Members See</a></small>
         </h3>
     </div>
     <hr />
