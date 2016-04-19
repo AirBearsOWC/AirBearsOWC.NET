@@ -133,6 +133,7 @@ input, select, textarea {
 
 .sponsors a {
     transition: opacity 0.3s ease;
+    width: 100%;
 }
 
 .sponsors a:hover {
