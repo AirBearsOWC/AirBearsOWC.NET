@@ -5,12 +5,13 @@
         .module("app")
         .controller("PilotConfirmationController", PilotConfirmationController);
 
-    PilotConfirmationController.$inject = ["$state", "$stateParams"];
+    PilotConfirmationController.$inject = ["$state", "$stateParams", "authService"];
 
-    function PilotConfirmationController($state, $stateParams) {
+    function PilotConfirmationController($state, $stateParams, authService) {
         var vm = this;
 
         vm.user = $stateParams.user;
+        vm.openLogin = authService.openLogin;
 
         activate();
 

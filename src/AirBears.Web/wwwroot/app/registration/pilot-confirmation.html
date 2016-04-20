@@ -1,39 +1,37 @@
-﻿<div class="page-header">
-    <h1>Welcome to Air Bears!</h1>
+﻿<div class="col-lg-12">
+    <div class="page-header">
+        <h1>Welcome to Air Bears!</h1>
+    </div>
+
+
+    <p class="lead">
+        Welcome to Air Bears, {{ vm.user.firstName }}. You're registration was successful.
+    </p>
+
+    <div class="row vertical-align vert-margin">
+        <p class="col-md-3 col-sm-5 hidden-xs">
+            <img class="img-responsive" src="../../images/shirt.jpg" />
+        </p>
+        <div class="col-md-6 col-sm-7">
+            <p>
+                <strong>Your exclusive volunteer pilot T-shirt will arrive shortly.</strong>
+
+                <br /><br />
+
+                The shirt is special. It is not for sale, and will eventually grant you access to restricted areas like fire and crime scenes.
+                Feel free to wear it as much as you'd like to help spread the word and raise awareness of our cause.
+                Note that it must be worn if or when you decide to answer a call for help.
+
+                <br /><br />
+
+                <a href ng-click="vm.openLogin()">Click here</a> to log in to your new Air Bears account. We encourage you to
+                customize your pilot profile to give us more information on your skills and capabilities.
+
+                <br /><br />
+
+                <button class="btn btn-info form-control" ng-click="vm.openLogin()">Log In</button>
+            </p>
+        </div>
+    </div>
 </div>
 
-<div class="col-md-8">
-    <p>
-        Welcome to Air Bears, {{ vm.user.firstName }}. You're registration was successful. Blah blah.
-    </p>
-
-    <p>
-        You should be recieve your Air Bears T-shirt within N weeks.
-    </p>
-
-    <p>
-        More content.
-    </p>
-
-    <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at convallis nisl, quis pretium neque. Interdum et malesuada fames ac ante ipsum primis in faucibus.
-        Donec eleifend dapibus erat. Cras venenatis ac dui eget facilisis. Etiam ut scelerisque sem. Pellentesque egestas leo in tortor maximus, vitae placerat sapien tincidunt.
-        Vivamus sit amet pretium neque, ac vulputate nisl. Quisque eu urna a odio pharetra ultricies luctus a nibh. Morbi nec tortor pulvinar, tincidunt lectus eget, varius risus.
-        Integer porta neque lacus, eget sagittis risus fermentum eget. Proin sollicitudin augue sed odio feugiat, posuere condimentum arcu elementum.
-        Nam tristique nulla lacus, at vulputate ipsum blandit ut. Praesent mattis nunc non sem rutrum lacinia. Nam nec orci eget dui viverra dictum ut eget dolor.
-    </p>
-</div>
-
-<div class="col-md-4">
-    <h3>Side Content</h3>
-    <p>
-        Proin sollicitudin augue sed odio feugiat, posuere condimentum arcu elementum.
-        Nam tristique nulla lacus, at vulputate ipsum blandit ut. Praesent mattis nunc non sem rutrum lacinia. Nam nec orci eget dui viverra dictum ut eget dolor.
-    </p>
-
-    <h3>Side Content 2</h3>
-    <p>
-        Proin sollicitudin augue sed odio feugiat, posuere condimentum arcu elementum.
-        Nam tristique nulla lacus, at vulputate ipsum blandit ut. Praesent mattis nunc non sem rutrum lacinia. Nam nec orci eget dui viverra dictum ut eget dolor.
-    </p>
-</div>
