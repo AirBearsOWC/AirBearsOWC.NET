@@ -6,6 +6,7 @@ using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -83,6 +84,7 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
+            await UpdateLastPasswordChangeDate(user);
             await SendChangePasswordEmail(user);
 
             return Ok();
@@ -111,6 +113,14 @@ namespace AirBears.Web.Controllers
             message += string.Format("\n\nThanks,\nAir Bears Team");
 
             await _mailer.SendAsync(user.Email, "Air Bears Password Changed", message);
+        }
+
+        private async Task UpdateLastPasswordChangeDate(User user)
+        {
+            user.LastPasswordChangeDate = DateTime.UtcNow;
+            _context.Users.Update(user, GraphBehavior.SingleObject);
+
+            await _context.SaveChangesAsync();
         }
 
         protected override void Dispose(bool disposing)
