@@ -54,8 +54,8 @@
             </div>
 
             <uib-pagination total-items="vm.results.totalCount"                            
-                            items-per-page="8"
-                            ng-show="vm.results && vm.results.totalCount > 8"
+                            items-per-page="vm.pageSize"
+                            ng-show="vm.results && vm.results.totalCount > vm.pageSize"
                             ng-model="vm.currentPage"
                             ng-change="vm.pageChanged()"></uib-pagination>
 

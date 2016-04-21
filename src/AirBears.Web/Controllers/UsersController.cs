@@ -41,8 +41,6 @@ namespace AirBears.Web.Controllers
                 .Include(u => u.Payload)
                 .FirstOrDefaultAsync(u => u.Id == User.GetUserId());
 
-            object resp;
-
             if (user.IsAuthorityAccount)
             {
                 var authorityUser = Mapper.Map<IdentityViewModel>(user);
