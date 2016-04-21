@@ -7,6 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System;
 using Braintree;
+using Microsoft.Data.Entity;
 
 namespace AirBears.Web.Controllers
 {
@@ -16,12 +17,14 @@ namespace AirBears.Web.Controllers
     {
         private readonly TokenAuthOptions _tokenOptions;
         private readonly UserManager<User> _userManager;
+        private readonly AppDbContext _context;
         private readonly IBraintreeGateway _gateway;
 
-        public TokenController(TokenAuthOptions tokenOptions, UserManager<User> userManager, IBraintreeGateway gateway)
+        public TokenController(TokenAuthOptions tokenOptions, UserManager<User> userManager, AppDbContext context, IBraintreeGateway gateway)
         {
             _tokenOptions = tokenOptions;
             _userManager = userManager;
+            _context = context;
             _gateway = gateway;
         }
 
@@ -45,6 +48,8 @@ namespace AirBears.Web.Controllers
                 var expires = DateTime.UtcNow.AddDays(5);
                 var token = await GetToken(model.Email, expires);
 
+                await UpdateLastLoginDate(user);
+
                 return Ok(new { authenticated = true, token = token, tokenExpires = expires });
             }
 
@@ -57,6 +62,14 @@ namespace AirBears.Web.Controllers
             var clientToken = _gateway.ClientToken.generate();
 
             return Ok(clientToken);
+        }
+
+        private async Task UpdateLastLoginDate(User user)
+        {
+            user.LastLoginDate = DateTime.UtcNow;
+            _context.Users.Update(user, GraphBehavior.SingleObject);
+
+           await  _context.SaveChangesAsync();
         }
 
         private async Task<string> GetToken(string username, DateTime? expires)

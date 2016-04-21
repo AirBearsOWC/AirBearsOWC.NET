@@ -4,24 +4,24 @@ using Microsoft.Data.Entity.Migrations;
 
 namespace AirBears.Web.Migrations
 {
-    public partial class AddedCoordinateFields : Migration
+    public partial class LoginPasswordTimestamps : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<double>(
-                name: "Latitude",
+            migrationBuilder.AddColumn<DateTime>(
+                name: "LastLoginDate",
                 table: "AspNetUsers",
                 nullable: true);
-            migrationBuilder.AddColumn<double>(
-                name: "Longitude",
+            migrationBuilder.AddColumn<DateTime>(
+                name: "LastPasswordChangeDate",
                 table: "AspNetUsers",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(name: "Latitude", table: "AspNetUsers");
-            migrationBuilder.DropColumn(name: "Longitude", table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "LastLoginDate", table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "LastPasswordChangeDate", table: "AspNetUsers");
         }
     }
 }

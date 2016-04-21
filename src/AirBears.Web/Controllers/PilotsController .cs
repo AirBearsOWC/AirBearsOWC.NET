@@ -136,7 +136,7 @@ namespace AirBears.Web.Controllers
 
             user.TeeShirtMailedDate = teeShirtMailed ? DateTime.UtcNow : default(DateTime?);
             _context.Users.Update(user, GraphBehavior.SingleObject);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return Ok(Mapper.Map<PilotViewModel>(user));
         }

@@ -65,6 +65,10 @@ namespace AirBears.Web.Models
 
         public DateTime DateRegistered { get; set; }
 
+        public DateTime? LastLoginDate { get; set; }
+
+        public DateTime? LastPasswordChangeDate { get; set; }
+
         #region Lazy Properties
 
         public virtual TeeShirtSize TeeShirtSize { get; set; }
