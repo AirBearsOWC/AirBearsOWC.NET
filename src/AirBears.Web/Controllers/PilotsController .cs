@@ -104,10 +104,12 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
+            var currentUser = await _userManager.FindByIdAsync(User.GetUserId());
+
             // If lat/lng were provided, use them to perform the distance query.
             if (model.Latitude.HasValue && model.Longitude.HasValue)
             {
-                return Ok(await FindPilotsWithinRadius(model.Distance, model.Latitude.Value, model.Longitude.Value, model.Page, model.PageSize));
+                return Ok(await FindPilotsWithinRadius(model.Distance, model.Latitude.Value, model.Longitude.Value, model.Page, model.PageSize, !currentUser.IsAuthorityAccount));
             }
 
             // Otherwise we have to ask the Geocode service to find the lat/lng for the given address.
@@ -119,7 +121,7 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            return Ok(await FindPilotsWithinRadius(model.Distance, coords.Latitude, coords.Longitude, model.Page, model.PageSize));
+            return Ok(await FindPilotsWithinRadius(model.Distance, coords.Latitude, coords.Longitude, model.Page, model.PageSize, !currentUser.IsAuthorityAccount));
         }
 
         // PUT: api/pilots/5/tee-shirt-mailed
@@ -199,17 +201,19 @@ namespace AirBears.Web.Controllers
             return coords.Status;
         }
 
-        private async Task<QueryResult<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, int page, int pageSize)
+        private async Task<QueryResult<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, int page, int pageSize, bool onlyConsenting)
         {
-            var countQuery = "SELECT Id FROM dbo.AspNetUsers "
+            var consentClause = onlyConsenting ? "AND AllowsPilotSearch = 1 " : "";
+            var countQuery = "SELECT Id, IsAuthorityAccount, AllowsPilotSearch FROM dbo.AspNetUsers "
                + $"WHERE (3959 * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
-               + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) < { distance }";
+               + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) < { distance } "
+               + $"AND IsAuthorityAccount = 0 { consentClause }";
 
-            var pagedSqlQuery = "SELECT Id FROM (SELECT Id, IsAuthorityAccount, "
+            var pagedSqlQuery = "SELECT Id FROM (SELECT Id, IsAuthorityAccount, AllowsPilotSearch, "
                    + $"(3959 * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
                    + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) as Distance "
                    + $"FROM dbo.AspNetUsers) as temp "
-                   + $"WHERE Distance <= { distance } AND IsAuthorityAccount = 0 "
+                   + $"WHERE Distance <= { distance } AND IsAuthorityAccount = 0 { consentClause }"
                    + $"ORDER BY Distance "
                    + $" OFFSET {pageSize} * {page - 1} ROWS "
                    + $"FETCH NEXT {pageSize} ROWS ONLY";
