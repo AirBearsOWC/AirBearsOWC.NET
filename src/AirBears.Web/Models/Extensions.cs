@@ -1,14 +1,15 @@
-﻿using System;
+﻿using Microsoft.Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
 namespace AirBears.Web.Models
 {
-    public static class Extenstions
+    public static class Extensions
     {
         /// <summary>
-        /// Returns all of the user's Role claims or and empty collection if there are none.
+        /// Returns all of the user's Role claims or an empty collection if there are none.
         /// </summary>
         /// <param name="principal"></param>
         /// <returns></returns>
@@ -27,6 +28,21 @@ namespace AirBears.Web.Models
         public static double ToRadians(this double val)
         {
             return (Math.PI / 180) * val;
+        }
+
+        /// <summary>
+        /// Includes all desired pilot navigation proerties and filters out authority users.
+        /// </summary>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        public static IQueryable<User> AsPilots(this DbSet<User> users)
+        {
+            return users
+                .Include(u => u.TeeShirtSize)
+                .Include(u => u.State)
+                .Include(u => u.FlightTime)
+                .Include(u => u.Payload)
+                .Where(u => !u.IsAuthorityAccount);
         }
     }
 }

@@ -35,13 +35,7 @@ namespace AirBears.Web.Controllers
         [HttpGet("{id}", Name = "Get Pilot")]
         public async Task<IActionResult> GetPilot([FromRoute] string id)
         {
-            var pilot = await _context.Users
-               .Where(u => !u.IsAuthorityAccount && u.Id == id)
-               .Include(u => u.TeeShirtSize)
-               .Include(u => u.State)
-               .Include(u => u.FlightTime)
-               .Include(u => u.Payload)
-               .FirstOrDefaultAsync();
+            var pilot = await _context.Users.AsPilots().FirstOrDefaultAsync();
 
             if (pilot == null)
             {
@@ -56,12 +50,7 @@ namespace AirBears.Web.Controllers
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<QueryResult<PilotViewModel>> GetPilots(string name, string sortBy, bool ascending = true, bool onlyShirtsNotSent = false, int page = 1, int? pageSize = 50)
         {
-            var pilots = _context.Users
-                .Include(u => u.TeeShirtSize)
-                .Include(u => u.State)
-                .Include(u => u.FlightTime)
-                .Include(u => u.Payload)
-                .Where(u => !u.IsAuthorityAccount);             
+            var pilots = _context.Users.AsPilots();            
 
             if(!string.IsNullOrWhiteSpace(name))
             {
@@ -201,37 +190,34 @@ namespace AirBears.Web.Controllers
             return coords.Status;
         }
 
+        public const int EarthRadius = 3959; // Distance from the Earth's center to its surface, about 3,959 miles (6,371 kilometers).
+
         private async Task<QueryResult<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, int page, int pageSize, bool onlyConsenting)
         {
-            var consentClause = onlyConsenting ? "AND AllowsPilotSearch = 1 " : "";
+            var consentClause = onlyConsenting ? "AND AllowsPilotSearch = 1 " : string.Empty;
             var countQuery = "SELECT Id, IsAuthorityAccount, AllowsPilotSearch FROM dbo.AspNetUsers "
-               + $"WHERE (3959 * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
+               + $"WHERE ({ EarthRadius } * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
                + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) < { distance } "
                + $"AND IsAuthorityAccount = 0 { consentClause }";
 
             var pagedSqlQuery = "SELECT Id FROM (SELECT Id, IsAuthorityAccount, AllowsPilotSearch, "
-                   + $"(3959 * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
+                   + $"({ EarthRadius } * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
                    + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) as Distance "
                    + $"FROM dbo.AspNetUsers) as temp "
                    + $"WHERE Distance <= { distance } AND IsAuthorityAccount = 0 { consentClause }"
                    + $"ORDER BY Distance "
-                   + $" OFFSET {pageSize} * {page - 1} ROWS "
-                   + $"FETCH NEXT {pageSize} ROWS ONLY";
+                   + $" OFFSET { pageSize } * { page - 1 } ROWS "
+                   + $"FETCH NEXT { pageSize } ROWS ONLY";
 
             var totalCount = _context.Users.FromSql(countQuery).Count();
             var pilotIds = _context.Users.FromSql(pagedSqlQuery).Select(u => u.Id).ToList();
-            var users = await _context.Users.Include(u => u.TeeShirtSize)
-                                        .Include(u => u.State)
-                                        .Include(u => u.FlightTime)
-                                        .Include(u => u.Payload)
-                                        .Where(u => !u.IsAuthorityAccount && pilotIds.Contains(u.Id))
-                                        .ToListAsync();
+            var users = await _context.Users.AsPilots().Where(u => pilotIds.Contains(u.Id)).ToListAsync();
 
             var pilots = Mapper.Map<List<PilotSearchResultViewModel>>(users);
 
             pilots.ForEach(p =>
             {
-                p.Distance = (3959 *
+                p.Distance = (EarthRadius *
                     Math.Acos((Math.Cos(latitude.ToRadians())) * Math.Cos(p.Latitude.Value.ToRadians()) *
                     Math.Cos(p.Longitude.Value.ToRadians() - longitude.ToRadians()) +
                     Math.Sin(latitude.ToRadians()) * Math.Sin(p.Latitude.Value.ToRadians())));
