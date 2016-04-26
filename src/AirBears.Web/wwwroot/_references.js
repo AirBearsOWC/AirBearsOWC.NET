@@ -3,6 +3,7 @@
 /// <reference path="app/app.config.js" />
 /// <reference path="app/app.js" />
 /// <reference path="app/app.route.js" />
+/// <reference path="app/app.run.js" />
 /// <reference path="app/auth/auth.service.js" />
 /// <reference path="app/auth/auth-interceptor.service.js" />
 /// <reference path="app/auth/login-modal.controller.js" />

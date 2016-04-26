@@ -11,6 +11,7 @@
         var vm = this;
 
         vm.user = null;
+        vm.isActive = isActive;
         vm.openRegistationOptions = registrationService.openRegistationOptions;
         vm.openLogin = authService.openLogin;
         vm.logout = logout;
@@ -29,6 +30,10 @@
             authService.onUnauthenticated($scope, function () {
                 vm.user = null;
             });
+        }
+
+        function isActive(routeSubstring) {
+            return $state.current.name.indexOf(routeSubstring) >= 0;
         }
 
         function logout() {

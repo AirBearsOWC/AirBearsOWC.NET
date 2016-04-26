@@ -5,9 +5,10 @@
         .module("app")
         .config(configureRoutes);
 
-    configureRoutes.$inject = ["$locationProvider", "$stateProvider", "$urlRouterProvider", "$httpProvider", "uiGmapGoogleMapApiProvider"];
+    configureRoutes.$inject = ["$locationProvider", "$stateProvider", "$urlRouterProvider"];
 
-    function configureRoutes($locationProvider, $stateProvider, $urlRouterProvider, $httpProvider, uiGmapGoogleMapApiProvider) {
+    function configureRoutes($locationProvider, $stateProvider, $urlRouterProvider) {
+        $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise("/");
 
         $stateProvider
@@ -88,17 +89,5 @@
                 templateUrl: "app/manage/manage-commanders.html",
                 controller: "ManageCommandersController as vm"
             });
-
-        $locationProvider.html5Mode(true);
-
-        $httpProvider.interceptors.push("authInterceptor");
-
-        uiGmapGoogleMapApiProvider.configure({
-            // https://github.com/angular-ui/angular-google-maps/blob/master/src/coffee/providers/map-loader.coffee#L84
-            //    key: "your api key",
-            //v: "3.20", //defaults to latest 3.X anyhow
-            //libraries: "weather,geometry,visualization"
-            key: "AIzaSyCgM9PF1imC5ExbcVHMBvvvi0wD8wLb8lQ"
-        });
     }
 })();
