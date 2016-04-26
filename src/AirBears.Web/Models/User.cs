@@ -7,19 +7,24 @@ namespace AirBears.Web.Models
     public class User : IdentityUser
     {
         [Required]
+        [MaxLength(100)]
         public string FirstName { get; set; }
 
         [Required]
+        [MaxLength(100)]
         public string LastName { get; set; }
 
         public Guid? TeeShirtSizeId { get; set; }
 
         public DateTime? TeeShirtMailedDate { get; set; }
 
+        [MaxLength(100)]
         public string Street1 { get; set; }
 
+        [MaxLength(100)]
         public string Street2 { get; set; }
 
+        [MaxLength(100)]
         public string City { get; set; }
 
         /// <summary>
@@ -27,12 +32,38 @@ namespace AirBears.Web.Models
         /// </summary>
         public Guid? StateId { get; set; }
 
+        [MaxLength(10)]
         public string Zip { get; set; }
+
+        /// <summary>
+        /// Line 1 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine1 { get; set; }
+
+        /// <summary>
+        /// Line 2 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine2 { get; set; }
+
+        /// <summary>
+        /// Line 3 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine3 { get; set; }
+
+        /// <summary>
+        /// Line 4 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine4 { get; set; }
 
         public double? Longitude { get; set; }
 
         public double? Latitude { get; set; }
 
+        [MaxLength(200)]
         public string GeocodeAddress { get; set; }
 
         //Hoping for DbGeography in EF7 at some point in time...
@@ -58,6 +89,8 @@ namespace AirBears.Web.Models
         public bool FemaIcsCertified { get; set; }
 
         public bool HamRadioLicensed { get; set; }
+
+        public bool HasInternationalAddress { get; set; }
 
         public Guid? PayloadId { get; set; }
 

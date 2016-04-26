@@ -9,12 +9,19 @@ namespace AirBears.Web.ViewModels
     {
         public string Id { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string FirstName { get; set; }
 
+        [Required]
+        [MaxLength(100)]
         public string LastName { get; set; }
 
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
+        [Required]
         public string PhoneNumber { get; set; }
 
         public DateTime DateRegistered { get; set; }
@@ -22,10 +29,13 @@ namespace AirBears.Web.ViewModels
 
     public class PilotViewModel : UserViewModel
     {
+        [MaxLength(100)]
         public string Street1 { get; set; }
 
+        [MaxLength(100)]
         public string Street2 { get; set; }
 
+        [MaxLength(100)]
         public string City { get; set; }
 
         /// <summary>
@@ -33,8 +43,36 @@ namespace AirBears.Web.ViewModels
         /// </summary>
         public State State { get; set; }
 
+        [MaxLength(10)]
         public string Zip { get; set; }
 
+        /// <summary>
+        /// Line 1 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine1 { get; set; }
+
+        /// <summary>
+        /// Line 2 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine2 { get; set; }
+
+        /// <summary>
+        /// Line 3 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine3 { get; set; }
+
+        /// <summary>
+        /// Line 4 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine4 { get; set; }
+
+        public bool HasInternationalAddress { get; set; }
+
+        [MaxLength(200)]
         public string GeocodeAddress { get; set; }
 
         public TeeShirtSize TeeShirtSize { get; set; }
