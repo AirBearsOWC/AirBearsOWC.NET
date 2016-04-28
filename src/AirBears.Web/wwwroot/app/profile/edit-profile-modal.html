@@ -42,13 +42,46 @@
             </div>
         </div>
 
-        <h3>Address <small class="glyphicon glyphicon-question-sign" uib-tooltip="Your address will be used for delivery of your Air Bears t-shirt and to help authorities locate the nearest pilot during an emergency."></small></h3>
-
         <div class="row">
+            <div class="col-sm-3">
+                <h3>
+                    Address
+                    <small class="glyphicon glyphicon-question-sign" uib-tooltip="Your address will be used to help authorities locate the nearest pilot."></small>
+                </h3>
+            </div>
+            <div class="col-sm-6">
+                <strong class="checkbox" style="margin-top: 22px;">
+                    <label>
+                        <input name="hasInternationalAddress" type="checkbox" ng-model="vm.pilot.hasInternationalAddress">
+                        <span uib-tooltip="Checking this box indicates that your address is outside of the United States.">International Address</span>
+                    </label>
+                </strong>
+            </div>
+        </div>
+
+        <div class="row" ng-show="vm.pilot.hasInternationalAddress">
+            <div class="col-sm-6">
+                <div class="form-group" ab-client-validate>
+                    <input id="addressLine1" name="addressLine1" type="text" class="form-control" placeholder="Address Line 1" ng-model="vm.pilot.addressLine1" ng-required="vm.pilot.hasInternationalAddress" />
+                    <div class="help-block validation" ng-show="profileForm.street1.$error.required">Address is required.</div>
+                </div>
+                <div class="form-group">
+                    <input id="addressLine2" name="addressLine2" type="text" class="form-control" placeholder="Address Line 2" ng-model="vm.pilot.addressLine2" />
+                </div>
+                <div class="form-group">
+                    <input id="addressLine3" name="addressLine3" type="text" class="form-control" placeholder="Address Line 3" ng-model="vm.pilot.addressLine3" />
+                </div>
+                <div class="form-group">
+                    <input id="addressLine4" name="addressLine4" type="text" class="form-control" placeholder="Address Line 4" ng-model="vm.pilot.addressLine4" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-show="!vm.pilot.hasInternationalAddress">
             <div class="col-sm-6">
                 <div class="form-group" ab-client-validate>
                     <label for="street1">Street</label>
-                    <input id="street1" name="street1" type="text" class="form-control" placeholder="Street Line 1" required ng-model="vm.pilot.street1" />
+                    <input id="street1" name="street1" type="text" class="form-control" placeholder="Street Line 1" ng-model="vm.pilot.street1" ng-required="!vm.pilot.hasInternationalAddress" />
                     <div class="help-block validation" ng-show="profileForm.street1.$error.required">Street is required.</div>
                 </div>
                 <div class="form-group">
@@ -57,19 +90,20 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" ng-show="!vm.pilot.hasInternationalAddress">
             <div class="col-sm-4">
                 <div class="form-group" ab-client-validate>
                     <label for="city">City</label>
-                    <input id="city" name="city" type="text" class="form-control" required ng-model="vm.pilot.city" />
-                    <div class="help-block validation" ng-show="profileForm.street1.$error.required">Street is required.</div>
+                    <input id="city" name="city" type="text" class="form-control" ng-model="vm.pilot.city" ng-required="!vm.pilot.hasInternationalAddress" />
+                    <div class="help-block validation" ng-show="profileForm.city.$error.required">City is required.</div>
                 </div>
             </div>
 
             <div class="col-sm-4">
                 <div class="form-group" ab-client-validate>
                     <label for="state">State</label>
-                    <select id="state" name="state" class="form-control" required 
+                    <select id="state" name="state" class="form-control" 
+                            ng-required="!vm.pilot.hasInternationalAddress" 
                             ng-model="vm.pilot.state" 
                             ng-options="s.name for s in vm.states track by s.id">
                         <option value="">Select a State</option>
@@ -81,7 +115,7 @@
             <div class="col-sm-4">
                 <div class="form-group" ab-client-validate>
                     <label for="zip">Zip Code</label>
-                    <input id="zip" name="zip" type="text" class="form-control" required ng-model="vm.pilot.zip" />
+                    <input id="zip" name="zip" type="text" class="form-control" ng-model="vm.pilot.zip" ng-required="!vm.pilot.hasInternationalAddress" />
                     <div class="help-block validation" ng-show="profileForm.zip.$error.required">Zip Code is required.</div>
                 </div>
             </div>

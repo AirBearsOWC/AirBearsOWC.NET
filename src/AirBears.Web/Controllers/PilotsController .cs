@@ -171,7 +171,12 @@ namespace AirBears.Web.Controllers
                 || user.City != pilot.City
                 || user.Street1 != pilot.Street1
                 || user.Street2 != pilot.Street2
-                || user.Zip != pilot.Zip;
+                || user.Zip != pilot.Zip
+                || user.HasInternationalAddress != pilot.HasInternationalAddress
+                || user.AddressLine1 != pilot.AddressLine1
+                || user.AddressLine2 != pilot.AddressLine2
+                || user.AddressLine3 != pilot.AddressLine3
+                || user.AddressLine4 != pilot.AddressLine4;
         }
 
         private async Task<GeocodeResponseStatus> UpdatePilotCoordinates(User pilot, string state)

@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace AirBears.Web.Models
 {
@@ -122,6 +123,18 @@ namespace AirBears.Web.Models
     {
         public static string GetAddress(this User user, string state)
         {
+            if(user.HasInternationalAddress)
+            {
+                var sb = new StringBuilder();
+
+                sb.Append(user.AddressLine1);
+                if (!string.IsNullOrWhiteSpace(user.AddressLine2)) { sb.Append($", { user.AddressLine2 }"); }
+                if (!string.IsNullOrWhiteSpace(user.AddressLine3)) { sb.Append($", { user.AddressLine3 }"); }
+                if (!string.IsNullOrWhiteSpace(user.AddressLine4)) { sb.Append($", { user.AddressLine4 }"); }
+
+                return sb.ToString();
+            }
+
             if (!string.IsNullOrWhiteSpace(user.Street2))
             {
                 return $"{user.Street1}, {user.Street2}, {user.City}, {state} {user.Zip}";
