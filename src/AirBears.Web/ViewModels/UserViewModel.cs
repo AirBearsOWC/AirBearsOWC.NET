@@ -22,6 +22,7 @@ namespace AirBears.Web.ViewModels
         public string Email { get; set; }
 
         [Required]
+        [MaxLength(15)]
         public string PhoneNumber { get; set; }
 
         public DateTime DateRegistered { get; set; }

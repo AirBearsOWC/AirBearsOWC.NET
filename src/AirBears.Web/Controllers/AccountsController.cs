@@ -42,15 +42,22 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var state = await _context.States.FirstOrDefaultAsync(s => s.Id == model.StateId.Value);
+            var stateName = string.Empty;
 
-            if (state == null)
+            if(!model.HasInternationalAddress)
             {
-                ModelState.AddModelError("StateId", "A state with that ID does not exist.");
-                return HttpBadRequest(ModelState);
+                var state = await _context.States.FirstOrDefaultAsync(s => s.Id == model.StateId.Value);
+
+                if (state == null)
+                {
+                    ModelState.AddModelError("StateId", "A state with that ID does not exist.");
+                    return HttpBadRequest(ModelState);
+                }
+
+                stateName = state.Name;
             }
 
-            var coords = await _geocodeService.GetCoordsForAddress(model.GetAddress(state.Name));
+            var coords = await _geocodeService.GetCoordsForAddress(model.GetAddress(stateName));
 
             if (coords.Status != GeocodeResponseStatus.OK)
             {

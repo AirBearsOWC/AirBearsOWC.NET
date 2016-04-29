@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Text;
 
 namespace AirBears.Web.ViewModels
 {
@@ -17,7 +19,7 @@ namespace AirBears.Web.ViewModels
         public bool RememberMe { get; set; }
     }
 
-    public class PilotRegistrationViewModel
+    public class PilotRegistrationViewModel : IValidatableObject
     {
         [Required]
         [EmailAddress]
@@ -37,13 +39,16 @@ namespace AirBears.Web.ViewModels
 
         [Required]
         [Display(Name = "First Name")]
+        [MaxLength(100)]
         public string FirstName { get; set; }
 
         [Required]
         [Display(Name = "Last Name")]
+        [MaxLength(100)]
         public string LastName { get; set; }
 
         [Required]
+        [MaxLength(15)]
         public string PhoneNumber { get; set; }
 
         [Required]
@@ -53,35 +58,85 @@ namespace AirBears.Web.ViewModels
         [Display(Name = "T-Shirt Size")]
         public Guid? TeeShirtSizeId { get; set; }
 
-        [Required]
         [Display(Name = "Street")]
+        [MaxLength(100)]
         public string Street1 { get; set; }
 
+        [MaxLength(100)]
         public string Street2 { get; set; }
 
-        [Required]
+        [MaxLength(100)]
         public string City { get; set; }
 
         /// <summary>
         /// State or province (region) dpending on the country.
         /// </summary>
-        [Required]
         public Guid? StateId { get; set; }
 
-        [Required]
+        [MaxLength(10)]
         public string Zip { get; set; }
+
+        /// <summary>
+        /// Line 1 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine1 { get; set; }
+
+        /// <summary>
+        /// Line 2 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine2 { get; set; }
+
+        /// <summary>
+        /// Line 3 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine3 { get; set; }
+
+        /// <summary>
+        /// Line 4 of international address
+        /// </summary>
+        [MaxLength(100)]
+        public string AddressLine4 { get; set; }
+
+        public bool HasInternationalAddress { get; set; }
 
         [MustBeTrue(ErrorMessage = "You must agree to the terms.")]
         public bool HasAgreedToTerms { get; set; }
 
         public string GetAddress(string state)
         {
+            if (HasInternationalAddress)
+            {
+                var sb = new StringBuilder();
+
+                sb.Append(AddressLine1);
+                if (!string.IsNullOrWhiteSpace(AddressLine2)) { sb.Append($", { AddressLine2 }"); }
+                if (!string.IsNullOrWhiteSpace(AddressLine3)) { sb.Append($", { AddressLine3 }"); }
+                if (!string.IsNullOrWhiteSpace(AddressLine4)) { sb.Append($", { AddressLine4 }"); }
+
+                return sb.ToString();
+            }
+
             if (!string.IsNullOrWhiteSpace(Street2))
             {
                 return $"{Street1}, {Street2}, {City}, {state} {Zip}";
             }
 
             return $"{Street1}, {City}, {state} {Zip}";
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (HasInternationalAddress && string.IsNullOrWhiteSpace(AddressLine1)) { yield return new ValidationResult("Address Line 1 is required.", new List<string> { nameof(AddressLine1) }); }
+            else if (!HasInternationalAddress)
+            {
+                if (string.IsNullOrWhiteSpace(Street1)) yield return new ValidationResult("Street address is required.", new List<string> { nameof(Street1) });
+                if (string.IsNullOrWhiteSpace(City)) yield return new ValidationResult("City is required.", new List<string> { nameof(City) });
+                if (string.IsNullOrWhiteSpace(Zip)) yield return new ValidationResult("Zip Code is required.", new List<string> { nameof(Zip) });
+                if (!StateId.HasValue) yield return new ValidationResult("State is required.", new List<string> { nameof(StateId) });
+            }
         }
     }
 
@@ -104,14 +159,17 @@ namespace AirBears.Web.ViewModels
         public string ConfirmPassword { get; set; }
 
         [Required]
+        [MaxLength(100)]
         [Display(Name = "First Name")]
         public string FirstName { get; set; }
 
         [Required]
+        [MaxLength(100)]
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
         [Required]
+        [MaxLength(100)]
         [Display(Name = "Organization")]
         public string Organization { get; set; }
     }
