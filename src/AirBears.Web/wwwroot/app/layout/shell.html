@@ -15,8 +15,8 @@
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
                 <li ui-sref-active="active"><a ui-sref="root.pilot-search">Pilot Search</a></li>
-                <li ui-sref-active="active"><a href>News</a></li>
-                <li ui-sref-active="active"><a href>Contact</a></li>               
+                <!--<li ui-sref-active="active"><a href>News</a></li>-->
+                <li ui-sref-active="active"><a ui-sref="root.contact">Contact</a></li>               
                 <li class="dropdown" ng-show="vm.user && vm.user.isAdmin" ng-class="{active:vm.isActive('root.manage')}">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         Manage <span class="caret"></span>

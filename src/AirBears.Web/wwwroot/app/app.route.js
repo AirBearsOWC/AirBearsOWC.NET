@@ -56,6 +56,11 @@
                     user: null
                 }
             })
+            .state("root.contact", {
+                url: "/contact",
+                templateUrl: "app/contact/contact.html",
+                controller: "ContactController as vm"
+            })
             .state("root.pilot-search", {
                 url: "/pilot-search",
                 templateUrl: "app/pilot-search/pilot-search.html",
