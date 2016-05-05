@@ -8,6 +8,11 @@ namespace AirBears.Web.Models
 {
     public static class Extensions
     {
+        public static string ToHtmlWhiteSpace(this string src)
+        {
+            return src.Replace("\n", "<br />");
+        }
+
         /// <summary>
         /// Returns all of the user's Role claims or an empty collection if there are none.
         /// </summary>
@@ -31,7 +36,7 @@ namespace AirBears.Web.Models
         }
 
         /// <summary>
-        /// Includes all desired pilot navigation proerties and filters out authority users.
+        /// Includes all desired pilot navigation properties and filters out authority users.
         /// </summary>
         /// <param name="users"></param>
         /// <returns></returns>

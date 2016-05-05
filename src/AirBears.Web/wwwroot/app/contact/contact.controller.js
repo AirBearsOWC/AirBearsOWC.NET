@@ -10,6 +10,7 @@
     function ContactController($state, toast, contactService) {
         var vm = this;
         
+        vm.messageSent = false;
         vm.send = send;
 
         activate();
@@ -26,7 +27,8 @@
             contactService.send(vm.form).then(function () {
                 toast.pop("success", "Message Sent", "Your message was successfully sent!");
                 vm.isSubmitting = false;
-                // show success message
+                vm.messageSent = true;
+                vm.form = {};
             }, function (resp) {
                 toast.pop("error", "Message Failed", "", resp.data);
                 vm.isSubmitting = false;

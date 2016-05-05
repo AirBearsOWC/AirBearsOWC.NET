@@ -6,50 +6,74 @@
 
     <div class="row">
         <div class="col-sm-8">
-            <form name="contactForm" ng-submit="vm.send(contactForm.$valid)" novalidate>
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="form-group" ab-client-validate>
-                            <label for="name">Name</label>
-                            <input id="name" name="name" type="text" class="form-control" required ng-model="vm.form.name" />
+
+            <h3>Question? Comments? We're Listening.</h3>
+
+            <div ng-hide="vm.messageSent">
+                <p class="lead">
+                    Fill out the form below and we'll get back to you as soon as we can.
+                </p>
+
+                <form name="contactForm" ng-submit="vm.send(contactForm.$valid)" novalidate>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group" ab-client-validate>
+                                <label for="name">Name</label>
+                                <input id="name" name="name" type="text" class="form-control" required ng-model="vm.form.name" />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="form-group" ab-client-validate>
-                            <label for="email">Email</label>
-                            <input id="email" name="email" type="email" class="form-control" required ng-model="vm.form.email" />
-                            <div class="help-block validation" ng-show="contactForm.email.$error.email">Email must be valid.</div>
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group" ab-client-validate>
+                                <label for="email">Email</label>
+                                <input id="email" name="email" type="email" class="form-control" required ng-model="vm.form.email" />
+                                <div class="help-block validation" ng-show="contactForm.email.$error.email">Email must be valid.</div>
+                            </div>
                         </div>
                     </div>
-                </div>  
 
-                <div class="row">
-                    <div class="col-sm-5">
-                        <div class="form-group">
-                            <label for="phone">Phone Number <small>(Optional)</small></label>
-                            <input id="phone" name="phone" type="text" class="form-control" ng-model="vm.form.phoneNumber" />
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="phone">Phone Number <small>(Optional)</small></label>
+                                <input id="phone" name="phone" type="text" class="form-control" ng-model="vm.form.phoneNumber" />
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-sm-8">
-                        <div class="form-group" ab-client-validate>
-                            <label for="message">Message</label>
-                            <textarea id="message" name="message" rows="6" class="form-control" ng-model="vm.form.phoneNumber"></textarea>
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group" ab-client-validate>
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" rows="6" class="form-control" required maxlength="500" ng-model="vm.form.message"></textarea>
+                                <div class="help-block validation" ng-show="contactForm.message.$error.maxlength">No more than 500 characters.</div>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="row">
-                    <div class="col-sm-6">
-                        <button class="btn btn-success" type="submit" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-envelope"></i> Send</button>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button class="btn btn-success" type="submit" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-envelope"></i> Send</button>
+                        </div>
                     </div>
-                </div>
-            </form> 
+                </form> 
+            </div>
+
+            <div ng-show="vm.messageSent">
+                <p class="lead text-success vert-margin">
+                    Thank you for the message! We'll get back to you shortly.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <p class="lead">
+                <strong>Air Bears Headquarters</strong><br />
+                1980 Hoyt Ave. E.<br />
+                St. Paul, MN 55119<br />
+            </p>
         </div>
     </div>
 </div>

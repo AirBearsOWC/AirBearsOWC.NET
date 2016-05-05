@@ -30,8 +30,7 @@ namespace AirBears.Web.Controllers
             _mailer = mailer;
         }
 
-        [Route("/api/me")]
-        [HttpGet]
+        [HttpGet("/api/me", Name = "Get Current User")]
         public async Task<IActionResult> GetCurrentUser()
         {
             var user = await _context.Users
@@ -60,7 +59,6 @@ namespace AirBears.Web.Controllers
         /// Changes the current user's password.
         /// </summary>
         /// <returns></returns>
-        [HttpPost]
         [HttpPost("/api/me/password", Name = "Change Password")]
         public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordViewModel model)
         {
