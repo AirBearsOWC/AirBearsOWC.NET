@@ -44,11 +44,11 @@ namespace AirBears.Web.Models
             {
                 context.Payloads.AddRange(
                     new Payload { Name = "None", SortOrder = 0 },
-                    new Payload { Name = "10 Pounds", SortOrder = 1 },
-                    new Payload { Name = "20 Pounds", SortOrder = 2 },
-                    new Payload { Name = "40 Pounds", SortOrder = 3 },
-                    new Payload { Name = "60 Pounds", SortOrder = 4 },
-                    new Payload { Name = "60+ Pounds", SortOrder = 5 }
+                    new Payload { Name = "1 Pound", SortOrder = 1 },
+                    new Payload { Name = "2 Pounds", SortOrder = 2 },
+                    new Payload { Name = "3 Pounds", SortOrder = 3 },
+                    new Payload { Name = "4 Pounds", SortOrder = 4 },
+                    new Payload { Name = "5+ Pounds", SortOrder = 5 }
                 );
 
                 context.SaveChanges();
