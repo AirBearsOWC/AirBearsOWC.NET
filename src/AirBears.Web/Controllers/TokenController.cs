@@ -59,7 +59,7 @@ namespace AirBears.Web.Controllers
         [HttpGet("/api/payment-token", Name = "Get Payment Token")]
         public async Task<IActionResult> GetPaymentToken()
         {
-            var clientToken = _gateway.ClientToken.generate();
+            var clientToken = await Task.Run(() => _gateway.ClientToken.generate());
 
             return Ok(clientToken);
         }

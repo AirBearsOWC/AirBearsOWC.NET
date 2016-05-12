@@ -84,7 +84,7 @@ namespace AirBears.Web
 
             services.AddIdentity<User, IdentityRole>(i =>
             {
-                // configure identity passwor policy options
+                // configure identity password policy options
                 i.Password.RequireDigit = true;
                 i.Password.RequireLowercase = true;
                 i.Password.RequireUppercase = true;
@@ -115,10 +115,11 @@ namespace AirBears.Web
         {
             return new BraintreeGateway
             {
-                Environment = Braintree.Environment.SANDBOX,
-                MerchantId = "wmp95y7xfnjrww8r",
-                PublicKey = "g3rwxd8d54j5qgsy",
-                PrivateKey = "d6a80dd07f0ce1eef52e149e2b1819c3"
+                Environment = Configuration["Braintree:Environment"].Equals("production", StringComparison.InvariantCultureIgnoreCase)
+                                    ? Braintree.Environment.PRODUCTION : Braintree.Environment.SANDBOX,
+                MerchantId = Configuration["Braintree:MerchantId"],
+                PublicKey = Configuration["Braintree:PublicKey"],
+                PrivateKey = Configuration["Braintree:PrivateKey"]
             };
         }
 
