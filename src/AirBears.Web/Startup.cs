@@ -115,11 +115,11 @@ namespace AirBears.Web
         {
             return new BraintreeGateway
             {
-                Environment = Configuration["Braintree:Environment"].Equals("production", StringComparison.InvariantCultureIgnoreCase)
+                Environment = Configuration["Authentication:Braintree:Environment"].Equals("production", StringComparison.InvariantCultureIgnoreCase)
                                     ? Braintree.Environment.PRODUCTION : Braintree.Environment.SANDBOX,
-                MerchantId = Configuration["Braintree:MerchantId"],
-                PublicKey = Configuration["Braintree:PublicKey"],
-                PrivateKey = Configuration["Braintree:PrivateKey"]
+                MerchantId = Configuration["Authentication:Braintree:MerchantId"],
+                PublicKey = Configuration["Authentication:Braintree:PublicKey"],
+                PrivateKey = Configuration["Authentication:Braintree:PrivateKey"]
             };
         }
 

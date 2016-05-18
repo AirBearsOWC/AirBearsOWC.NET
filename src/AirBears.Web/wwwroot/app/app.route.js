@@ -56,6 +56,16 @@
                     user: null
                 }
             })
+            .state("root.privacy-policy", {
+                url: "/privacy-policy",
+                templateUrl: "app/legal/privacy.html",
+                controller: "PrivacyPolicyController as vm"
+            })
+            .state("root.terms-of-service", {
+                 url: "/terms-of-service",
+                 templateUrl: "app/legal/terms.html",
+                 controller: "TermsOfServiceController as vm"
+            })
             .state("root.contact", {
                 url: "/contact",
                 templateUrl: "app/contact/contact.html",
@@ -70,7 +80,7 @@
                 url: "/reset-password?code",
                 templateUrl: "app/reset-password/reset-password.html",
                 controller: "ResetPasswordController as vm"
-            })           
+            })
             .state("root.edit-profile", {
                 url: "/profile/edit",
                 templateUrl: "app/profile/edit-profile.html",
