@@ -13,7 +13,7 @@
         vm.user = null;
         vm.results = null;
         vm.currentPage = 1;
-        vm.pageSize = 10;
+        vm.pageSize = 8;
         vm.distances = [
             { value: 1, name: "1 mile" },
             { value: 5, name: "5 miles" },
@@ -58,16 +58,14 @@
             selectPilot(model);
         };
 
-        function search(isValid, pageChange) {
+        function search(isValid) {
             if (!isValid) { return; }
 
             var searchCriteria = {
                 distance: vm.distance.value,
                 address: vm.address,
                 latitude: null,
-                longitude: null,
-                page: pageChange ? vm.currentPage : 1, // default to page one on new searches
-                pageSize: vm.pageSize
+                longitude: null
             };
             
             vm.isSearching = true;
@@ -103,14 +101,13 @@
             }           
 
             pilotService.search(searchCriteria).then(function (data) {
-                angular.forEach(data.items, function (item) {
+                angular.forEach(data, function (item) {
                     item.windowTemplate = "app/pilot-search/pilot-window.html";
                 });
 
                 vm.results = data;
                 vm.isSearching = false;
-
-                if (!pageChange) { vm.currentPage = 1; }
+                vm.currentPage = 1;
             }, 
             function (resp) {
                 vm.isSearching = false;
@@ -121,7 +118,7 @@
         }
 
         function pageChanged() {
-            search(true, true);
+            //search(true, true);
         }
 
         function getCurrentUser() {

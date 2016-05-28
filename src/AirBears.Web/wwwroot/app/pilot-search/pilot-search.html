@@ -38,10 +38,14 @@
 
             <div class="panel panel-default" ng-show="vm.results">
                 <div class="panel-heading">
-                    <h2 class="panel-title">{{ vm.results.totalCount }} Pilots Found <span ng-if="vm.results.totalCount != vm.results.items.length">(Showing {{ vm.results.items.length }})</span></h2>
+                    <h2 class="panel-title">{{ vm.results.length }} Pilots Found</h2><!--<span ng-if="vm.results.length != vm.results.items.length">(Showing {{ vm.results.items.length }})</span>-->
                 </div>
                 <ul class="list-group">
-                    <li class="list-group-item" ng-repeat="pilot in vm.results.items" ng-click="vm.selectPilot(pilot)" ng-class="{ active: pilot.show }">
+                    <li class="list-group-item" 
+                        ng-repeat="pilot in vm.results | startFrom:(vm.currentPage-1)*vm.pageSize | limitTo:vm.pageSize" 
+                        ng-click="vm.selectPilot(pilot)" 
+                        ng-class="{ active: pilot.show }">
+
                         <strong>{{ pilot.firstName }} {{ pilot.lastName }}</strong>
                         <span class="badge">{{ pilot.distance | number:2 }} miles</span>
                         <br />
@@ -53,18 +57,18 @@
                 </ul>
             </div>
 
-            <uib-pagination total-items="vm.results.totalCount"                            
+            <uib-pagination total-items="vm.results.length"                            
                             items-per-page="vm.pageSize"
-                            ng-show="vm.results && vm.results.totalCount > vm.pageSize"
+                            ng-show="vm.results && vm.results.length > vm.pageSize"
                             ng-model="vm.currentPage"
                             ng-change="vm.pageChanged()"></uib-pagination>
 
         </div>
 
         <div class="col-sm-7">
-            <ui-gmap-google-map ng-if="vm.map && vm.results && vm.results.items && vm.user" center="vm.map.center" zoom="vm.map.zoom">
+            <ui-gmap-google-map ng-if="vm.map && vm.results && vm.user" center="vm.map.center" zoom="vm.map.zoom">
                 <ui-gmap-circle center="vm.circle.center" stroke="vm.circle.stroke" fill="vm.circle.fill" radius="vm.circle.radius"></ui-gmap-circle>
-                <ui-gmap-markers models="vm.results.items" coords="'self'" options="'options'" click="vm.toggleMarkerWindow">
+                <ui-gmap-markers models="vm.results" coords="'self'" options="'options'" click="vm.toggleMarkerWindow">
                     <ui-gmap-windows show="show" templateUrl="'windowTemplate'" templateParameter="model"></ui-gmap-windows>
                 </ui-gmap-markers>
             </ui-gmap-google-map>

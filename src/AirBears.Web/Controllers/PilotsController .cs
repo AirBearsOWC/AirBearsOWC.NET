@@ -98,7 +98,7 @@ namespace AirBears.Web.Controllers
             // If lat/lng were provided, use them to perform the distance query.
             if (model.Latitude.HasValue && model.Longitude.HasValue)
             {
-                return Ok(await FindPilotsWithinRadius(model.Distance, model.Latitude.Value, model.Longitude.Value, model.Page, model.PageSize, !currentUser.IsAuthorityAccount));
+                return Ok(await FindPilotsWithinRadius(model.Distance, model.Latitude.Value, model.Longitude.Value, !currentUser.IsAuthorityAccount));
             }
 
             // Otherwise we have to ask the Geocode service to find the lat/lng for the given address.
@@ -110,7 +110,7 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            return Ok(await FindPilotsWithinRadius(model.Distance, coords.Latitude, coords.Longitude, model.Page, model.PageSize, !currentUser.IsAuthorityAccount));
+            return Ok(await FindPilotsWithinRadius(model.Distance, coords.Latitude, coords.Longitude, !currentUser.IsAuthorityAccount));
         }
 
         // PUT: api/pilots/5/tee-shirt-mailed
@@ -197,25 +197,23 @@ namespace AirBears.Web.Controllers
 
         public const int EarthRadius = 3959; // Distance from the Earth's center to its surface, about 3,959 miles (6,371 kilometers).
 
-        private async Task<QueryResult<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, int page, int pageSize, bool onlyConsenting)
+        private async Task<IEnumerable<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, bool onlyConsenting)
         {
             var consentClause = onlyConsenting ? "AND AllowsPilotSearch = 1 " : string.Empty;
-            var countQuery = "SELECT Id, IsAuthorityAccount, AllowsPilotSearch FROM dbo.AspNetUsers "
+            var query = "SELECT Id, IsAuthorityAccount, AllowsPilotSearch FROM dbo.AspNetUsers "
                + $"WHERE ({ EarthRadius } * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
                + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) < { distance } "
                + $"AND IsAuthorityAccount = 0 { consentClause }";
 
-            var pagedSqlQuery = "SELECT Id FROM (SELECT Id, IsAuthorityAccount, AllowsPilotSearch, "
-                   + $"({ EarthRadius } * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
-                   + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) as Distance "
-                   + $"FROM dbo.AspNetUsers) as temp "
-                   + $"WHERE Distance <= { distance } AND IsAuthorityAccount = 0 { consentClause }"
-                   + $"ORDER BY Distance "
-                   + $" OFFSET { pageSize } * { page - 1 } ROWS "
-                   + $"FETCH NEXT { pageSize } ROWS ONLY";
+            //var pagedSqlQuery = "SELECT Id FROM (SELECT Id, IsAuthorityAccount, AllowsPilotSearch, "
+            //       + $"({ EarthRadius } * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
+            //       + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) as Distance "
+            //       + $"FROM dbo.AspNetUsers) as temp "
+            //       + $"WHERE Distance <= { distance } AND IsAuthorityAccount = 0 { consentClause }"
+            //       + $"ORDER BY Distance";
 
-            var totalCount = _context.Users.FromSql(countQuery).Count();
-            var pilotIds = _context.Users.FromSql(pagedSqlQuery).Select(u => u.Id).ToList();
+            //var totalCount = _context.Users.FromSql(countQuery).Count();
+            var pilotIds = _context.Users.FromSql(query).Select(u => u.Id).ToList();
             var users = await _context.Users.AsPilots().Where(u => pilotIds.Contains(u.Id)).ToListAsync();
 
             var pilots = Mapper.Map<List<PilotSearchResultViewModel>>(users);
@@ -228,16 +226,50 @@ namespace AirBears.Web.Controllers
                     Math.Sin(latitude.ToRadians()) * Math.Sin(p.Latitude.Value.ToRadians())));
             });
 
-            var result = new QueryResult<PilotSearchResultViewModel>()
-            {
-                Items = pilots.OrderBy(p => p.Distance),
-                Page = page,
-                PageSize = pageSize,
-                TotalCount = totalCount
-            };
-
-            return result;
+            return pilots;
         }
+
+        //private async Task<QueryResult<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, int page, int pageSize, bool onlyConsenting)
+        //{
+        //    var consentClause = onlyConsenting ? "AND AllowsPilotSearch = 1 " : string.Empty;
+        //    var countQuery = "SELECT Id, IsAuthorityAccount, AllowsPilotSearch FROM dbo.AspNetUsers "
+        //       + $"WHERE ({ EarthRadius } * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
+        //       + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) < { distance } "
+        //       + $"AND IsAuthorityAccount = 0 { consentClause }";
+
+        //    var pagedSqlQuery = "SELECT Id FROM (SELECT Id, IsAuthorityAccount, AllowsPilotSearch, "
+        //           + $"({ EarthRadius } * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
+        //           + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) as Distance "
+        //           + $"FROM dbo.AspNetUsers) as temp "
+        //           + $"WHERE Distance <= { distance } AND IsAuthorityAccount = 0 { consentClause }"
+        //           + $"ORDER BY Distance "
+        //           + $" OFFSET { pageSize } * { page - 1 } ROWS "
+        //           + $"FETCH NEXT { pageSize } ROWS ONLY";
+
+        //    var totalCount = _context.Users.FromSql(countQuery).Count();
+        //    var pilotIds = _context.Users.FromSql(pagedSqlQuery).Select(u => u.Id).ToList();
+        //    var users = await _context.Users.AsPilots().Where(u => pilotIds.Contains(u.Id)).ToListAsync();
+
+        //    var pilots = Mapper.Map<List<PilotSearchResultViewModel>>(users);
+
+        //    pilots.ForEach(p =>
+        //    {
+        //        p.Distance = (EarthRadius *
+        //            Math.Acos((Math.Cos(latitude.ToRadians())) * Math.Cos(p.Latitude.Value.ToRadians()) *
+        //            Math.Cos(p.Longitude.Value.ToRadians() - longitude.ToRadians()) +
+        //            Math.Sin(latitude.ToRadians()) * Math.Sin(p.Latitude.Value.ToRadians())));
+        //    });
+
+        //    var result = new QueryResult<PilotSearchResultViewModel>()
+        //    {
+        //        Items = pilots.OrderBy(p => p.Distance),
+        //        Page = page,
+        //        PageSize = pageSize,
+        //        TotalCount = totalCount
+        //    };
+
+        //    return result;
+        //}
 
         protected override void Dispose(bool disposing)
         {

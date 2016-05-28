@@ -14,6 +14,7 @@
 /// <reference path="app/common/contact.service.js" />
 /// <reference path="app/common/pilot.service.js" />
 /// <reference path="app/common/resource.service.js" />
+/// <reference path="app/common/start-from.filter.js" />
 /// <reference path="app/common/toast.service.js" />
 /// <reference path="app/common/user.service.js" />
 /// <reference path="app/contact/contact.controller.js" />

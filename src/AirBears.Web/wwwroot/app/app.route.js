@@ -57,12 +57,12 @@
                 }
             })
             .state("root.privacy-policy", {
-                url: "/privacy-policy",
+                url: "/privacy",
                 templateUrl: "app/legal/privacy.html",
                 controller: "PrivacyPolicyController as vm"
             })
             .state("root.terms-of-service", {
-                 url: "/terms-of-service",
+                 url: "/terms",
                  templateUrl: "app/legal/terms.html",
                  controller: "TermsOfServiceController as vm"
             })

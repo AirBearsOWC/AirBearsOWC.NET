@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirBears.Web.ViewModels
 {
-    public class PilotSearchViewModel : QueryBase, IValidatableObject
+    public class PilotSearchViewModel : IValidatableObject
     {
         public string Address { get; set; }
 
