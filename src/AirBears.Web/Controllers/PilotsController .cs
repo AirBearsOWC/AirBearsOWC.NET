@@ -205,17 +205,8 @@ namespace AirBears.Web.Controllers
                + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) < { distance } "
                + $"AND IsAuthorityAccount = 0 { consentClause }";
 
-            //var pagedSqlQuery = "SELECT Id FROM (SELECT Id, IsAuthorityAccount, AllowsPilotSearch, "
-            //       + $"({ EarthRadius } * acos(cos(radians({ latitude })) * cos(radians(Latitude)) "
-            //       + $"* cos(radians(Longitude) - radians({ longitude })) + sin(radians({ latitude })) * sin(radians(Latitude)))) as Distance "
-            //       + $"FROM dbo.AspNetUsers) as temp "
-            //       + $"WHERE Distance <= { distance } AND IsAuthorityAccount = 0 { consentClause }"
-            //       + $"ORDER BY Distance";
-
-            //var totalCount = _context.Users.FromSql(countQuery).Count();
             var pilotIds = _context.Users.FromSql(query).Select(u => u.Id).ToList();
             var users = await _context.Users.AsPilots().Where(u => pilotIds.Contains(u.Id)).ToListAsync();
-
             var pilots = Mapper.Map<List<PilotSearchResultViewModel>>(users);
 
             pilots.ForEach(p =>
@@ -226,7 +217,7 @@ namespace AirBears.Web.Controllers
                     Math.Sin(latitude.ToRadians()) * Math.Sin(p.Latitude.Value.ToRadians())));
             });
 
-            return pilots;
+            return pilots.OrderBy(p => p.Distance);
         }
 
         //private async Task<QueryResult<PilotSearchResultViewModel>> FindPilotsWithinRadius(int distance, double latitude, double longitude, int page, int pageSize, bool onlyConsenting)
