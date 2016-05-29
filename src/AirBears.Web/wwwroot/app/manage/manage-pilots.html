@@ -67,9 +67,17 @@
                             <td>{{ pilot.email }}</td>
                             <td>{{ pilot.phoneNumber }}</td>
                             <td>
-                                <div ng-bind="pilot.street1"></div>
-                                <div ng-if="pilot.street2" ng-bind="pilot.street2"></div>
-                                <span ng-bind="pilot.city"></span>, <span ng-bind="pilot.state.abbr"></span> <span ng-bind="pilot.zip"></span>
+                                <div ng-show="pilot.hasInternationalAddress">
+                                    <div ng-bind="pilot.addressLine1"></div>
+                                    <div ng-if="pilot.addressLine2" ng-bind="pilot.addressLine2"></div>
+                                    <div ng-if="pilot.addressLine3" ng-bind="pilot.addressLine3"></div>
+                                    <div ng-if="pilot.addressLine4" ng-bind="pilot.addressLine4"></div>
+                                </div>
+                                <div ng-hide="pilot.hasInternationalAddress">
+                                    <div ng-bind="pilot.street1"></div>
+                                    <div ng-if="pilot.street2" ng-bind="pilot.street2"></div>
+                                    <span ng-bind="pilot.city"></span>, <span ng-bind="pilot.state.abbr"></span> <span ng-bind="pilot.zip"></span>
+                                </div>
                             </td>
                             <td>{{ pilot.dateRegistered | date:"MMM dd, yyyy" }}</td>
                             <td>

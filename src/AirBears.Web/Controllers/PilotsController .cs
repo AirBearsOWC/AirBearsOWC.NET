@@ -35,7 +35,7 @@ namespace AirBears.Web.Controllers
         [HttpGet("{id}", Name = "Get Pilot")]
         public async Task<IActionResult> GetPilot([FromRoute] string id)
         {
-            var pilot = await _context.Users.AsPilots().FirstOrDefaultAsync();
+            var pilot = await _context.Users.AsPilots().Where(p => p.Id == id).FirstOrDefaultAsync();
 
             if (pilot == null)
             {

@@ -59,6 +59,9 @@
 
             <uib-pagination total-items="vm.results.length"                            
                             items-per-page="vm.pageSize"
+                            max-size="6"
+                            boundary-link-numbers="true"
+                            rotate="false"
                             ng-show="vm.results && vm.results.length > vm.pageSize"
                             ng-model="vm.currentPage"
                             ng-change="vm.pageChanged()"></uib-pagination>

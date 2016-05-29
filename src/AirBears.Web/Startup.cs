@@ -52,7 +52,7 @@ namespace AirBears.Web
             // Add framework services.
             services.AddEntityFramework()
                 .AddSqlServer()
-                .AddDbContext<Models.AppDbContext>(options =>
+                .AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             // See the RSAKeyUtils.GetKeyParameters method for an examle of loading from

@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
 using Microsoft.Data.Entity.Migrations;
+using System;
 using System.Linq;
 
 namespace AirBears.Web.Models
@@ -35,6 +37,8 @@ namespace AirBears.Web.Models
                 context.SeedTeeShirtSizes();
                 context.SeedPayloads();
                 context.SeedFlightTimes();
+
+                PilotSeeder.SeedPilots(context);
             }
         }
 

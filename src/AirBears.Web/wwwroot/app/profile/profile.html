@@ -30,9 +30,17 @@
                 </div>
                 <div class="col-sm-6">
                     <h3>Address</h3>
-                    <div ng-bind="vm.pilot.street1"></div>
-                    <div ng-if="vm.pilot.street2" ng-bind="vm.pilot.street2"></div>
-                    <span ng-bind="vm.pilot.city"></span>, <span ng-bind="vm.pilot.state.abbr"></span> <span ng-bind="vm.pilot.zip"></span>
+                    <div ng-show="vm.pilot.hasInternationalAddress">
+                        <div ng-bind="vm.pilot.addressLine1"></div>
+                        <div ng-if="vm.pilot.addressLine2" ng-bind="vm.pilot.addressLine2"></div>
+                        <div ng-if="vm.pilot.addressLine3" ng-bind="vm.pilot.addressLine3"></div>
+                        <div ng-if="vm.pilot.addressLine4" ng-bind="vm.pilot.addressLine4"></div>
+                    </div>
+                    <div ng-hide="vm.pilot.hasInternationalAddress">
+                        <div ng-bind="vm.pilot.street1"></div>
+                        <div ng-if="vm.pilot.street2" ng-bind="vm.pilot.street2"></div>
+                        <span ng-bind="vm.pilot.city"></span>, <span ng-bind="vm.pilot.state.abbr"></span> <span ng-bind="vm.pilot.zip"></span>
+                    </div>
                 </div>
             </div>
           
