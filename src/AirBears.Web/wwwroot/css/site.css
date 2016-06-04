@@ -189,6 +189,9 @@ input, select, textarea {
     position: relative;
 }
 
+ol ol > li {
+    list-style-type: lower-alpha;
+}
 
 /*
     Toast Overrides

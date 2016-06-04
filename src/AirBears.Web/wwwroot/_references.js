@@ -19,6 +19,7 @@
 /// <reference path="app/common/user.service.js" />
 /// <reference path="app/contact/contact.controller.js" />
 /// <reference path="app/dashboard/home.controller.js" />
+/// <reference path="app/guidelines/guidelines.controller.js" />
 /// <reference path="app/layout/shell.controller.js" />
 /// <reference path="app/legal/privacy.controller.js" />
 /// <reference path="app/legal/terms.controller.js" />

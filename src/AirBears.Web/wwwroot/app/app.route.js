@@ -71,6 +71,11 @@
                 templateUrl: "app/contact/contact.html",
                 controller: "ContactController as vm"
             })
+            .state("root.guidelines", {
+                url: "/guidelines",
+                templateUrl: "app/guidelines/guidelines.html",
+                controller: "GuidelinesController as vm"
+            })
             .state("root.pilot-search", {
                 url: "/pilot-search",
                 templateUrl: "app/pilot-search/pilot-search.html",
