@@ -193,6 +193,10 @@ ol ol > li {
     list-style-type: lower-alpha;
 }
 
+.text-light {
+    color: #888;
+}
+
 /*
     Toast Overrides
 */

@@ -9,6 +9,7 @@
 /// <reference path="app/auth/login-modal.controller.js" />
 /// <reference path="app/common/authority.service.js" />
 /// <reference path="app/common/braintree.service.js" />
+/// <reference path="app/common/ceil.filter.js" />
 /// <reference path="app/common/client-validate.directive.js" />
 /// <reference path="app/common/compare-to.directive.js" />
 /// <reference path="app/common/contact.service.js" />

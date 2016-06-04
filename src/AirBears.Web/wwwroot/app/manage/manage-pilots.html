@@ -44,6 +44,14 @@
         </div>
     </div>
 
+    <div class="row" ng-show="vm.results">
+        <div class="col-md-12">
+            <p class="text-light">           
+                <span>{{ vm.results.totalCount }} results. Showing page {{ vm.searchCriteria.page }} of {{ (vm.results.totalCount / vm.results.pageSize) | ceil }}.</span>
+            </p>
+        </div>
+    </div>
+
     <div class="row" ng-show="vm.results && vm.results.totalCount > 0">
         <div class="col-md-12">           
             <div class="panel panel-default">
