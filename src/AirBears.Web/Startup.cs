@@ -1,6 +1,7 @@
 ﻿using AirBears.Web.Filters;
 using AirBears.Web.Models;
 using AirBears.Web.Services;
+using AirBears.Web.Settings;
 using Braintree;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Authorization;
@@ -102,6 +103,13 @@ namespace AirBears.Web
                 options.Filters.Add(new NoCacheHeaderFilter());
             });
 
+            // Add functionality to inject IOptions<T>
+            services.AddOptions();
+
+            services.Configure<AppSettings>(Configuration.GetSection("MiscSettings"));
+            services.Configure<SmtpSettings>(Configuration.GetSection("Authentication:GmailPrimary"));
+            services.Configure<RecaptchaSettings>(Configuration.GetSection("Authentication:Recaptcha"));
+
             services.AddInstance(GetBraintreeGateway());
 
             // Add application services.
@@ -109,6 +117,7 @@ namespace AirBears.Web
             services.AddTransient<ISmsSender, AuthMessageSender>();
             services.AddTransient<IGeocodeService, GeocodeService>();
             services.AddTransient<IMailer, Mailer>();
+            services.AddTransient<ICaptchaService, RecaptchaService>();
         }
 
         private IBraintreeGateway GetBraintreeGateway()

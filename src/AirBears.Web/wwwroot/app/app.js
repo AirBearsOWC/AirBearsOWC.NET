@@ -9,6 +9,7 @@
          "google.places",
          "uiGmapgoogle-maps",
          "angular-loading-bar",
+         "vcRecaptcha",
          "angular-storage",
          "templates"
     ]);

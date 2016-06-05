@@ -1,11 +1,14 @@
 using AirBears.Web.Models;
 using AirBears.Web.Services;
+using AirBears.Web.Settings;
 using AirBears.Web.ViewModels;
 using AutoMapper;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Http.Features;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using Microsoft.Extensions.OptionsModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +21,15 @@ namespace AirBears.Web.Controllers
     [Route("api/messages")]
     public class MessagesController : Controller
     {
+        private AppSettings AppSettings { get; set; }
         private readonly IMailer _mailer;
+        private readonly ICaptchaService _captchaService;
 
-        public MessagesController(IMailer mailer)
+        public MessagesController(IMailer mailer, ICaptchaService captchaService, IOptions<AppSettings> appSettings)
         {
             _mailer = mailer;
+            _captchaService = captchaService;
+            AppSettings = appSettings.Value;
         }
 
         [HttpPost]
@@ -31,6 +38,13 @@ namespace AirBears.Web.Controllers
             if (!ModelState.IsValid)
             {
                 return HttpBadRequest(ModelState);
+            }
+
+            var remoteIpAddress = HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString();
+
+            if (!await _captchaService.IsValid(model.CaptchaResponse, remoteIpAddress))
+            {
+                ModelState.AddModelError(string.Empty, "Failed to verify CAPTCHA. Please try again.");
             }
 
             await SendContactMessageEmail(model);
@@ -52,7 +66,7 @@ namespace AirBears.Web.Controllers
 
             message += $"<b>Message:</b><br /><br />{ model.Message.ToHtmlWhiteSpace() }<br />";
 
-            await _mailer.SendAsync("airbears.uav@gmail.com", "Air Bears Web Message", message, true);
+            await _mailer.SendAsync(AppSettings.PrimaryAppRecipient, "Air Bears Web Message", message, true);
         }
     }
 }

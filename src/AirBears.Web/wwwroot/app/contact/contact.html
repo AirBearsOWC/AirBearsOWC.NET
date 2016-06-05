@@ -55,6 +55,15 @@
 
                     <div class="row">
                         <div class="col-sm-6">
+                            <div class="form-group">
+                                <div vc-recaptcha key="'6LfWxSETAAAAAMloyGsgTNoUWJF12RdxgRBqRBZm'" ng-model="vm.form.captchaResponse"></div>
+                                <div class="help-block" ng-show="contactForm.$submitted && contactForm.$error.recaptcha">Please verify that you're human.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row vert-margin">
+                        <div class="col-sm-4">
                             <button class="btn btn-success" type="submit" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-envelope"></i> Send</button>
                         </div>
                     </div>

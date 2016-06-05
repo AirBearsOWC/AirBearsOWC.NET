@@ -37,6 +37,7 @@ paths.thirdPartyJs = [
     paths.webroot + "lib/braintree-web/dist/braintree.js",
     paths.webroot + "lib/lodash/dist/lodash.min.js",
     paths.webroot + "lib/angularjs-toaster/toaster.js",
+    paths.webroot + "lib/angular-recaptcha/release/angular-recaptcha.js",
     paths.webroot + "lib/angular-ui-router/release/angular-ui-router.js",
     paths.webroot + "lib/jquery/dist/jquery.js",
     paths.webroot + "lib/bootstrap/dist/js/bootstrap.js"

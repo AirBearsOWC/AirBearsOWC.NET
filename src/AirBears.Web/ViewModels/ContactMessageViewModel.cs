@@ -21,5 +21,8 @@ namespace AirBears.Web.ViewModels
 
         [MaxLength(500)]
         public string Message { get; set; }
+
+        [Required]
+        public string CaptchaResponse { get; set; }
     }
 }
