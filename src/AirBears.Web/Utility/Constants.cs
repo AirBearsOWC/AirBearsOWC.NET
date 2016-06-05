@@ -1,4 +1,4 @@
-﻿namespace AirBears.Web.Models
+﻿namespace AirBears.Web
 {
     public static class Roles
     {

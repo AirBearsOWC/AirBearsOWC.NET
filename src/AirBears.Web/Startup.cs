@@ -25,11 +25,10 @@ namespace AirBears.Web
 {
     public class Startup
     {
-        private MapperConfiguration _mapperConfiguration { get; set; }
         private const string TokenAudience = "AirBearsUsers";
         private const string TokenIssuer = "AirBearsAPI";
-        private RsaSecurityKey key;
-        private TokenAuthOptions tokenOptions;
+        private MapperConfiguration MapperConfiguration { get; set; }
+        private RsaSecurityKey AuthKey { get; set; }
 
         public Startup(IHostingEnvironment env)
         {
@@ -47,7 +46,8 @@ namespace AirBears.Web
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            _mapperConfiguration = new MapperConfiguration(cfg =>
+            AuthKey = new RsaSecurityKey(RsaKeyUtils.GetRandomKey());
+            MapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new CommonProfile());
                 Mapper.AssertConfigurationIsValid();
@@ -64,25 +64,6 @@ namespace AirBears.Web
                 .AddSqlServer()
                 .AddDbContext<AppDbContext>(options =>
                     options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
-
-            // See the RSAKeyUtils.GetKeyParameters method for an examle of loading from
-            // a JSON file.
-            var keyParams = RsaKeyUtils.GetRandomKey();
-
-            // Create the key, and a set of token options to record signing credentials 
-            // using that key, along with the other parameters we will need in the 
-            // token controlller.
-            key = new RsaSecurityKey(keyParams);
-            tokenOptions = new TokenAuthOptions()
-            {
-                Audience = TokenAudience,
-                Issuer = TokenIssuer,
-                SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256Signature)
-            };
-
-            // Save the token options into an instance so they're accessible to the 
-            // controller.
-            services.AddInstance(tokenOptions);
 
             // Enable the use of an [Authorize("Bearer")] attribute on methods and classes to protect.
             services.AddAuthorization(auth =>
@@ -118,8 +99,9 @@ namespace AirBears.Web
             services.Configure<SmtpSettings>(Configuration.GetSection("Authentication:GmailPrimary"));
             services.Configure<RecaptchaSettings>(Configuration.GetSection("Authentication:Recaptcha"));
 
-            services.AddSingleton(sp => _mapperConfiguration.CreateMapper());
+            services.AddSingleton(sp => MapperConfiguration.CreateMapper());
             services.AddInstance(GetBraintreeGateway());
+            services.AddInstance(GetTokenAuthOptions());
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -127,18 +109,6 @@ namespace AirBears.Web
             services.AddTransient<IGeocodeService, GeocodeService>();
             services.AddTransient<IMailer, Mailer>();
             services.AddTransient<ICaptchaService, RecaptchaService>();
-        }
-
-        private IBraintreeGateway GetBraintreeGateway()
-        {
-            return new BraintreeGateway
-            {
-                Environment = Configuration["Authentication:Braintree:Environment"].Equals("production", StringComparison.InvariantCultureIgnoreCase)
-                                    ? Braintree.Environment.PRODUCTION : Braintree.Environment.SANDBOX,
-                MerchantId = Configuration["Authentication:Braintree:MerchantId"],
-                PublicKey = Configuration["Authentication:Braintree:PublicKey"],
-                PrivateKey = Configuration["Authentication:Braintree:PrivateKey"]
-            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -208,9 +178,9 @@ namespace AirBears.Web
             app.UseJwtBearerAuthentication(options =>
             {
                 // Basic settings - signing key to validate with, audience and issuer.
-                options.TokenValidationParameters.IssuerSigningKey = key;
-                options.TokenValidationParameters.ValidAudience = tokenOptions.Audience;
-                options.TokenValidationParameters.ValidIssuer = tokenOptions.Issuer;
+                options.TokenValidationParameters.IssuerSigningKey = AuthKey;
+                options.TokenValidationParameters.ValidAudience = TokenAudience;
+                options.TokenValidationParameters.ValidIssuer = TokenIssuer;
 
                 // When receiving a token, check that we've signed it.
                 options.TokenValidationParameters.ValidateSignature = true;
@@ -232,6 +202,28 @@ namespace AirBears.Web
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc();
+        }
+
+        private TokenAuthOptions GetTokenAuthOptions()
+        {
+            return new TokenAuthOptions()
+            {
+                Audience = TokenAudience,
+                Issuer = TokenIssuer,
+                SigningCredentials = new SigningCredentials(AuthKey, SecurityAlgorithms.RsaSha256Signature)
+            };
+        }
+
+        private IBraintreeGateway GetBraintreeGateway()
+        {
+            return new BraintreeGateway
+            {
+                Environment = Configuration["Authentication:Braintree:Environment"].Equals("production", StringComparison.InvariantCultureIgnoreCase)
+                                    ? Braintree.Environment.PRODUCTION : Braintree.Environment.SANDBOX,
+                MerchantId = Configuration["Authentication:Braintree:MerchantId"],
+                PublicKey = Configuration["Authentication:Braintree:PublicKey"],
+                PrivateKey = Configuration["Authentication:Braintree:PrivateKey"]
+            };
         }
 
         // Entry point for the application.

@@ -1,11 +1,12 @@
-﻿using AutoMapper;
+﻿using AirBears.Web.Models;
+using AutoMapper;
 using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 
-namespace AirBears.Web.Models
+namespace AirBears.Web
 {
     public static class Extensions
     {

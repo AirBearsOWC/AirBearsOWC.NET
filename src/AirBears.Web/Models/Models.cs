@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-// Using this Models.cs file to hold misc small models to keep folder structure flat.  Significant models
+// Using this Models.cs file to hold misc small models to keep folder structure flat. Significant models
 // should be placed in separate files.
 
 namespace AirBears.Web.Models
