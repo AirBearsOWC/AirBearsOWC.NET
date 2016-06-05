@@ -22,9 +22,11 @@ namespace AirBears.Web.Controllers
         private readonly AppDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IMailer _mailer;
+        private readonly IMapper _mapper;
 
-        public UsersController(AppDbContext context, UserManager<User> userManager, IMailer mailer)
+        public UsersController(IMapper mapper, AppDbContext context, UserManager<User> userManager, IMailer mailer)
         {
+            _mapper = mapper;
             _context = context;
             _userManager = userManager;
             _mailer = mailer;
@@ -42,14 +44,14 @@ namespace AirBears.Web.Controllers
 
             if (user.IsAuthorityAccount)
             {
-                var authorityUser = Mapper.Map<IdentityViewModel>(user);
+                var authorityUser = _mapper.Map<IdentityViewModel>(user);
                 authorityUser.Roles = User.GetRoles();
 
                 // Return an authority user object if that is who is currently authenticated.
                 return Ok(authorityUser);
             }
 
-            var pilotUser = Mapper.Map<IdentityPilotViewModel>(user);
+            var pilotUser = _mapper.Map<IdentityPilotViewModel>(user);
             pilotUser.Roles = User.GetRoles();
 
             return Ok(pilotUser);
@@ -98,7 +100,7 @@ namespace AirBears.Web.Controllers
                 return HttpNotFound();
             }
 
-            return Ok(Mapper.Map<UserViewModel>(user));
+            return Ok(_mapper.Map<UserViewModel>(user));
         }
 
         private async Task SendChangePasswordEmail(User user)

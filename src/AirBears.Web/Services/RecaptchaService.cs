@@ -2,7 +2,6 @@
 using AirBears.Web.Settings;
 using Microsoft.Extensions.OptionsModel;
 using Newtonsoft.Json;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 

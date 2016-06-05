@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Threading.Tasks;
+﻿using AirBears.Web.Settings;
 using MailKit.Net.Smtp;
-using MimeKit;
-using AirBears.Web.Settings;
 using Microsoft.Extensions.OptionsModel;
+using MimeKit;
+using System.Threading.Tasks;
 
 namespace AirBears.Web.Services
 {

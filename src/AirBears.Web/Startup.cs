@@ -1,7 +1,9 @@
 ﻿using AirBears.Web.Filters;
 using AirBears.Web.Models;
+using AirBears.Web.Profiles;
 using AirBears.Web.Services;
 using AirBears.Web.Settings;
+using AutoMapper;
 using Braintree;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Authorization;
@@ -23,6 +25,7 @@ namespace AirBears.Web
 {
     public class Startup
     {
+        private MapperConfiguration _mapperConfiguration { get; set; }
         private const string TokenAudience = "AirBearsUsers";
         private const string TokenIssuer = "AirBearsAPI";
         private RsaSecurityKey key;
@@ -43,6 +46,12 @@ namespace AirBears.Web
 
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
+
+            _mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile(new CommonProfile());
+                Mapper.AssertConfigurationIsValid();
+            });
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -105,11 +114,11 @@ namespace AirBears.Web
 
             // Add functionality to inject IOptions<T>
             services.AddOptions();
-
             services.Configure<AppSettings>(Configuration.GetSection("MiscSettings"));
             services.Configure<SmtpSettings>(Configuration.GetSection("Authentication:GmailPrimary"));
             services.Configure<RecaptchaSettings>(Configuration.GetSection("Authentication:Recaptcha"));
 
+            services.AddSingleton(sp => _mapperConfiguration.CreateMapper());
             services.AddInstance(GetBraintreeGateway());
 
             // Add application services.
@@ -157,8 +166,6 @@ namespace AirBears.Web
                 serviceScope.ServiceProvider.GetService<AppDbContext>().EnsureSeedData();
             }
 
-            AutoMapperConfig.RegisterMappings();
-
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
             // Register a simple error handler to catch token expiries and change them to a 401, 
@@ -191,6 +198,7 @@ namespace AirBears.Web
                             JsonConvert.SerializeObject
                             (new { success = false, error = error.Error }));
                     }
+
                     // We're not trying to handle anything else so just let the default 
                     // handler handle.
                     else await next();

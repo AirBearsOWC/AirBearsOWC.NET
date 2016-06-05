@@ -21,14 +21,16 @@ namespace AirBears.Web.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IGeocodeService _geocodeService;
         private readonly IMailer _mailer;
+        private readonly IMapper _mapper;
         private readonly IBraintreeGateway _gateway;
 
-        public AccountsController(AppDbContext context, UserManager<User> userManager, IGeocodeService geocodeService, IMailer mailer, IBraintreeGateway gateway)
+        public AccountsController(AppDbContext context, UserManager<User> userManager, IMapper mapper, IGeocodeService geocodeService, IMailer mailer, IBraintreeGateway gateway)
         {
             _context = context;
             _userManager = userManager;
             _geocodeService = geocodeService;
             _mailer = mailer;
+            _mapper = mapper;
             _gateway = gateway;
         }
 
@@ -86,7 +88,7 @@ namespace AirBears.Web.Controllers
                 }
             }
 
-            var user = Mapper.Map<User>(model);
+            var user = _mapper.Map<User>(model);
             user.Longitude = coords.Longitude;
             user.Latitude = coords.Latitude;
             user.GeocodeAddress = coords.GeocodeAddress;
@@ -109,7 +111,7 @@ namespace AirBears.Web.Controllers
                 .Include(u => u.State)
                 .SingleAsync(u => u.UserName == model.Email);
 
-            return Ok(Mapper.Map<UserViewModel>(responseUser));
+            return Ok(_mapper.Map<UserViewModel>(responseUser));
         }
 
         // POST: /api/accounts/authority-registration
@@ -122,7 +124,7 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var user = Mapper.Map<User>(model);
+            var user = _mapper.Map<User>(model);
             user.DateRegistered = DateTime.UtcNow;
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -134,7 +136,7 @@ namespace AirBears.Web.Controllers
 
             var responseUser = await _context.Users.SingleAsync(u => u.UserName == model.Email);
 
-            return Ok(Mapper.Map<UserViewModel>(responseUser));
+            return Ok(_mapper.Map<UserViewModel>(responseUser));
         }
 
         [AllowAnonymous]

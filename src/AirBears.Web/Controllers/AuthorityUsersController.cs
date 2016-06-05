@@ -21,11 +21,13 @@ namespace AirBears.Web.Controllers
         private readonly AppDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IMailer _mailer;
+        private readonly IMapper _mapper;
 
-        public AuthorityUsersController(AppDbContext context, UserManager<User> userManager, IMailer mailer)
+        public AuthorityUsersController(AppDbContext context, UserManager<User> userManager, IMapper mapper, IMailer mailer)
         {
             _context = context;
             _userManager = userManager;
+            _mapper = mapper;
             _mailer = mailer;
         }
 
@@ -40,7 +42,7 @@ namespace AirBears.Web.Controllers
                 return HttpNotFound();
             }
 
-            var resp = Mapper.Map<IdentityViewModel>(user);
+            var resp = _mapper.Map<IdentityViewModel>(user);
 
             resp.Roles = await _userManager.GetRolesAsync(user);
 
@@ -77,7 +79,7 @@ namespace AirBears.Web.Controllers
 
             foreach (var u in users)
             {
-                var user = Mapper.Map<IdentityViewModel>(u);
+                var user = _mapper.Map<IdentityViewModel>(u);
 
                 // manually align the roles in memory.
                 user.Roles = roles.Where(r => u.Roles.Select(x => x.RoleId).Contains(r.Id)).Select(r => r.Name).ToList();
@@ -114,7 +116,7 @@ namespace AirBears.Web.Controllers
 
             await _userManager.AddToRoleAsync(user, Roles.Authority);
 
-            var resp = Mapper.Map<IdentityViewModel>(user);
+            var resp = _mapper.Map<IdentityViewModel>(user);
             resp.Roles = await _userManager.GetRolesAsync(user);
 
             return Ok(resp);

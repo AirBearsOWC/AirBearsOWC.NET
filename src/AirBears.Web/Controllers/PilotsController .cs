@@ -23,11 +23,13 @@ namespace AirBears.Web.Controllers
         private readonly AppDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IGeocodeService _geocodeService;
+        private readonly IMapper _mapper;
 
-        public PilotsController(AppDbContext context, UserManager<User> userManager, IGeocodeService geocodeService)
+        public PilotsController(AppDbContext context, UserManager<User> userManager, IMapper mapper, IGeocodeService geocodeService)
         {
             _context = context;
             _userManager = userManager;
+            _mapper = mapper;
             _geocodeService = geocodeService;
         }
 
@@ -42,7 +44,7 @@ namespace AirBears.Web.Controllers
                 return HttpNotFound();
             }
 
-            return Ok(Mapper.Map<PilotViewModel>(pilot));
+            return Ok(_mapper.Map<PilotViewModel>(pilot));
         }
 
         // GET: api/pilots
@@ -72,7 +74,7 @@ namespace AirBears.Web.Controllers
 
             var result = new QueryResult<PilotViewModel>()
             {
-                Items = (await pilots.Skip((page - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync()).Select(p => Mapper.Map<PilotViewModel>(p)),
+                Items = (await pilots.Skip((page - 1) * pageSize.Value).Take(pageSize.Value).ToListAsync()).Select(p => _mapper.Map<PilotViewModel>(p)),
                 Page = page,
                 PageSize = pageSize.Value,
                 TotalCount = pilots.Count()
@@ -129,7 +131,7 @@ namespace AirBears.Web.Controllers
             _context.Users.Update(user, GraphBehavior.SingleObject);
             await _context.SaveChangesAsync();
 
-            return Ok(Mapper.Map<PilotViewModel>(user));
+            return Ok(_mapper.Map<PilotViewModel>(user));
         }
 
         // GET: api/pilots/me
@@ -145,7 +147,7 @@ namespace AirBears.Web.Controllers
             var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == User.GetUserId());
             var addressHasChanged = AddressHasChanged(user, model);
 
-            user = Mapper.Map(model, user);
+            user = _mapper.Map(model, user);
 
             if (addressHasChanged)
             {
@@ -207,7 +209,7 @@ namespace AirBears.Web.Controllers
 
             var pilotIds = _context.Users.FromSql(query).Select(u => u.Id).ToList();
             var users = await _context.Users.AsPilots().Where(u => pilotIds.Contains(u.Id)).ToListAsync();
-            var pilots = Mapper.Map<List<PilotSearchResultViewModel>>(users);
+            var pilots = _mapper.Map<List<PilotSearchResultViewModel>>(users);
 
             pilots.ForEach(p =>
             {

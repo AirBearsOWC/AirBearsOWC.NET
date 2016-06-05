@@ -2,17 +2,9 @@ using AirBears.Web.Models;
 using AirBears.Web.Services;
 using AirBears.Web.Settings;
 using AirBears.Web.ViewModels;
-using AutoMapper;
-using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Http.Features;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
-using Microsoft.Data.Entity;
 using Microsoft.Extensions.OptionsModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AirBears.Web.Controllers
@@ -45,6 +37,7 @@ namespace AirBears.Web.Controllers
             if (!await _captchaService.IsValid(model.CaptchaResponse, remoteIpAddress))
             {
                 ModelState.AddModelError(string.Empty, "Failed to verify CAPTCHA. Please try again.");
+                return HttpBadRequest(ModelState);
             }
 
             await SendContactMessageEmail(model);

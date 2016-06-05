@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Entity;
+﻿using AutoMapper;
+using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,23 @@ namespace AirBears.Web.Models
                 .Include(u => u.FlightTime)
                 .Include(u => u.Payload)
                 .Where(u => !u.IsAuthorityAccount);
+        }
+
+        /// <summary>
+        /// Ignores fields that exist on the destination type but not on the source type.
+        /// </summary>
+        /// <typeparam name="TSource"></typeparam>
+        /// <typeparam name="TDestination"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static IMappingExpression<TSource, TDestination> IgnoreAllNonExisting<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression)
+        {
+            foreach (var property in expression.TypeMap.GetUnmappedPropertyNames())
+            {
+                expression.ForMember(property, opt => opt.Ignore());
+            }
+
+            return expression;
         }
     }
 }
