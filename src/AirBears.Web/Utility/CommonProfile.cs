@@ -1,10 +1,6 @@
 ﻿using AirBears.Web.Models;
 using AirBears.Web.ViewModels;
 using AutoMapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace AirBears.Web.Profiles
 {
@@ -12,6 +8,8 @@ namespace AirBears.Web.Profiles
     {
         protected override void Configure()
         {
+            CreateMap<Post, PostViewModel>().ReverseMap();
+
             CreateMap<User, UserViewModel>();
 
             CreateMap<User, PilotViewModel>();

@@ -13,6 +13,8 @@ namespace AirBears.Web.Models
             // Add your customizations after calling base.OnModelCreating(builder);
         }
 
+        public DbSet<Post> Posts { get; set; }
+
         public DbSet<TeeShirtSize> TeeShirtSizes { get; set; }
 
         public DbSet<Payload> Payloads { get; set; }
