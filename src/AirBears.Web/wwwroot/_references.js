@@ -51,6 +51,7 @@
 /// <reference path="lib/angular-google-places-autocomplete/src/autocomplete.js" />
 /// <reference path="lib/AngularJS-Toaster/toaster.js" />
 /// <reference path="lib/angular-loading-bar/build/loading-bar.js" />
+/// <reference path="lib/angular-recaptcha/release/angular-recaptcha.js" />
 /// <reference path="lib/angular-simple-logger/dist/angular-simple-logger.js" />
 /// <reference path="lib/angular-ui-router/release/angular-ui-router.js" />
 /// <reference path="lib/bootstrap/dist/js/bootstrap.js" />
