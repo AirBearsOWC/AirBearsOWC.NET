@@ -37,7 +37,7 @@ namespace AirBears.Web.Controllers
             return Ok(_mapper.Map<PostViewModel>(post));
         }
 
-        [HttpGet("{slug:string}", Name = "Get Post By Slug")]
+        [HttpGet("{slug}", Name = "Get Post By Slug")]
         public async Task<IActionResult> GetPostBySlug([FromRoute] string slug)
         {
             var post = await _context.Posts.Where(p => p.Slug == slug.ToLower()).FirstOrDefaultAsync();

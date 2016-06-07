@@ -99,6 +99,16 @@
                     pilot: null
                 }
             })
+            .state("root.manage-posts", {
+                url: "/manage-posts",
+                templateUrl: "app/manage/manage-posts.html",
+                controller: "ManagePostsController as vm"
+            })
+            .state("root.edit-post", {
+                url: "/manage-posts/:postId",
+                templateUrl: "app/manage/edit-post.html",
+                controller: "EditPostController as vm"
+            })
             .state("root.manage-pilots", {
                 url: "/manage-pilots",
                 templateUrl: "app/manage/manage-pilots.html",
