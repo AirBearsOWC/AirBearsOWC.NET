@@ -1,0 +1,45 @@
+﻿<div class="container body-content">
+    <div class="page-header">
+        <h1>Edit Post</h1>
+    </div>
+
+    <form name="postForm" ng-submit="vm.save(postForm.$valid)" novalidate>
+        <div class="row">
+            <div class="col-sm-9">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group" ab-client-validate>
+                            <input id="title" name="title" type="text" class="form-control" placeholder="Title" required ng-model="vm.post.title" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="help-block">
+                            The <em>Slug</em> is the human readable text that appears at the end of the post URL. It's usually a shortend, hyphenated
+                            version of the post title. For example: http://www.airbears.org/posts/<mark>this-post-is-about-honorary-pilots</mark>
+                        </div>
+                        <div class="form-group" ab-client-validate>
+                            <input id="slug" name="slug" type="text" class="form-control text-lowercase" placeholder="Slug" required ng-model="vm.post.slug" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            Content
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <button class="btn btn-success form-control" type="submit" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+
+                <div class="form-group" ng-show="vm.post.dateUpdated | date:'shortdate'">
+                    <label>Last Updated</label>
+                    <div ng-bind="vm.post.dateUpdated"></div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

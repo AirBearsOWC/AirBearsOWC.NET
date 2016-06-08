@@ -5,9 +5,9 @@
         .module("app")
         .controller("ManagePostsController", ManagePostsController);
 
-    ManagePostsController.$inject = ["$state", "postsService", "toast"];
+    ManagePostsController.$inject = ["$state", "postService", "toast"];
 
-    function ManagePostsController($state, postsService, toast) {
+    function ManagePostsController($state, postService, toast) {
         var vm = this;
 
         vm.posts = [];
@@ -19,17 +19,17 @@
         activate();
 
         function activate() {
-            postsService.getPosts().then(function (posts) {
+            postService.getPosts().then(function (posts) {
                 vm.posts = posts;
             });
         }
       
         function createPost() {
-
+            $state.go("root.edit-post", { postId: "new" });
         }
 
-        function editPost() {
-
+        function editPost(postId) {
+            $state.go("root.edit-post", { postId: postId });
         }
 
         function viewPost() {

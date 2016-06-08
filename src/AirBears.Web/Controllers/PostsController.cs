@@ -67,14 +67,15 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var post = _mapper.Map<Post>(model);
+            model.Id = Guid.NewGuid();
+            model.DateUpdated = DateTime.UtcNow;
 
-            post.DateUpdated = DateTime.UtcNow;
+            var post = _mapper.Map<Post>(model);
 
             _context.Add(post);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(model);
         }
 
         [HttpPut(Name = "Update Post")]

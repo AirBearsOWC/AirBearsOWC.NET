@@ -4,11 +4,11 @@
     </div>
 
     <div class="row">
-        <div class="col-md-12">
+        <p class="col-md-12">
             <button class="btn btn-success" ng-click="vm.createPost()">
                 <i class="glyphicon glyphicon-plus-sign"></i> Create New Post
             </button>
-        </div>
+        </p>
     </div>
 
     <div class="row">
@@ -44,12 +44,12 @@
 
 <script type="text/ng-template" id="post-menu.html">
     <div>
-        <button class="btn btn-sm btn-default" ng-click="vm.editPost()">
+        <button class="btn btn-sm btn-default form-control" ng-click="vm.editPost(post.id)">
             <i class="glyphicon glyphicon-pencil"></i> Edit Post
         </button>
     </div>
     <div>
-        <button class="btn btn-sm btn-default" ng-click="vm.viewPost()">
+        <button class="btn btn-sm btn-default form-control" ng-click="vm.viewPost()">
             <i class="glyphicon glyphicon-eye-open"></i> View Post
         </button>
     </div>
