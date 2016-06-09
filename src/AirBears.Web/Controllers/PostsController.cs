@@ -94,13 +94,14 @@ namespace AirBears.Web.Controllers
                 return HttpNotFound();
             }
 
+            model.DateUpdated = DateTime.UtcNow;
+
             _mapper.Map(model, post);
-            post.DateUpdated = DateTime.UtcNow;
 
             _context.Posts.Update(post);
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(model);
         }
 
         protected override void Dispose(bool disposing)

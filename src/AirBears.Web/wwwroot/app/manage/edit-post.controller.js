@@ -11,7 +11,10 @@
         var vm = this;
         var isNewPost = true;
 
+        vm.publishDatePickerOpened = false;
+
         vm.save = save;
+        vm.openPublishDatePicker = openPublishDatePicker;
 
         activate();
 
@@ -36,12 +39,17 @@
                 });
             }
             else {
-                postService.updatePost(vm.post).then(function () {
+                postService.updatePost(vm.post).then(function (post) {
                     toast.pop("success", "Success!", "Your post was updated.");
+                    $state.go("root.edit-post", { postId: post.id });
                 }, function (resp) {
                     toast.pop("error", "Update Post Failed", "", resp.data);
                 });
             }
         }
+
+        function openPublishDatePicker () {
+            vm.publishDatePickerOpened = true;
+        };
     }
 })();

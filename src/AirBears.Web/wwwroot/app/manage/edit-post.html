@@ -1,6 +1,6 @@
 ﻿<div class="container body-content">
     <div class="page-header">
-        <h1>Edit Post</h1>
+        <h1>Edit Post: <span ng-bind="vm.post.title"></span> <small>({{ vm.post.datePublished ? 'Published' : 'Draft'}})</small></h1>
     </div>
 
     <form name="postForm" ng-submit="vm.save(postForm.$valid)" novalidate>
@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="form-group" ab-client-validate>
-                            <input id="title" name="title" type="text" class="form-control" placeholder="Title" required ng-model="vm.post.title" />
+                            <input id="title" name="title" type="text" class="form-control" style="font-size: 1.9em; height: 60px;" placeholder="Title" required ng-model="vm.post.title" />
                         </div>
                     </div>
                 </div>
@@ -17,10 +17,13 @@
                     <div class="col-sm-12">
                         <div class="help-block">
                             The <em>Slug</em> is the human readable text that appears at the end of the post URL. It's usually a shortend, hyphenated
-                            version of the post title. For example: http://www.airbears.org/posts/<mark>this-post-is-about-honorary-pilots</mark>
+                            version of the post title. For example: https://www.airbears.org/posts/<mark>top-air-bears-pilots-february</mark>
                         </div>
                         <div class="form-group" ab-client-validate>
-                            <input id="slug" name="slug" type="text" class="form-control text-lowercase" placeholder="Slug" required ng-model="vm.post.slug" />
+                            <div class="input-group">
+                                <span class="input-group-addon">https://www.airbears.org/posts/</span>
+                                <input id="slug" name="slug" type="text" class="form-control text-lowercase" placeholder="slug-goes-here" required ng-model="vm.post.slug" />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -33,11 +36,37 @@
                 </div>
             </div>
             <div class="col-sm-3">
-                <button class="btn btn-success form-control" type="submit" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-floppy-disk"></i> Save</button>
+                <div class="form-group">
+                    <button class="btn btn-success form-control" type="submit" ng-disabled="vm.isSubmitting">
+                        <i class="glyphicon glyphicon-floppy-disk"></i> Save
+                    </button>
+                </div>
 
-                <div class="form-group" ng-show="vm.post.dateUpdated | date:'shortdate'">
+                <div class="form-group">
+                    <button class="btn btn-default form-control" ui-sref="root.manage-posts">
+                        Done Editing
+                    </button>
+                </div>
+
+                <div class="form-group">
+                    <label for="datePublished">
+                        Publish Date
+                        <small class="glyphicon glyphicon-question-sign" uib-tooltip="The post will become public on the date specified. If you want the post to remain a draft, leave the field blank."></small>
+                    </label>
+                    <p class="input-group">
+                        <input id="datePublished" name="datePublished" type="text" class="form-control" 
+                               uib-datepicker-popup 
+                               is-open="vm.publishDatePickerOpened" 
+                               ng-model="vm.post.datePublished" datepicker-options="{}" close-text="Close" />
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="vm.openPublishDatePicker()"><i class="glyphicon glyphicon-calendar"></i></button>
+                        </span>
+                    </p>
+                </div>
+
+                <div class="form-group" ng-show="vm.post.dateUpdated">
                     <label>Last Updated</label>
-                    <div ng-bind="vm.post.dateUpdated"></div>
+                    <div ng-bind="vm.post.dateUpdated | date:'short'"></div>
                 </div>
             </div>
         </div>
