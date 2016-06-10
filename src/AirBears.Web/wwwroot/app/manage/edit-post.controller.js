@@ -27,8 +27,8 @@
             }
         }
       
-        function save(isValid) {
-            if (!isValid) { return; }
+        function save(form) {
+            if (!form.$valid) { return; }
 
             if (isNewPost) {
                 postService.createPost(vm.post).then(function (post) {
@@ -41,7 +41,7 @@
             else {
                 postService.updatePost(vm.post).then(function (post) {
                     toast.pop("success", "Success!", "Your post was updated.");
-                    $state.go("root.edit-post", { postId: post.id });
+                    form.$setPristine();
                 }, function (resp) {
                     toast.pop("error", "Update Post Failed", "", resp.data);
                 });

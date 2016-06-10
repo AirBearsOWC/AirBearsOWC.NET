@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.RegularExpressions;
 
 namespace AirBears.Web
 {
@@ -13,6 +14,11 @@ namespace AirBears.Web
         public static string ToHtmlWhiteSpace(this string src)
         {
             return src.Replace("\n", "<br />");
+        }
+
+        public static string StripHtml(this string input)
+        {
+            return Regex.Replace(input, "<.*?>", string.Empty);
         }
 
         /// <summary>

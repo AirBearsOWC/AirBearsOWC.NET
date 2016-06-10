@@ -3,7 +3,7 @@
         <h1>Edit Post: <span ng-bind="vm.post.title"></span> <small>({{ vm.post.datePublished ? 'Published' : 'Draft'}})</small></h1>
     </div>
 
-    <form name="postForm" ng-submit="vm.save(postForm.$valid)" novalidate>
+    <form name="postForm" ng-submit="vm.save(postForm)" novalidate>
         <div class="row">
             <div class="col-sm-9">
                 <div class="row">
@@ -29,15 +29,14 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            Content
-                        </div>
+                        <h3>Post Content</h3>
+                        <text-angular ng-model="vm.post.content"></text-angular>
                     </div>
                 </div>
             </div>
             <div class="col-sm-3">
                 <div class="form-group">
-                    <button class="btn btn-success form-control" type="submit" ng-disabled="vm.isSubmitting">
+                    <button class="btn btn-success form-control" type="submit" ng-disabled="vm.isSubmitting || postForm.$pristine">
                         <i class="glyphicon glyphicon-floppy-disk"></i> Save
                     </button>
                 </div>
@@ -48,6 +47,8 @@
                     </button>
                 </div>
 
+                <br /><br />
+
                 <div class="form-group">
                     <label for="datePublished">
                         Publish Date
@@ -55,9 +56,10 @@
                     </label>
                     <p class="input-group">
                         <input id="datePublished" name="datePublished" type="text" class="form-control" 
+                               ng-model="vm.post.datePublished"
                                uib-datepicker-popup 
                                is-open="vm.publishDatePickerOpened" 
-                               ng-model="vm.post.datePublished" datepicker-options="{}" close-text="Close" />
+                               close-text="Close" />
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="vm.openPublishDatePicker()"><i class="glyphicon glyphicon-calendar"></i></button>
                         </span>

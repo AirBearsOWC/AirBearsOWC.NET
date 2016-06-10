@@ -51,9 +51,15 @@ namespace AirBears.Web.Controllers
         }
 
         [HttpGet(Name = "Get Posts")]
-        public async Task<IActionResult> GetPosts()
+        public async Task<IActionResult> GetPosts(int? pageSize)
         {
-            var posts = await _context.Posts.OrderByDescending(p => p.DatePublished).ToListAsync();
+            pageSize = pageSize ?? 50;
+            var posts = await _context.Posts.OrderByDescending(p => p.DatePublished).Take(pageSize.Value).ToListAsync();
+
+            foreach(var post in posts)
+            {
+                if(!string.IsNullOrWhiteSpace(post.Content)) post.Content = post.Content.StripHtml().Substring(0, 500);
+            }
 
             return Ok(_mapper.Map<List<PostViewModel>>(posts));
         }

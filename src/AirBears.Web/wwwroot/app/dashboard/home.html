@@ -93,6 +93,25 @@
 
 <div class="header-bar">
     <div class="container">
+        <h2>Latest News</h2>
+    </div>
+</div>
+
+<div class="container body-content">
+    <div class="row">
+        <div class="col-sm-4" ng-repeat="post in vm.latestPosts">
+            <div class="post-preview">
+                <h4><a href="#">{{ post.title }}</a></h4>
+                <span class="date">{{ post.datePublished | date:'longDate' }}</span>
+                <p>{{ post.content }}</p>
+                <a href="#">Read More</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="header-bar">
+    <div class="container">
         <h2>Board of Directors</h2>
     </div>
 </div>

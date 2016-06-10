@@ -39,12 +39,17 @@ paths.thirdPartyJs = [
     paths.webroot + "lib/angularjs-toaster/toaster.js",
     paths.webroot + "lib/angular-recaptcha/release/angular-recaptcha.js",
     paths.webroot + "lib/angular-ui-router/release/angular-ui-router.js",
+    paths.webroot + "lib/textAngular/dist/textAngular-rangy.min.js",
+    paths.webroot + "lib/textAngular/dist/textAngular-sanitize.min.js",
+    paths.webroot + "lib/textAngular/dist/textAngular.min.js",
     paths.webroot + "lib/jquery/dist/jquery.js",
     paths.webroot + "lib/bootstrap/dist/js/bootstrap.js"
 ];
 
 paths.thirdPartyCss = [
     paths.webroot + "lib/angular-loading-bar/build/loading-bar.css",
+    paths.webroot + "lib/textAngular/dist/textAngular.css",
+    paths.webroot + "lib/font-awesome/css/font-awesome.min.css",
     paths.webroot + "lib/angular-google-places-autocomplete/dist/autocomplete.min.css",
     paths.webroot + "lib/angularjs-toaster/toaster.css",
     paths.webroot + "lib/bootstrap/dist/css/bootstrap.css"
@@ -78,7 +83,7 @@ gulp.task("min:css", ["clean"], function () {
 });
 
 gulp.task("move:fonts", ["clean"], function () {
-    var fontPaths = paths.webroot + "lib/bootstrap/dist/fonts/*";
+    var fontPaths = [paths.webroot + "lib/bootstrap/dist/fonts/*", paths.webroot + "lib/font-awesome/fonts/*"];
 
     return gulp.src(fontPaths)
         .pipe(gulp.dest(paths.webroot + "dist/fonts"));

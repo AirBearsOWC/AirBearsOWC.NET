@@ -5,13 +5,17 @@
         .module("app")
         .controller("HomeController", HomeController);
 
-    HomeController.$inject = []; 
+    HomeController.$inject = ["postService"]; 
 
-    function HomeController() {
+    function HomeController(postService) {
         var vm = this;
 
         activate();
 
-        function activate() { }
+        function activate() {
+            postService.getPosts(3).then(function (posts) {
+                vm.latestPosts = posts;
+            });
+        }
     }
 })();

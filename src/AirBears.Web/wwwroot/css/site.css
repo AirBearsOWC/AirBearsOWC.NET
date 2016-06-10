@@ -197,6 +197,10 @@ ol ol > li {
     color: #888;
 }
 
+.post-preview .date {
+    color: #999;
+}
+
 /*
     Toast Overrides
 */
