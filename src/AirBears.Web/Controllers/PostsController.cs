@@ -7,7 +7,9 @@ using Microsoft.Data.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace AirBears.Web.Controllers
 {
@@ -24,6 +26,7 @@ namespace AirBears.Web.Controllers
             _mapper = mapper;
         }
 
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         [HttpGet("{id:guid}", Name = "Get Post By ID")]
         public async Task<IActionResult> GetPostById([FromRoute] Guid id)
         {
@@ -40,7 +43,7 @@ namespace AirBears.Web.Controllers
         [HttpGet("{slug}", Name = "Get Post By Slug")]
         public async Task<IActionResult> GetPostBySlug([FromRoute] string slug)
         {
-            var post = await _context.Posts.Where(p => p.Slug == slug.ToLower()).FirstOrDefaultAsync();
+            var post = await _context.Posts.ThatArePublished().Where(p => p.Slug == slug.ToLower()).FirstOrDefaultAsync();
 
             if (post == null)
             {
@@ -51,14 +54,28 @@ namespace AirBears.Web.Controllers
         }
 
         [HttpGet(Name = "Get Posts")]
-        public async Task<IActionResult> GetPosts(int? pageSize)
+        [Authorize(AuthPolicies.Bearer)]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetPosts(int pageSize = 50, bool includeDrafts = false)
         {
-            pageSize = pageSize ?? 50;
-            var posts = await _context.Posts.OrderByDescending(p => p.DatePublished).Take(pageSize.Value).ToListAsync();
+            pageSize = Math.Min(pageSize, 100); // restrict size to 100.
+
+            if (includeDrafts && !User.IsInRole(Roles.Admin))
+            {
+                // If they've requested drafts, they must be administrators. Send 403 if they're not.
+                return new HttpStatusCodeResult((int)HttpStatusCode.Forbidden);
+            }
+
+            var posts = (includeDrafts)
+                 ? await _context.Posts.OrderByDescending(p => p.DatePublished).Take(pageSize).ToListAsync()
+                 : await _context.Posts.ThatArePublished().OrderByDescending(p => p.DatePublished).Take(pageSize).ToListAsync();
 
             foreach(var post in posts)
             {
-                if(!string.IsNullOrWhiteSpace(post.Content)) post.Content = post.Content.StripHtml().Substring(0, 500);
+                if (!string.IsNullOrWhiteSpace(post.Content) && post.Content.Length > 500)
+                    post.Content = post.Content.StripHtml().Substring(0, 500);
+                else if (!string.IsNullOrWhiteSpace(post.Content))
+                    post.Content = post.Content.StripHtml();
             }
 
             return Ok(_mapper.Map<List<PostViewModel>>(posts));

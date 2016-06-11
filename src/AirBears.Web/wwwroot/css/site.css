@@ -197,8 +197,20 @@ ol ol > li {
     color: #888;
 }
 
-.post-preview .date {
+.no-top-margin {
+    margin-top: 0;
+}
+
+.post-preview .date, .post .date, .post-list-item .date {
     color: #999;
+}
+
+.post-list-item .title {
+    font-size: 1.15em;
+}
+
+.post-list-item {
+    margin-bottom: 20px;
 }
 
 /*

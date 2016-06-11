@@ -1,0 +1,30 @@
+﻿<div class="container body-content post">
+
+    <div class="page-header">
+        <h1 ng-bind="vm.post.title"></h1>
+        <span class="date" ng-bind="vm.post.datePublished | date:'longDate'"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-9" ng-bind-html="vm.post.content">
+            
+        </div>
+        <div class="col-sm-3">
+            <h3 class="no-top-margin">Recent Updates</h3>
+
+            <ul class="list-unstyled">
+                <li class="post-list-item" ng-repeat="post in vm.latestPosts">
+                    <div class="title">
+                        <strong><a ui-sref="root.post({slug: post.slug})">{{ post.title }}</a></strong>
+                    </div>
+                    <span class="date">{{ post.datePublished | date:'longDate' }}</span>
+                </li>
+            </ul>
+
+            <div>
+                <a ui-sref="root.post-archive">View All Posts</a>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -59,6 +59,17 @@ namespace AirBears.Web
         }
 
         /// <summary>
+        /// Filters out non-published posts from the post data set.
+        /// </summary>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        public static IQueryable<Post> ThatArePublished(this DbSet<Post> posts)
+        {
+            var now = DateTime.UtcNow;
+            return posts.Where(p => p.DatePublished.HasValue && p.DatePublished <= now); // published date must be earlier than today.
+        }
+
+        /// <summary>
         /// Ignores fields that exist on the destination type but not on the source type.
         /// </summary>
         /// <typeparam name="TSource"></typeparam>

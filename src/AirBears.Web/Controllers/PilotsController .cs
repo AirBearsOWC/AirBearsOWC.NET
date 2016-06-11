@@ -83,6 +83,11 @@ namespace AirBears.Web.Controllers
             return result;
         }
 
+        private bool IsApprovedAuthority(User user)
+        {
+            return (user.IsAuthorityAccount && User.IsInRole(Roles.Authority)) || User.IsInRole(Roles.Admin);
+        }
+
         /// <summary>
         /// Returns a list of pilots that match the search criteria and are within a particular distance (in miles) from the address or coordinates.
         /// </summary>
@@ -100,7 +105,7 @@ namespace AirBears.Web.Controllers
             // If lat/lng were provided, use them to perform the distance query.
             if (model.Latitude.HasValue && model.Longitude.HasValue)
             {
-                return Ok(await FindPilotsWithinRadius(model.Distance, model.Latitude.Value, model.Longitude.Value, !currentUser.IsAuthorityAccount));
+                return Ok(await FindPilotsWithinRadius(model.Distance, model.Latitude.Value, model.Longitude.Value, !IsApprovedAuthority(currentUser)));
             }
 
             // Otherwise we have to ask the Geocode service to find the lat/lng for the given address.
@@ -112,7 +117,7 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            return Ok(await FindPilotsWithinRadius(model.Distance, coords.Latitude, coords.Longitude, !currentUser.IsAuthorityAccount));
+            return Ok(await FindPilotsWithinRadius(model.Distance, coords.Latitude, coords.Longitude, !IsApprovedAuthority(currentUser)));
         }
 
         // PUT: api/pilots/5/tee-shirt-mailed

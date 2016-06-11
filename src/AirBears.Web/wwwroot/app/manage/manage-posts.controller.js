@@ -19,7 +19,7 @@
         activate();
 
         function activate() {
-            postService.getPosts().then(function (posts) {
+            postService.getPosts(50, true).then(function (posts) {
                 vm.posts = posts;
             });
         }

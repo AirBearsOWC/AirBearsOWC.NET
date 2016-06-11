@@ -35,9 +35,15 @@
             return $http.get(urlBase + "/" + slug).then(successPost, failure);
         }
 
-        function getPosts(pageSize) {
+        function getPosts(pageSize, includeDrafts) {
             pageSize = pageSize || 50;
-            return $http.get(urlBase + "?pageSize=" + pageSize).then(successCollection, failure);
+
+            var url = urlBase + "?pageSize=" + pageSize;
+            if (includeDrafts) {
+                url += "&includeDrafts=true";
+            }
+
+            return $http.get(url).then(successCollection, failure);
         }
 
         function successPost(resp) {

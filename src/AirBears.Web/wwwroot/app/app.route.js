@@ -99,6 +99,16 @@
                     pilot: null
                 }
             })
+            .state("root.post-archive", {
+                url: "/posts",
+                templateUrl: "app/posts/post-archive.html",
+                controller: "PostArchiveController as vm"
+            })
+            .state("root.post", {
+                url: "/posts/:slug",
+                templateUrl: "app/posts/post.html",
+                controller: "PostController as vm"
+            })
             .state("root.manage-posts", {
                 url: "/manage-posts",
                 templateUrl: "app/manage/manage-posts.html",
