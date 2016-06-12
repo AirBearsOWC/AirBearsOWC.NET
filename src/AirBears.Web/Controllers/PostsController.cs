@@ -91,6 +91,7 @@ namespace AirBears.Web.Controllers
             }
 
             model.Id = Guid.NewGuid();
+            model.Slug = model.Slug.ToLower();
             model.DateUpdated = DateTime.UtcNow;
 
             var post = _mapper.Map<Post>(model);
@@ -117,6 +118,7 @@ namespace AirBears.Web.Controllers
                 return HttpNotFound();
             }
 
+            model.Slug = model.Slug.ToLower();
             model.DateUpdated = DateTime.UtcNow;
 
             _mapper.Map(model, post);

@@ -13,6 +13,7 @@ namespace AirBears.Web.ViewModels
 
         [Required]
         [MaxLength(50)]
+        [RegularExpression("^[-0-9A-Za-z]*$", ErrorMessage = "The slug must only contain dashes and alphanumeric characters.")]
         public string Slug { get; set; }
 
         public string Content { get; set; }
