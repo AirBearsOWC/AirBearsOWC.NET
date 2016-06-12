@@ -1,6 +1,6 @@
 ﻿<div class="container body-content">
     <div class="page-header">
-        <h1>Edit Post: <span ng-bind="vm.post.title"></span> <small>({{ vm.post.status }})</small></h1>
+        <h1>Edit Post: <span ng-bind="vm.post.title"></span> <small ng-show="vm.post.status">({{ vm.post.status }})</small></h1>
     </div>
 
     <form name="postForm" ng-submit="vm.save(postForm)" novalidate>

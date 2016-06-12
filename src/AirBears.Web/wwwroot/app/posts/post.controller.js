@@ -23,6 +23,20 @@
             });
 
             postService.getPosts(5).then(function (posts) {
+                var indexOfCurrentPost = -1;
+
+                // Look for the current post in the list of posts and remove it if it's found.
+                for (var i = 0; i < posts.length; i++){
+                    if (posts[i].slug === $stateParams.slug) {
+                        indexOfCurrentPost = i;
+                        break;
+                    }
+                }
+
+                if (indexOfCurrentPost >= 0) {
+                    posts.splice(indexOfCurrentPost, 1);
+                }
+
                 vm.latestPosts = posts;
             });
         }

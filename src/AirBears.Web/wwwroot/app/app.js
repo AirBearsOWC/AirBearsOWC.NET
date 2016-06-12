@@ -10,7 +10,6 @@
          "uiGmapgoogle-maps",
          "angular-loading-bar",
          "vcRecaptcha",
-         //"ngSanitize",
          "textAngular",
          "angular-storage",
          "templates"
