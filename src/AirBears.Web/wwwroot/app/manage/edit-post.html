@@ -1,6 +1,6 @@
 ﻿<div class="container body-content">
     <div class="page-header">
-        <h1>Edit Post: <span ng-bind="vm.post.title"></span> <small>({{ vm.post.datePublished ? 'Published' : 'Draft'}})</small></h1>
+        <h1>Edit Post: <span ng-bind="vm.post.title"></span> <small>({{ vm.post.status }})</small></h1>
     </div>
 
     <form name="postForm" ng-submit="vm.save(postForm)" novalidate>
@@ -17,12 +17,26 @@
                     <div class="col-sm-12">
                         <div class="help-block">
                             The <em>Slug</em> is the human readable text that appears at the end of the post URL. It's usually a shortend, hyphenated
-                            version of the post title. For example: https://www.airbears.org/posts/<mark>top-air-bears-pilots-february</mark>
+                            version of the post title. For example: https://www.airbears.org/posts/<mark>top-air-bears-pilots-february</mark><br />
+                            Once a post is published, the slug should generally never change. We must assume search engines have already indexed this page.
                         </div>
-                        <div class="form-group" ab-client-validate>
+                        <div class="form-group" ab-client-validate ng-hide="vm.post.statusCode === 1 && !vm.slugWarningOverridden">
                             <div class="input-group">
                                 <span class="input-group-addon">https://www.airbears.org/posts/</span>
                                 <input id="slug" name="slug" type="text" class="form-control text-lowercase" placeholder="slug-goes-here" required ng-model="vm.post.slug" />
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="vm.generateSlug()" uib-tooltip="Automatically generate a slug derived from the title text.">
+                                        <i class="glyphicon glyphicon-refresh"></i>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                        <div ng-show="vm.post.statusCode === 1 && !vm.slugWarningOverridden">
+                            <div class="lead">
+                                https://www.airbears.org/posts/{{ vm.post.slug }}
+                            </div>
+                            <div>
+                                <a href ng-click="vm.overrideSlugWarning()">Although this post is already published, I really need to change the slug.</a>
                             </div>
                         </div>
                     </div>

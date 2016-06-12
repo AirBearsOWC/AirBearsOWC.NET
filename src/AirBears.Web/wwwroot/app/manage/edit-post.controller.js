@@ -12,9 +12,12 @@
         var isNewPost = true;
 
         vm.publishDatePickerOpened = false;
+        vm.slugWarningOverridden = false;
 
         vm.save = save;
         vm.openPublishDatePicker = openPublishDatePicker;
+        vm.generateSlug = generateSlug;
+        vm.overrideSlugWarning = overrideSlugWarning;
 
         activate();
 
@@ -50,6 +53,20 @@
 
         function openPublishDatePicker () {
             vm.publishDatePickerOpened = true;
-        };
+        }
+
+        function generateSlug() {
+            var slug = vm.post.title.toString().toLowerCase().trim()
+                        .replace(/\s+/g, "-")           // Replace spaces with -
+                        .replace(/&/g, "-and-")         // Replace & with 'and'
+                        .replace(/[^\w\-]+/g, "")       // Remove all non-word chars
+                        .replace(/\-\-+/g, "-");        // Replace multiple - with single -
+
+            vm.post.slug = slug;
+        }
+
+        function overrideSlugWarning() {
+            vm.slugWarningOverridden = true;
+        }
     }
 })();

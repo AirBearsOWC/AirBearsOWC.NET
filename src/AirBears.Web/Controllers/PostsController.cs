@@ -127,6 +127,23 @@ namespace AirBears.Web.Controllers
             return Ok(model);
         }
 
+        [HttpDelete("{id:guid}", Name = "Delete Post")]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
+        public async Task<IActionResult> DeletePost([FromRoute] Guid id)
+        {
+            var post = await _context.Posts.Where(p => p.Id == id).SingleOrDefaultAsync();
+
+            if (post == null)
+            {
+                return HttpNotFound();
+            }
+
+            _context.Posts.Remove(post);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

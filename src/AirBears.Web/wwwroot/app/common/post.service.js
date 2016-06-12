@@ -13,6 +13,7 @@
 
         service.createPost = createPost;
         service.updatePost = updatePost;
+        service.deletePost = deletePost;
         service.getPostById = getPostById;
         service.getPostBySlug = getPostBySlug;
         service.getPosts = getPosts;
@@ -25,6 +26,10 @@
 
         function updatePost(post) {
             return $http.put(urlBase, post).then(successPost, failure);
+        }
+
+        function deletePost(id) {
+            return $http.delete(urlBase + "/" + id).then(function () { }, failure);
         }
 
         function getPostById(id) {

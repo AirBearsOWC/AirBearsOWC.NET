@@ -18,22 +18,34 @@
                     <thead>
                         <tr>
                             <th>Title</th>
+                            <th>Status</th>
+                            <th>Publish Date</th>
                             <th>Last Updated</th>
-                            <th>Published</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr ng-repeat="post in vm.posts">
                             <td>
-                                <button class="btn btn-sm" uib-popover-template="'post-menu.html'">
-                                    <i class="glyphicon glyphicon-cog"></i>
-                                </button>
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="glyphicon glyphicon-cog"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a href ng-click="vm.editPost(post.id)">Edit Post</a></li>
+                                        <li><a href ng-click="vm.viewPost()">View Post</a></li>
+                                        <li role="separator" class="divider"></li>
+                                        <li><a href ng-click="vm.deletePost(post)"><i class="glyphicon glyphicon-trash"></i> Delete Post</a></li>
+                                    </ul>
+                                </div>
+
                                 &nbsp;&nbsp;
+
                                 {{ post.title }}
                             </td>
+                            <td>{{ post.status }}</td>                          
+                            <td>{{ post.datePublished | date:"shortDate"}}</td>
                             <td>{{ post.dateUpdated | date:"short"}}</td>
-                            <td>{{ post.datePublished | date:"short"}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -41,16 +53,3 @@
         </div>
     </div>
 </div>
-
-<script type="text/ng-template" id="post-menu.html">
-    <div>
-        <button class="btn btn-sm btn-default form-control" ng-click="vm.editPost(post.id)">
-            <i class="glyphicon glyphicon-pencil"></i> Edit Post
-        </button>
-    </div>
-    <div>
-        <button class="btn btn-sm btn-default form-control" ng-click="vm.viewPost()">
-            <i class="glyphicon glyphicon-eye-open"></i> View Post
-        </button>
-    </div>
-</script>

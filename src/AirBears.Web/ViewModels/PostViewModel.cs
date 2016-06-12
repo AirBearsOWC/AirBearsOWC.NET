@@ -19,8 +19,19 @@ namespace AirBears.Web.ViewModels
 
         public string FeaturedImageUrl { get; set; }
 
+        public string Status { get; set; }
+
+        public PostStatus StatusCode { get; set; }
+
         public DateTime DateUpdated { get; set; }
 
         public DateTime? DatePublished { get; set; }
+    }
+
+    public enum PostStatus
+    {
+        Draft,
+        Published,
+        Scheduled
     }
 }

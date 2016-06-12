@@ -1,6 +1,7 @@
 ﻿using AirBears.Web.Models;
 using AirBears.Web.ViewModels;
 using AutoMapper;
+using System;
 
 namespace AirBears.Web.Profiles
 {
@@ -8,7 +9,27 @@ namespace AirBears.Web.Profiles
     {
         protected override void Configure()
         {
-            CreateMap<Post, PostViewModel>().ReverseMap();
+            CreateMap<Post, PostViewModel>()
+                .ForMember(dest => dest.Status, mapper => mapper.Ignore())
+                .ForMember(dest => dest.StatusCode, mapper => mapper.Ignore())
+                .AfterMap((s, d) =>
+                {
+                    //Status is derived from DatePublished.
+                    d.StatusCode = PostStatus.Draft;
+                    
+                    if (s.DatePublished.HasValue && s.DatePublished.Value <= DateTime.UtcNow)
+                    {
+                        d.StatusCode = PostStatus.Published;
+                    }
+                    else if (s.DatePublished.HasValue && s.DatePublished.Value > DateTime.UtcNow)
+                    {
+                        d.StatusCode = PostStatus.Scheduled;
+                    }
+
+                    d.Status = d.StatusCode.ToString();
+                });
+
+            CreateMap<PostViewModel, Post>();
 
             CreateMap<User, UserViewModel>();
 
