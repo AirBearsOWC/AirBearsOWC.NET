@@ -1,4 +1,8 @@
-﻿body {
+﻿html, body {
+    height: 100%;
+}
+
+body {
     padding-top: 50px;
     padding-bottom: 20px;
 }
@@ -186,7 +190,8 @@ input, select, textarea {
 }
 
 .transition-container {
-    position: relative;
+    min-height: 100%;
+    height: 100%;
 }
 
 ol ol > li {
@@ -211,6 +216,12 @@ ol ol > li {
 
 .post-list-item {
     margin-bottom: 20px;
+}
+
+.footer {
+    background-color: #444;
+    color: #ddd;
+    padding: 20px 0px;
 }
 
 /*
