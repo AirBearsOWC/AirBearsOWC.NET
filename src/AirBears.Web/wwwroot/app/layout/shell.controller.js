@@ -5,9 +5,9 @@
         .module("app")
         .controller("ShellController", ShellController);
 
-    ShellController.$inject = ["$scope", "$state", "registrationService", "authService", "userService"]; 
+    ShellController.$inject = ["$scope", "$state", "registrationService", "authService", "userService", "postService"]; 
 
-    function ShellController($scope, $state, registrationService, authService, userService) {
+    function ShellController($scope, $state, registrationService, authService, userService, postService) {
         var vm = this;
 
         vm.user = null;
@@ -29,6 +29,10 @@
 
             authService.onUnauthenticated($scope, function () {
                 vm.user = null;
+            });
+
+            postService.getPosts(3).then(function (posts) {
+                vm.latestPosts = posts;
             });
         }
 

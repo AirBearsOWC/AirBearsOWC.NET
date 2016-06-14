@@ -189,6 +189,13 @@ input, select, textarea {
     height: 50px;
 }
 
+.footer .social-icon img {
+    height: 30px;
+    position: relative;
+    top: -1px;
+    left: -3px;
+}
+
 .transition-container {
     min-height: 100%;
     height: 100%;
@@ -210,6 +217,10 @@ ol ol > li {
     color: #999;
 }
 
+.footer .date {
+    font-size: 0.9em;
+}
+
 .post-list-item .title {
     font-size: 1.15em;
 }
@@ -219,7 +230,7 @@ ol ol > li {
 }
 
 .footer {
-    background-color: #444;
+    background-color: #333;
     color: #ddd;
     padding: 20px 0px;
 }

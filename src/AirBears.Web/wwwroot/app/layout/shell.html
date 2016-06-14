@@ -59,7 +59,7 @@
 <div class="footer">
     <div class="container">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-3">
                 <h3>Navigation</h3>
                 <ul class="list-unstyled">
                     <li><a ui-sref="root.pilot-search">Pilot Search</a></li>
@@ -69,22 +69,30 @@
                 </ul>
             </div>
             <div class="col-sm-4">
-                <h3>Navigation</h3>
+                <h3>News and Updates</h3>
                 <ul class="list-unstyled">
-                    <li><a ui-sref="root.pilot-search">Pilot Search</a></li>
-                    <li><a ui-sref="root.guidelines">Operational Guidelines</a></li>
-                    <li><a ui-sref="root.post-archive">News and Updates</a></li>
-                    <li><a ui-sref="root.contact">Contact Air Bears</a></li>
+                    <li ng-repeat="post in vm.latestPosts">
+                        <a ui-sref="root.post({slug: post.slug})">{{ post.title }}</a>
+                        <div class="date">{{ post.datePublished | date:'longDate' }}</div>
+                    </li>
                 </ul>
             </div>
-            <div class="col-sm-4">
-                <h3>Navigation</h3>
-                <ul class="list-unstyled">
-                    <li><a ui-sref="root.pilot-search">Pilot Search</a></li>
-                    <li><a ui-sref="root.guidelines">Operational Guidelines</a></li>
-                    <li><a ui-sref="root.post-archive">News and Updates</a></li>
-                    <li><a ui-sref="root.contact">Contact Air Bears</a></li>
-                </ul>
+            <div class="col-sm-3">
+                <h3>Contact</h3>
+                <p>
+                    1980 Hoyt Ave. E.<br />
+                    St. Paul, MN 55119
+                </p>
+                <p>
+                    <a href="https://www.facebook.com/Air-Bears-830111767019340/" class="social-icon" target="_blank" title="Contact Air Bears on Facebook">
+                        <img src="../../images/facebook-icon.png" /> Facebook
+                    </a>
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <small>&copy; 2016 Air Bears</small>
             </div>
         </div>
     </div>
