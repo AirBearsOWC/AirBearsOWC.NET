@@ -48,6 +48,7 @@
 /// <reference path="app/registration/registration.service.js" />
 /// <reference path="app/registration/terms.controller.js" />
 /// <reference path="app/reset-password/reset-password.controller.js" />
+/// <reference path="app/resources/resources.controller.js" />
 /// <reference path="lib/a0-angular-storage/dist/angular-storage.js" />
 /// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/angular-animate/angular-animate.js" />
