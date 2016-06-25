@@ -10,6 +10,7 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.WebEncoders;
 using Braintree;
+using Microsoft.AspNet.Http.Features;
 
 namespace AirBears.Web.Controllers
 {
@@ -23,8 +24,9 @@ namespace AirBears.Web.Controllers
         private readonly IMailer _mailer;
         private readonly IMapper _mapper;
         private readonly IBraintreeGateway _gateway;
+        private readonly ICaptchaService _captchaService;
 
-        public AccountsController(AppDbContext context, UserManager<User> userManager, IMapper mapper, IGeocodeService geocodeService, IMailer mailer, IBraintreeGateway gateway)
+        public AccountsController(AppDbContext context, UserManager<User> userManager, IMapper mapper, IGeocodeService geocodeService, IMailer mailer, IBraintreeGateway gateway, ICaptchaService captchaService)
         {
             _context = context;
             _userManager = userManager;
@@ -32,6 +34,7 @@ namespace AirBears.Web.Controllers
             _mailer = mailer;
             _mapper = mapper;
             _gateway = gateway;
+            _captchaService = captchaService;
         }
 
         // POST: /api/accounts/pilot-registration
@@ -121,6 +124,14 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                return HttpBadRequest(ModelState);
+            }
+
+            var remoteIpAddress = HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString();
+
+            if (!await _captchaService.IsValid(model.CaptchaResponse, remoteIpAddress))
+            {
+                ModelState.AddModelError(string.Empty, "Failed to verify CAPTCHA. Please try again.");
                 return HttpBadRequest(ModelState);
             }
 

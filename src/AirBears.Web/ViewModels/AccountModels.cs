@@ -172,6 +172,9 @@ namespace AirBears.Web.ViewModels
         [MaxLength(100)]
         [Display(Name = "Organization")]
         public string Organization { get; set; }
+
+        [Required]
+        public string CaptchaResponse { get; set; }
     }
 
     public class ForgotPasswordViewModel
