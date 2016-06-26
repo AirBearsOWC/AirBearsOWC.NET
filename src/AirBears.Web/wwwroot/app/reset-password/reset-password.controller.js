@@ -31,6 +31,7 @@
                 vm.isSubmitting = false;
                 vm.reset = {};
                 toast.pop("success", "Success", "Your password has been successfully reset!");
+                $state.go("root.home");
             },
             function (resp) {
                 vm.isSubmitting = false;

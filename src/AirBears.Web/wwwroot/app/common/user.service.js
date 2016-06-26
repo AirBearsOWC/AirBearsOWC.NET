@@ -36,8 +36,8 @@
             });
         }
 
-        function recoverPassword(email) {
-            return $http.post("/api/accounts/forgot-password", { email: email });
+        function recoverPassword(email, captchaResponse) {
+            return $http.post("/api/accounts/forgot-password", { email: email, captchaResponse: captchaResponse });
         }
 
         function resetPassword(resetData) {

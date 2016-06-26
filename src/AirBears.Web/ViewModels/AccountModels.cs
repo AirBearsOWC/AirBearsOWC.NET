@@ -182,6 +182,9 @@ namespace AirBears.Web.ViewModels
         [Required]
         [EmailAddress]
         public string Email { get; set; }
+
+        [Required]
+        public string CaptchaResponse { get; set; }
     }
 
     public class ResetPasswordViewModel

@@ -58,11 +58,11 @@
         function recoverPassword(isValid) {
             if (!isValid) { return; }
 
-            userService.recoverPassword(vm.username).then(function () {
+            userService.recoverPassword(vm.username, vm.captchaResponse).then(function () {
                 toast.pop("success", "Email Sent!", "Check your email for a password recovery link.");
                 $uibModalInstance.close({ loginSuccess: false });
             }, function (resp) {
-                vm.message = null;z
+                vm.message = null;
                 if (resp && resp.data) {
                     vm.message = resp.data;
                 }

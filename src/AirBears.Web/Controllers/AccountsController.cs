@@ -159,11 +159,19 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
+            var remoteIpAddress = HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString();
+
+            if (!await _captchaService.IsValid(model.CaptchaResponse, remoteIpAddress))
+            {
+                ModelState.AddModelError(string.Empty, "Failed to verify CAPTCHA. Please try again.");
+                return HttpBadRequest(ModelState);
+            }
+
             var user = await _userManager.FindByNameAsync(model.Email);
             if (user == null)
             {
                 // Don't reveal that the user doen't exist.
-                return HttpBadRequest();
+                return Ok();
             }
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
