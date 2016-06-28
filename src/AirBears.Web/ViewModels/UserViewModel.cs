@@ -25,6 +25,11 @@ namespace AirBears.Web.ViewModels
         [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
+        /// <summary>
+        /// Identifies an account as an authority account, regardless if the account has been granted the Authority role.
+        /// </summary>
+        public bool IsAuthorityAccount { get; set; }
+
         public DateTime DateRegistered { get; set; }
     }
 

@@ -41,7 +41,7 @@
                         {{ vm.user.firstName }} {{ vm.user.lastName }} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a ui-sref="root.edit-profile">My Profile</a></li>
+                        <li><a ui-sref="root.edit-profile" ng-show="!vm.user.isAuthorityAccount">My Profile</a></li>
                         <li><a href="#" ng-click="vm.logout()"><span class="glyphicon glyphicon-lock"></span>&nbsp; Log Out</a></li>
                     </ul>
                 </li>

@@ -102,6 +102,14 @@ namespace AirBears.Web.Controllers
 
             var currentUser = await _userManager.FindByIdAsync(User.GetUserId());
 
+            if(currentUser.IsAuthorityAccount && !User.IsInRole(Roles.Authority))
+            {
+                // Non-approved authority accounts cannot use pilot search.
+                ModelState.AddModelError("", "Authority accounts must be verified before they can use the pilot finder.");
+                return HttpBadRequest(ModelState);
+            }
+
+
             // If lat/lng were provided, use them to perform the distance query.
             if (model.Latitude.HasValue && model.Longitude.HasValue)
             {
