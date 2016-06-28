@@ -35,7 +35,10 @@
             },
             function (resp) {
                 vm.isSubmitting = false;
-                toast.pop("error", "Error", "An error occurred while attempting to reset your password. It's possible that your recovery link has expired and you need to request a new one.");
+                if (resp.data && resp.data[""] && resp.data[""][0].indexOf("Invalid token") >= 0)
+                    toast.pop("error", "Error", "An error occurred while attempting to reset your password. It's possible that your recovery link has expired and you need to request a new one.");
+                else
+                    toast.pop("error", "Error", "", resp.data);
             });
         }
     }
