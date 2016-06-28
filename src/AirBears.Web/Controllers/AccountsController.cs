@@ -224,7 +224,7 @@ namespace AirBears.Web.Controllers
             message += string.Format("If this was not your doing, please reply to this message so we can protect your account.");
             message += string.Format("<a href='{0}' target='_blank'>Click here</a> to reset your password or browse to the address below.", callbackUrl);
             message += string.Format("<br /><br /><a href='{0}' target='_blank'>{1}</a>", callbackUrl, callbackUrl);
-            message += string.Format("<br /><br />Thanks,\nAir Bears Team");
+            message += string.Format("<br /><br />Thanks,<br />Air Bears Team");
 
             await _mailer.SendAsync(user.Email, "Air Bears Password Recovery", message, true);
         }

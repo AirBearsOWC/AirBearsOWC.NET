@@ -59,10 +59,10 @@ namespace AirBears.Web.Profiles
                 .ForMember(dest => dest.PayloadId, mapper => mapper.MapFrom(s => s.Payload.Id))
                 .ForMember(dest => dest.TeeShirtSizeId, mapper => mapper.MapFrom(s => s.TeeShirtSize.Id))
                 //Remove virtual properties
-                .ForMember(dest => dest.State, mapper => mapper.UseValue(null))
-                .ForMember(dest => dest.FlightTime, mapper => mapper.UseValue(null))
-                .ForMember(dest => dest.Payload, mapper => mapper.UseValue(null))
-                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.UseValue(null))
+                .ForMember(dest => dest.State, mapper => mapper.UseValue<State>(null))
+                .ForMember(dest => dest.FlightTime, mapper => mapper.UseValue<FlightTime>(null))
+                .ForMember(dest => dest.Payload, mapper => mapper.UseValue<Payload>(null))
+                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.UseValue<TeeShirtSize>(null))
                 .IgnoreAllNonExisting();
         }
     }

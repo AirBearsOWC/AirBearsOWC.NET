@@ -2,7 +2,7 @@
   "name": "AirBears",
   "private": true,
   "dependencies": {
-    "angular": "1.4.6",
+    "angular": "1.5.7",
     "angular-animate": "1.4.6",
     "braintree-web": "2.21.0",
     "angular-ui-router": "ui-router#~0.2.15",
