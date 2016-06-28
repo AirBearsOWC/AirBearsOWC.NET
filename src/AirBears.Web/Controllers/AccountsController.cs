@@ -145,6 +145,8 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
+            await SendAuthorityWelcomeEmail(user);
+
             var responseUser = await _context.Users.SingleAsync(u => u.UserName == model.Email);
 
             return Ok(_mapper.Map<UserViewModel>(responseUser));
@@ -237,6 +239,16 @@ namespace AirBears.Web.Controllers
                 + "Feel free to wear it as much as you'd like to help spread the word and raise awareness of our cause. "
                 + "Note that it must be worn if or when you decide to answer a call for help. "
                 + "\n\nWe look forward to making a difference with your help,\nAir Bears";
+
+            await _mailer.SendAsync(user.Email, "Welcome to Air Bears", message);
+        }
+
+        private async Task SendAuthorityWelcomeEmail(User user)
+        {
+            var message = $"Greetings {user.FirstName}!\n\n"
+                + "Welcome to the Air Bears community. You will be contacted shortly for authority verification purposes. "
+                + "Once your account has been verified you will have access to our pilot locator."
+                + "\n\nWe look forward to help you anyway we can,\nAir Bears";
 
             await _mailer.SendAsync(user.Email, "Welcome to Air Bears", message);
         }

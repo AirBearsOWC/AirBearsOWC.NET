@@ -63,6 +63,7 @@
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Address</th>
+                            <th>Shirt Size</th>
                             <th>Registration Date</th>
                             <th>Tee-Shirt Mailed?</th>
                         </tr>
@@ -87,6 +88,7 @@
                                     <span ng-bind="pilot.city"></span>, <span ng-bind="pilot.state.abbr"></span> <span ng-bind="pilot.zip"></span>
                                 </div>
                             </td>
+                            <td><span ng-show="pilot.teeShirtSize">{{ pilot.teeShirtSize.name }}</span></td>
                             <td>{{ pilot.dateRegistered | date:"MMM dd, yyyy" }}</td>
                             <td>
                                 <button class="btn btn-sm btn-success" ng-hide="pilot.teeShirtMailedDate" ng-click="vm.markTeeShirtMailed($index, 'true')">

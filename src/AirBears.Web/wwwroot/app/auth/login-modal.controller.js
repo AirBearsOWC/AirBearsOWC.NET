@@ -59,7 +59,7 @@
             if (!isValid) { return; }
 
             userService.recoverPassword(vm.username, vm.captchaResponse).then(function () {
-                toast.pop("success", "Email Sent!", "Check your email for a password recovery link.");
+                toast.pop("success", "Email Sent!", "Check your email for a password recovery link. It may be necessary to check your spam folder.");
                 $uibModalInstance.close({ loginSuccess: false });
             }, function (resp) {
                 vm.message = null;
