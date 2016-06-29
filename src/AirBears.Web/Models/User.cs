@@ -71,6 +71,9 @@ namespace AirBears.Web.Models
 
         public bool HasAgreedToTerms { get; set; }
 
+        [MaxLength(100)]
+        public string Organization { get; set; }
+
         [MaxLength(500)]
         public string Bio { get; set; }
 

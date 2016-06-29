@@ -35,7 +35,7 @@ namespace AirBears.Web.Profiles
 
             CreateMap<User, PilotViewModel>();
 
-            CreateMap<User, IdentityViewModel>();
+            CreateMap<User, AuthorityIdentityViewModel>();
 
             CreateMap<User, IdentityPilotViewModel>();
 

@@ -60,6 +60,7 @@
                         <tr>
                             <th>Last Name</th>
                             <th>First Name</th>
+                            <th>Orgainization</th>
                             <th>Email</th>
                             <th>Phone</th>
                             <th>Registration Date</th>
@@ -71,6 +72,7 @@
                         <tr ng-repeat="user in vm.results.items">
                             <td>{{ user.lastName }}</td>
                             <td>{{ user.firstName }}</td>
+                            <td>{{ user.orgainization }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.phoneNumber }}</td>
                             <td>{{ user.dateRegistered | date:"MMM dd, yyyy" }}</td>

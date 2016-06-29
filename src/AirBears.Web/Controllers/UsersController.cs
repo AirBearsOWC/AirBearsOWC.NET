@@ -53,7 +53,7 @@ namespace AirBears.Web.Controllers
 
             if (user.IsAuthorityAccount)
             {
-                var authorityUser = _mapper.Map<IdentityViewModel>(user);
+                var authorityUser = _mapper.Map<AuthorityIdentityViewModel>(user);
                 authorityUser.Roles = User.GetRoles();
 
                 // Return an authority user object if that is who is currently authenticated.

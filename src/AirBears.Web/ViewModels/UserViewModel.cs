@@ -117,8 +117,10 @@ namespace AirBears.Web.ViewModels
         public double? Latitude { get; set; }
     }
 
-    public class IdentityViewModel : UserViewModel
+    public class AuthorityIdentityViewModel : UserViewModel
     {
+        public string Organization { get; set; }
+
         public IEnumerable<string> Roles { get; set; }
     }
 

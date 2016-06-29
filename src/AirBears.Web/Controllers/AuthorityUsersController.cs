@@ -42,7 +42,7 @@ namespace AirBears.Web.Controllers
                 return HttpNotFound();
             }
 
-            var resp = _mapper.Map<IdentityViewModel>(user);
+            var resp = _mapper.Map<AuthorityIdentityViewModel>(user);
 
             resp.Roles = await _userManager.GetRolesAsync(user);
 
@@ -51,11 +51,11 @@ namespace AirBears.Web.Controllers
 
         [HttpGet(Name = "Get Authority Users")]
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
-        public async Task<QueryResult<IdentityViewModel>> GetAuthorityUsers(string name, string sortBy, bool ascending = true, bool onlyUnapproved = false, int page = 1, int? pageSize = 50)
+        public async Task<QueryResult<AuthorityIdentityViewModel>> GetAuthorityUsers(string name, string sortBy, bool ascending = true, bool onlyUnapproved = false, int page = 1, int? pageSize = 50)
         {
             var query = _context.Users.Include(u => u.Roles).Where(u => u.IsAuthorityAccount);
             var roles = await _context.Roles.ToListAsync();
-            var resp = new List<IdentityViewModel>();
+            var resp = new List<AuthorityIdentityViewModel>();
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -79,14 +79,14 @@ namespace AirBears.Web.Controllers
 
             foreach (var u in users)
             {
-                var user = _mapper.Map<IdentityViewModel>(u);
+                var user = _mapper.Map<AuthorityIdentityViewModel>(u);
 
                 // manually align the roles in memory.
                 user.Roles = roles.Where(r => u.Roles.Select(x => x.RoleId).Contains(r.Id)).Select(r => r.Name).ToList();
                 resp.Add(user);
             }
 
-            var result = new QueryResult<IdentityViewModel>()
+            var result = new QueryResult<AuthorityIdentityViewModel>()
             {
                 Items = resp,
                 Page = page,
@@ -116,7 +116,7 @@ namespace AirBears.Web.Controllers
 
             await _userManager.AddToRoleAsync(user, Roles.Authority);
 
-            var resp = _mapper.Map<IdentityViewModel>(user);
+            var resp = _mapper.Map<AuthorityIdentityViewModel>(user);
             resp.Roles = await _userManager.GetRolesAsync(user);
 
             return Ok(resp);
