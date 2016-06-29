@@ -248,7 +248,7 @@ namespace AirBears.Web.Controllers
             var message = $"Greetings {user.FirstName}!\n\n"
                 + "Welcome to the Air Bears community. You will be contacted shortly for authority verification purposes. "
                 + "Once your account has been verified you will have access to our pilot locator."
-                + "\n\nWe look forward to help you anyway we can,\nAir Bears";
+                + "\n\nWe look forward to helping you anyway we can,\nAir Bears";
 
             await _mailer.SendAsync(user.Email, "Welcome to Air Bears", message);
         }

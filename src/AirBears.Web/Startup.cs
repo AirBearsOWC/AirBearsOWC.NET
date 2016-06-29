@@ -20,6 +20,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.IdentityModel.Tokens;
+using System.Security.Cryptography;
 
 namespace AirBears.Web
 {
@@ -46,7 +47,8 @@ namespace AirBears.Web
             builder.AddEnvironmentVariables();
             Configuration = builder.Build();
 
-            AuthKey = new RsaSecurityKey(RsaKeyUtils.GetRandomKey());
+            AuthKey = new RsaSecurityKey(KeyContainer.GetKeyFromContainer("AirBearsAuthContainer"));
+            //AuthKey = new RsaSecurityKey(RsaKeyUtils.GetRandomKey());
             MapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new CommonProfile());
@@ -235,5 +237,17 @@ namespace AirBears.Web
         public string Audience { get; set; }
         public string Issuer { get; set; }
         public SigningCredentials SigningCredentials { get; set; }
+    }
+
+    public class KeyContainer
+    {
+        public static RSAParameters GetKeyFromContainer(string containerName)
+        {
+            CspParameters cp = new CspParameters { KeyContainerName = containerName, Flags = CspProviderFlags.UseMachineKeyStore };
+            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048, cp);
+            RSAParameters rsaKeyInfo = rsa.ExportParameters(true);
+
+            return rsaKeyInfo;
+        }
     }
 }
