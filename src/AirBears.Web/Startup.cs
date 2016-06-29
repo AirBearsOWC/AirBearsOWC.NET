@@ -28,6 +28,7 @@ namespace AirBears.Web
     {
         private const string TokenAudience = "AirBearsUsers";
         private const string TokenIssuer = "AirBearsAPI";
+
         private MapperConfiguration MapperConfiguration { get; set; }
         private RsaSecurityKey AuthKey { get; set; }
 
@@ -243,11 +244,10 @@ namespace AirBears.Web
     {
         public static RSAParameters GetKeyFromContainer(string containerName)
         {
-            CspParameters cp = new CspParameters { KeyContainerName = containerName, Flags = CspProviderFlags.UseMachineKeyStore };
-            RSACryptoServiceProvider rsa = new RSACryptoServiceProvider(2048, cp);
-            RSAParameters rsaKeyInfo = rsa.ExportParameters(true);
+            var cp = new CspParameters { KeyContainerName = containerName, Flags = CspProviderFlags.UseMachineKeyStore };
+            var rsa = new RSACryptoServiceProvider(2048, cp);
 
-            return rsaKeyInfo;
+            return rsa.ExportParameters(true);
         }
     }
 }

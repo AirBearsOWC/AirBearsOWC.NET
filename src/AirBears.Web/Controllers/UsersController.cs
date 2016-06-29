@@ -32,6 +32,15 @@ namespace AirBears.Web.Controllers
             _mailer = mailer;
         }
 
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
+        [HttpGet("/api/me/invite-users", Name = "Invite Users")]
+        public async Task<IActionResult> InviteUsers()
+        {
+            PilotSeeder.InvitePilots(_context, _mailer);
+
+            return Ok();
+        }
+
         [HttpGet("/api/me", Name = "Get Current User")]
         public async Task<IActionResult> GetCurrentUser()
         {

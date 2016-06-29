@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using AirBears.Web.Services;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Data.Entity.Infrastructure;
@@ -37,8 +38,14 @@ namespace AirBears.Web.Models
                 context.SeedTeeShirtSizes();
                 context.SeedPayloads();
                 context.SeedFlightTimes();
+            }
+        }
 
-                PilotSeeder.SeedPilots(context);
+        public static void InviteMigratedUsers(this AppDbContext context, IMailer mailer)
+        {
+            if (context.AllMigrationsApplied())
+            {
+                PilotSeeder.InvitePilots(context, mailer);
             }
         }
 

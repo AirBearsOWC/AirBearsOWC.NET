@@ -17,7 +17,7 @@ namespace AirBears.Web.Services
             AppSettings = appSettings.Value;
         }
 
-        public async Task SendAsync(string to, string subject, string body, bool isHtml = false)
+        public async Task SendAsync(string to, string subject, string body, bool isHtml = false, bool blindCopyAppRecipient = true)
         {
             var message = new MimeMessage();
             var subtype = isHtml ? "html" : "plain";
@@ -26,10 +26,10 @@ namespace AirBears.Web.Services
             message.Subject = subject;
             message.Body = new TextPart(subtype) { Text = body };
 
-            await Send(message);
+            await Send(message, blindCopyAppRecipient);
         }
 
-        private async Task Send(MimeMessage message)
+        private async Task Send(MimeMessage message, bool blindCopyAppRecipient)
         {
             using (var client = new SmtpClient())
             {
@@ -37,7 +37,8 @@ namespace AirBears.Web.Services
                 await client.AuthenticateAsync(SmtpSettings.Username, SmtpSettings.Password);
 
                 message.From.Add(new MailboxAddress("Air Bears Team", "teamcentral@airbears.org"));
-                message.Bcc.Add(new MailboxAddress(string.Empty, AppSettings.PrimaryAppRecipient));
+
+                if(blindCopyAppRecipient) message.Bcc.Add(new MailboxAddress(string.Empty, AppSettings.PrimaryAppRecipient));
 
                 await client.SendAsync(message);
                 await client.DisconnectAsync(true);
