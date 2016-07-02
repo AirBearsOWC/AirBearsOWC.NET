@@ -17,5 +17,8 @@
     "angular-google-places-autocomplete": "https://github.com/joshleeb/AngularGooglePlacesAutocomplete/archive/0.2.7-drawerFix.zip",
     "angular-google-maps": "2.3.2",
     "textAngular": "1.5.1"
+  },
+  "resolutions": {
+    "angular": ">= 1.0.8"
   }
 }

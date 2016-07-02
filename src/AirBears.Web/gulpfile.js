@@ -11,7 +11,8 @@ var gulp = require("gulp"),
     templateCache = require("gulp-angular-templatecache"),
     rev = require("gulp-rev"),
     revReplace = require("gulp-rev-replace"),
-    sourcemaps = require("gulp-sourcemaps");
+    sourcemaps = require("gulp-sourcemaps"),
+    ngAnnotate = require("gulp-ng-annotate");
 
 var paths = {
     webroot: "./wwwroot/"
@@ -65,6 +66,7 @@ gulp.task("min:js", ["clean"], function () {
     scriptPaths.push(paths.app);
 
     return gulp.src(scriptPaths, { base: "." })
+        .pipe(ngAnnotate())
         .pipe(sourcemaps.init())
         .pipe(concat("combined.js"))
         .pipe(uglify())

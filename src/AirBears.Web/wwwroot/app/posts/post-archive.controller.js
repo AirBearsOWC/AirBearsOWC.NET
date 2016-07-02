@@ -3,19 +3,21 @@
 
     angular
         .module("app")
-        .controller("PostArchiveController", PostArchiveController);
+        .component("postArchive", {
+            templateUrl: "app/posts/post-archive.html",
+            bindings: {
 
-    PostArchiveController.$inject = ["postService"];
-
-    function PostArchiveController(postService) {
-        var vm = this;
+            },
+            controller: function(postService) {
+                var vm = this;
         
-        activate();
+                activate();
 
-        function activate() {
-            postService.getPosts(50).then(function (posts) {
-                vm.posts = posts;
-            });
-        }
-    }
+                function activate() {
+                    postService.getPosts(50).then(function (posts) {
+                        vm.posts = posts;
+                    });
+                }
+            }
+        });
 })();

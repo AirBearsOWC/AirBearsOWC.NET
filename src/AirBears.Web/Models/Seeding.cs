@@ -41,14 +41,6 @@ namespace AirBears.Web.Models
             }
         }
 
-        public static void InviteMigratedUsers(this AppDbContext context, IMailer mailer)
-        {
-            if (context.AllMigrationsApplied())
-            {
-                PilotSeeder.InvitePilots(context, mailer);
-            }
-        }
-
         private static void SeedPayloads(this AppDbContext context)
         {
             if (!context.Payloads.Any())

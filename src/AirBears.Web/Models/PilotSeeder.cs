@@ -4,7 +4,6 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AirBears.Web.Models
 {
@@ -59,7 +58,7 @@ namespace AirBears.Web.Models
             {
                 return new List<string>()
                 {
-                    "terrill503@yahoo.com", "christman.gordon@gmail.com", "kjedick@earthlink.net"
+                    
                 };
             }
         }

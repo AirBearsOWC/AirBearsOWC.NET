@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-sm-10">
             <ul class="list-unstyled">
-                <li class="post-list-item" ng-repeat="post in vm.posts">
+                <li class="post-list-item" ng-repeat="post in $ctrl.posts">
                     <h3>
                         <a ui-sref="root.post({slug: post.slug})">{{ post.title }}</a>
                     </h3>

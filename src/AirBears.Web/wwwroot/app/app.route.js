@@ -106,13 +106,11 @@
             })
             .state("root.post-archive", {
                 url: "/posts",
-                templateUrl: "app/posts/post-archive.html",
-                controller: "PostArchiveController as vm"
+                template: "<post-archive></post-archive>"
             })
             .state("root.post", {
                 url: "/posts/:slug",
-                templateUrl: "app/posts/post.html",
-                controller: "PostController as vm"
+                template: "<post></post>"
             })
             .state("root.manage-posts", {
                 url: "/manage-posts",
