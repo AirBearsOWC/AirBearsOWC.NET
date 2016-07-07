@@ -47,74 +47,23 @@ namespace AirBears.Web.Controllers
                 return HttpBadRequest(ModelState);
             }
 
-            var stateName = string.Empty;
+            var response = await RegisterPilotInner(model, true);
 
-            if(!model.HasInternationalAddress)
+            return response;
+        }
+
+        [HttpPost("prepaid-pilot-registration", Name = "Register Pilot (Prepaid)")]
+        [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
+        public async Task<IActionResult> RegisterPrepaidPilot([FromBody]PilotRegistrationViewModel model)
+        {
+            if (!ModelState.IsValid)
             {
-                var state = await _context.States.FirstOrDefaultAsync(s => s.Id == model.StateId.Value);
-
-                if (state == null)
-                {
-                    ModelState.AddModelError("StateId", "A state with that ID does not exist.");
-                    return HttpBadRequest(ModelState);
-                }
-
-                stateName = state.Name;
-            }
-
-            var coords = await _geocodeService.GetCoordsForAddress(model.GetAddress(stateName));
-
-            if (coords.Status != GeocodeResponseStatus.OK)
-            {
-                ModelState.AddModelError(string.Empty, coords.Status.ToString());
                 return HttpBadRequest(ModelState);
             }
 
-            var request = new TransactionRequest
-            {
-                Amount = 25.00M,
-                PaymentMethodNonce = model.Nonce,
-                Options = new TransactionOptionsRequest
-                {
-                    SubmitForSettlement = true
-                }
-            };
+            var response = await RegisterPilotInner(model, false);
 
-            var transactionResult = _gateway.Transaction.Sale(request);
-
-            if (!transactionResult.IsSuccess())
-            {
-                foreach (var error in transactionResult.Errors.All())
-                {
-                    ModelState.AddModelError(string.Empty, error.Message);
-                    return HttpBadRequest(ModelState);
-                }
-            }
-
-            var user = _mapper.Map<User>(model);
-            user.Longitude = coords.Longitude;
-            user.Latitude = coords.Latitude;
-            user.GeocodeAddress = coords.GeocodeAddress;
-            user.AllowsPilotSearch = true;
-            user.SubscribesToUpdates = true;
-            user.DateRegistered = DateTime.UtcNow;
-
-            var result = await _userManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                AddErrors(result);
-                return HttpBadRequest(ModelState);
-            }
-
-            await SendPilotWelcomeEmail(user);
-
-            var responseUser = await _context.Users
-                .Include(u => u.TeeShirtSize)
-                .Include(u => u.State)
-                .SingleAsync(u => u.UserName == model.Email);
-
-            return Ok(_mapper.Map<UserViewModel>(responseUser));
+            return response;
         }
 
         // POST: /api/accounts/authority-registration
@@ -207,6 +156,81 @@ namespace AirBears.Web.Controllers
             await SendResetPasswordEmail(user);
 
             return Ok();
+        }
+
+        private async Task<IActionResult> RegisterPilotInner(PilotRegistrationViewModel model, bool submitPayment)
+        {
+            var stateName = string.Empty;
+
+            if (!model.HasInternationalAddress)
+            {
+                var state = await _context.States.FirstOrDefaultAsync(s => s.Id == model.StateId.Value);
+
+                if (state == null)
+                {
+                    ModelState.AddModelError("StateId", "A state with that ID does not exist.");
+                    return HttpBadRequest(ModelState);
+                }
+
+                stateName = state.Name;
+            }
+
+            var coords = await _geocodeService.GetCoordsForAddress(model.GetAddress(stateName));
+
+            if (coords.Status != GeocodeResponseStatus.OK)
+            {
+                ModelState.AddModelError(string.Empty, coords.Status.ToString());
+                return HttpBadRequest(ModelState);
+            }
+
+            if (submitPayment)
+            {
+                var request = new TransactionRequest
+                {
+                    Amount = 25.00M,
+                    PaymentMethodNonce = model.Nonce,
+                    Options = new TransactionOptionsRequest
+                    {
+                        SubmitForSettlement = true
+                    }
+                };
+
+                var transactionResult = _gateway.Transaction.Sale(request);
+
+                if (!transactionResult.IsSuccess())
+                {
+                    foreach (var error in transactionResult.Errors.All())
+                    {
+                        ModelState.AddModelError(string.Empty, error.Message);
+                        return HttpBadRequest(ModelState);
+                    }
+                }
+            }
+
+            var user = _mapper.Map<User>(model);
+            user.Longitude = coords.Longitude;
+            user.Latitude = coords.Latitude;
+            user.GeocodeAddress = coords.GeocodeAddress;
+            user.AllowsPilotSearch = true;
+            user.SubscribesToUpdates = true;
+            user.DateRegistered = DateTime.UtcNow;
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+                return HttpBadRequest(ModelState);
+            }
+
+            await SendPilotWelcomeEmail(user);
+
+            var responseUser = await _context.Users
+                .Include(u => u.TeeShirtSize)
+                .Include(u => u.State)
+                .SingleAsync(u => u.UserName == model.Email);
+
+            return Ok(_mapper.Map<UserViewModel>(responseUser));
         }
 
         private async Task SendResetPasswordEmail(User user)

@@ -91,6 +91,13 @@ gulp.task("move:fonts", ["clean"], function () {
         .pipe(gulp.dest(paths.webroot + "dist/fonts"));
 });
 
+gulp.task("move:downloads", ["clean"], function () {
+    var downloadPaths = [paths.webroot + "downloads/*"];
+
+    return gulp.src(downloadPaths)
+        .pipe(gulp.dest(paths.webroot + "dist/downloads"));
+});
+
 gulp.task("templatecache", ["clean"], function () {
     return gulp.src(paths.webroot + "app/**/*.html")
         .pipe(htmlmin())
@@ -115,4 +122,4 @@ gulp.task("revreplace", ["rev-assets"], function () {
       .pipe(gulp.dest(paths.webroot));
 });
 
-gulp.task("build", ["min:js", "min:css", "move:fonts", "templatecache", "rev-assets", "revreplace"]);
+gulp.task("build", ["min:js", "min:css", "move:fonts", "move:downloads", "templatecache", "rev-assets", "revreplace"]);
