@@ -19,8 +19,7 @@
             })
             .state("root.home", {
                 url: "/",
-                templateUrl: "app/dashboard/home.html",
-                controller: "HomeController as vm"
+                template: "<home></home>"
             })
             .state("root.register-pilot", {
                 abstract: true,
@@ -68,8 +67,7 @@
             })
             .state("root.contact", {
                 url: "/contact",
-                templateUrl: "app/contact/contact.html",
-                controller: "ContactController as vm"
+                template: "<contact></contact>",
             })
             .state("root.guidelines", {
                 url: "/guidelines",

@@ -3,19 +3,21 @@
 
     angular
         .module("app")
-        .controller("HomeController", HomeController);
+        .component("home", {
+            templateUrl: "app/dashboard/home.html",
+            bindings: {
 
-    HomeController.$inject = ["postService"]; 
+            },
+            controller: function (postService) {
+                var vm = this;
 
-    function HomeController(postService) {
-        var vm = this;
+                activate();
 
-        activate();
-
-        function activate() {
-            postService.getPosts(3).then(function (posts) {
-                vm.latestPosts = posts;
-            });
-        }
-    }
+                function activate() {
+                    postService.getPosts(3).then(function (posts) {
+                        vm.latestPosts = posts;
+                    });
+                }
+            }
+        });
 })();

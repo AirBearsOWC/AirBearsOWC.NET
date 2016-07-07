@@ -3,36 +3,38 @@
 
     angular
         .module("app")
-        .controller("ContactController", ContactController);
+        .component("contact", {
+            templateUrl: "app/contact/contact.html",
+            bindings: {
 
-    ContactController.$inject = ["$state", "toast", "contactService"];
+            },
+            controller: function ($state, toast, contactService) {
+                var vm = this;
 
-    function ContactController($state, toast, contactService) {
-        var vm = this;
-        
-        vm.messageSent = false;
-        vm.send = send;
+                vm.messageSent = false;
+                vm.send = send;
 
-        activate();
+                activate();
 
-        function activate() {
-           
-        }
+                function activate() {
 
-        function send(isValid) {
-            if (!isValid) { return; }
+                }
 
-            vm.isSubmitting = true;
+                function send(isValid) {
+                    if (!isValid) { return; }
 
-            contactService.send(vm.form).then(function () {
-                toast.pop("success", "Message Sent", "Your message was successfully sent!");
-                vm.isSubmitting = false;
-                vm.messageSent = true;
-                vm.form = {};
-            }, function (resp) {
-                toast.pop("error", "Message Failed", "", resp.data);
-                vm.isSubmitting = false;
-            });
-        }
-    }
+                    vm.isSubmitting = true;
+
+                    contactService.send(vm.form).then(function () {
+                        toast.pop("success", "Message Sent", "Your message was successfully sent!");
+                        vm.isSubmitting = false;
+                        vm.messageSent = true;
+                        vm.form = {};
+                    }, function (resp) {
+                        toast.pop("error", "Message Failed", "", resp.data);
+                        vm.isSubmitting = false;
+                    });
+                }
+            }
+        });
 })();

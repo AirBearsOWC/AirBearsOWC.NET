@@ -108,7 +108,7 @@
 
 <div class="container body-content">
     <div class="row">
-        <div class="col-sm-4" ng-repeat="post in vm.latestPosts">
+        <div class="col-sm-4" ng-repeat="post in $ctrl.latestPosts">
             <div class="post-preview">
                 <h3><a ui-sref="root.post({slug: post.slug})">{{ post.title }}</a></h3>
                 <span class="date">{{ post.datePublished | date:'longDate' }}</span>

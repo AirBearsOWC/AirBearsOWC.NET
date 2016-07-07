@@ -9,17 +9,17 @@
 
             <h3>Question? Comments? We're Listening.</h3>
 
-            <div ng-hide="vm.messageSent">
+            <div ng-hide="$ctrl.messageSent">
                 <p class="lead">
                     Fill out the form below and we'll get back to you as soon as we can.
                 </p>
 
-                <form name="contactForm" ng-submit="vm.send(contactForm.$valid)" novalidate>
+                <form name="contactForm" ng-submit="$ctrl.send(contactForm.$valid)" novalidate>
                     <div class="row">
                         <div class="col-sm-5">
                             <div class="form-group" ab-client-validate>
                                 <label for="name">Name</label>
-                                <input id="name" name="name" type="text" class="form-control" required ng-model="vm.form.name" />
+                                <input id="name" name="name" type="text" class="form-control" required ng-model="$ctrl.form.name" />
                             </div>
                         </div>
                     </div>
@@ -28,7 +28,7 @@
                         <div class="col-sm-5">
                             <div class="form-group" ab-client-validate>
                                 <label for="email">Email</label>
-                                <input id="email" name="email" type="email" class="form-control" required ng-model="vm.form.email" />
+                                <input id="email" name="email" type="email" class="form-control" required ng-model="$ctrl.form.email" />
                                 <div class="help-block validation" ng-show="contactForm.email.$error.email">Email must be valid.</div>
                             </div>
                         </div>
@@ -38,7 +38,7 @@
                         <div class="col-sm-5">
                             <div class="form-group">
                                 <label for="phone">Phone Number <small>(Optional)</small></label>
-                                <input id="phone" name="phone" type="text" class="form-control" ng-model="vm.form.phoneNumber" />
+                                <input id="phone" name="phone" type="text" class="form-control" ng-model="$ctrl.form.phoneNumber" />
                             </div>
                         </div>
                     </div>
@@ -47,7 +47,7 @@
                         <div class="col-sm-8">
                             <div class="form-group" ab-client-validate>
                                 <label for="message">Message</label>
-                                <textarea id="message" name="message" rows="6" class="form-control" required maxlength="500" ng-model="vm.form.message"></textarea>
+                                <textarea id="message" name="message" rows="6" class="form-control" required maxlength="500" ng-model="$ctrl.form.message"></textarea>
                                 <div class="help-block validation" ng-show="contactForm.message.$error.maxlength">No more than 500 characters.</div>
                             </div>
                         </div>
@@ -56,7 +56,7 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <div vc-recaptcha key="'6LfWxSETAAAAAMloyGsgTNoUWJF12RdxgRBqRBZm'" ng-model="vm.form.captchaResponse"></div>
+                                <div vc-recaptcha key="'6LfWxSETAAAAAMloyGsgTNoUWJF12RdxgRBqRBZm'" ng-model="$ctrl.form.captchaResponse"></div>
                                 <div class="help-block" ng-show="contactForm.$submitted && contactForm.$error.recaptcha">Please verify that you're human.</div>
                             </div>
                         </div>
@@ -64,13 +64,13 @@
 
                     <div class="row vert-margin">
                         <div class="col-sm-4">
-                            <button class="btn btn-success" type="submit" ng-disabled="vm.isSubmitting"><i class="glyphicon glyphicon-envelope"></i> Send</button>
+                            <button class="btn btn-success" type="submit" ng-disabled="$ctrl.isSubmitting"><i class="glyphicon glyphicon-envelope"></i> Send</button>
                         </div>
                     </div>
                 </form> 
             </div>
 
-            <div ng-show="vm.messageSent">
+            <div ng-show="$ctrl.messageSent">
                 <p class="lead text-success vert-margin">
                     Thank you for the message! We'll get back to you shortly.
                 </p>

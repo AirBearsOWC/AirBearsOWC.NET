@@ -50,6 +50,7 @@
 /// <reference path="app/reset-password/reset-password.controller.js" />
 /// <reference path="app/resources/resources.controller.js" />
 /// <reference path="lib/a0-angular-storage/dist/angular-storage.js" />
+/// <reference path="lib/angular/angular.js" />
 /// <reference path="lib/angular-animate/angular-animate.js" />
 /// <reference path="lib/angular-bootstrap/ui-bootstrap-tpls.js" />
 /// <reference path="lib/angular-google-maps/dist/angular-google-maps.js" />
