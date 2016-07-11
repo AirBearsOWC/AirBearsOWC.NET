@@ -120,6 +120,11 @@
                 templateUrl: "app/manage/edit-post.html",
                 controller: "EditPostController as vm"
             })
+            .state("root.prepaid-registration", {
+                url: "/prepaid-registration",
+                templateUrl: "app/manage/prepaid-registration.html",
+                controller: "PrepaidRegistrationController as vm"
+            })
             .state("root.manage-pilots", {
                 url: "/manage-pilots",
                 templateUrl: "app/manage/manage-pilots.html",

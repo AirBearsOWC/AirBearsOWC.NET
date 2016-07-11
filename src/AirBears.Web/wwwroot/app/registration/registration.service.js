@@ -12,6 +12,7 @@
         var urlBase = "/api/";
 
         service.registerPilot = registerPilot;
+        service.registerPrepaidPilot = registerPrepaidPilot;
         service.registerAuthority = registerAuthority;
         service.openRegistationOptions = openRegistationOptions;
 
@@ -19,6 +20,10 @@
 
         function registerPilot(registration) {
             return $http.post(urlBase + "accounts/pilot-registration", registration);
+        }
+
+        function registerPrepaidPilot(registration) {
+            return $http.post(urlBase + "accounts/prepaid-pilot-registration", registration);
         }
 
         function registerAuthority(registration) {

@@ -14,8 +14,10 @@
         vm.teeShirtSizes = [];
         vm.registration = {};
         vm.isSubmitting = false;
+        vm.isRegistrationComplete = false;
         vm.openTermsAndConditions = openTermsAndConditions;
         vm.submit = submit;
+        vm.done = done;
 
         activate();
 
@@ -42,19 +44,27 @@
             });
         }
 
-        function submit(isValid) {
-            if (!isValid) { return; }
+        function submit(form) {
+            if (!form.$valid) { return; }
 
             vm.isSubmitting = true;
-            vm.registration.nonce = "EXEMPT";
+            vm.registration.nonce = "PREPAID";
 
-            registrationService.registerPilot(vm.registration).then(function(resp){
-                $state.go("root.register-pilot.confirmation", { user: resp.data });
+            registrationService.registerPrepaidPilot(vm.registration).then(function (resp) {
+                vm.isSubmitting = false;
+                vm.isRegistrationComplete = true;
+                form.$setPristine();
             },
             function (resp) {
                 vm.isSubmitting = false;
                 toast.pop("error", "Invalid Registration", "", resp.data);
             });
+        }
+
+        function done() {
+            vm.isRegistrationComplete = false;
+            vm.isSubmitting = false;
+            vm.registration = {};
         }
     }
 })();
