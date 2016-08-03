@@ -2,15 +2,15 @@ using AirBears.Web.Models;
 using AirBears.Web.Services;
 using AirBears.Web.ViewModels;
 using AutoMapper;
+using Braintree;
 using Microsoft.AspNet.Authorization;
+using Microsoft.AspNet.Http.Features;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Mvc;
 using Microsoft.Data.Entity;
+using Microsoft.Extensions.WebEncoders;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.WebEncoders;
-using Braintree;
-using Microsoft.AspNet.Http.Features;
 
 namespace AirBears.Web.Controllers
 {
