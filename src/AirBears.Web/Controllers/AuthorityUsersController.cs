@@ -119,6 +119,8 @@ namespace AirBears.Web.Controllers
             var resp = _mapper.Map<AuthorityIdentityViewModel>(user);
             resp.Roles = await _userManager.GetRolesAsync(user);
 
+            await SendAuthorityApprovalNoticeEmail(user);
+
             return Ok(resp);
         }
 
@@ -130,6 +132,17 @@ namespace AirBears.Web.Controllers
             message += string.Format("\n\nThanks,\nAir Bears Team");
 
             await _mailer.SendAsync(user.Email, "Air Bears Password Changed", message);
+        }
+
+        private async Task SendAuthorityApprovalNoticeEmail(User user)
+        {
+            var message = $"Hello {user.FirstName},\n\nYour authority account application has been approved! "
+            + "You now have access to the entire Air Bears member database. "
+            + "Simply use our website's pilot search feature to find and contact the nearest Air Bears member to help you. "
+            + "\n\nWe look forward to assisting any way we can. "
+            + "\n\nThanks,\nAir Bears Team";
+
+            await _mailer.SendAsync(user.Email, "Air Bears Approval", message);
         }
 
         protected override void Dispose(bool disposing)
