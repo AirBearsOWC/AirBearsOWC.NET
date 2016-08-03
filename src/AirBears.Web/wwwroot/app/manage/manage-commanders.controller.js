@@ -5,9 +5,9 @@
         .module("app")
         .controller("ManageCommandersController", ManageCommandersController);
 
-    ManageCommandersController.$inject = ["authorityService", "toast"];
+    ManageCommandersController.$inject = ["$uibModal", "authorityService", "toast"];
 
-    function ManageCommandersController(authorityService, toast) {
+    function ManageCommandersController($uibModal, authorityService, toast) {
         var vm = this;
 
         vm.results = {};
@@ -53,11 +53,32 @@
         }
 
         function markApproved(index, isApproved) {
-            authorityService.markApproved(vm.results.items[index].id, isApproved).then(function (resp) {
-                vm.results.items[index] = resp.data;
-            },
-            function (resp) {
-                toast.pop("error", "Update Failed", "", resp.data);
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: "app/common/confirm-modal.html",
+                controller: "ConfirmModalController as vm",
+                resolve: {
+                    options: function () {
+                        return {
+                            title: "Confirm Approval",
+                            content: "Are you sure you want to approve this account? This will provide the account access to our entire pilot database.",
+                            confirmBtnText: "Yes, Approve the Account",
+                            confirmBtnClass: "btn-danger"
+                        };
+                    }
+                },
+                size: "sm"
+            });
+
+            modalInstance.result.then(function (confirmed) {
+                if (confirmed) {
+                    authorityService.markApproved(vm.results.items[index].id, isApproved).then(function (resp) {
+                        vm.results.items[index] = resp.data;
+                    },
+                    function (resp) {
+                        toast.pop("error", "Update Failed", "", resp.data);
+                    });
+                }
             });
         }
     }
