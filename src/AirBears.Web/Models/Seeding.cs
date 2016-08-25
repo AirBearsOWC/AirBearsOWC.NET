@@ -38,8 +38,18 @@ namespace AirBears.Web.Models
                 context.SeedTeeShirtSizes();
                 context.SeedPayloads();
                 context.SeedFlightTimes();
+
+                //PilotSeeder.SeedPilots(context);
             }
         }
+
+        //public static void InviteMigratedUsers(this AppDbContext context, IMailer mailer)
+        //{
+        //    if (context.AllMigrationsApplied())
+        //    {
+        //        PilotSeeder.InvitePilots(context, mailer);
+        //    }
+        //}
 
         private static void SeedPayloads(this AppDbContext context)
         {

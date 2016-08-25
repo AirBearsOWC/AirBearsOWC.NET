@@ -58,7 +58,7 @@ namespace AirBears.Web.Models
             {
                 return new List<string>()
                 {
-                    
+
                 };
             }
         }
@@ -143,9 +143,7 @@ namespace AirBears.Web.Models
 
         private static List<MigratedUser> PilotsToBeSeeded = new List<MigratedUser>
         {
-            new MigratedUser { UserName = "terrill503@yahoo.com", FirstName = "William", LastName = "Terrill", Phone="503-665-3561", Street1 = "2516 SW Brixton Dr.", Street2 ="", City = "Gresham", State = "OR", Zip="97080", TeeShirtSize = "2XL", AddressLine1 = "", AddressLine2 =  "", AddressLine3 =  "", AddressLine4 =  "", HasInternationalAddress =  false },
-            new MigratedUser { UserName = "christman.gordon@gmail.com", FirstName = "Chris", LastName = "Gordon", Phone="502-741-4352", Street1 = "2917 Cambridge Rd.", Street2 ="", City = "Louisville", State = "KY", Zip="40220", TeeShirtSize = "2XL", AddressLine1 = "", AddressLine2 =  "", AddressLine3 =  "", AddressLine4 =  "", HasInternationalAddress =  false },
-            new MigratedUser { UserName = "kjedick@earthlink.net", FirstName = "Kenneth", LastName = "Edick", Phone="", Street1 = "27665 Mucho Grande View", Street2 ="", City = "Calhan", State = "CO", Zip="80808", TeeShirtSize = "XL", AddressLine1 = "", AddressLine2 =  "", AddressLine3 =  "", AddressLine4 =  "", HasInternationalAddress =  false }
+
         };
     }
 

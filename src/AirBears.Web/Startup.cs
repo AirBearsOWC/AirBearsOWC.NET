@@ -137,6 +137,7 @@ namespace AirBears.Web
             {
                 serviceScope.ServiceProvider.GetService<AppDbContext>().Database.Migrate();
                 serviceScope.ServiceProvider.GetService<AppDbContext>().EnsureSeedData();
+                //serviceScope.ServiceProvider.GetService<AppDbContext>().InviteMigratedUsers(serviceScope.ServiceProvider.GetService<IMailer>());
             }
 
             app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
