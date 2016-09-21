@@ -70,12 +70,11 @@ namespace AirBears.Web.Controllers
                  ? await _context.Posts.OrderByDescending(p => p.DatePublished).Take(pageSize).ToListAsync()
                  : await _context.Posts.ThatArePublished().OrderByDescending(p => p.DatePublished).Take(pageSize).ToListAsync();
 
-            foreach(var post in posts)
+            foreach(var post in posts.Where(p => !string.IsNullOrWhiteSpace(p.Content)))
             {
+                post.Content = post.Content.StripHtml();
                 if (!string.IsNullOrWhiteSpace(post.Content) && post.Content.Length > 500)
-                    post.Content = post.Content.StripHtml().Substring(0, 500);
-                else if (!string.IsNullOrWhiteSpace(post.Content))
-                    post.Content = post.Content.StripHtml();
+                    post.Content = post.Content.Substring(0, 500);
             }
 
             return Ok(_mapper.Map<List<PostViewModel>>(posts));
