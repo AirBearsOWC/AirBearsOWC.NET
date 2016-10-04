@@ -65,6 +65,10 @@
                  templateUrl: "app/legal/terms.html",
                  controller: "TermsOfServiceController as vm"
             })
+            .state("root.refund-policy", {
+                url: "/refund",
+                template: "<refund></refund>",
+            })
             .state("root.contact", {
                 url: "/contact",
                 template: "<contact></contact>",

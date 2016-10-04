@@ -25,6 +25,7 @@
 /// <reference path="app/guidelines/guidelines.controller.js" />
 /// <reference path="app/layout/shell.controller.js" />
 /// <reference path="app/legal/privacy.controller.js" />
+/// <reference path="app/legal/refund.controller.js" />
 /// <reference path="app/legal/terms.controller.js" />
 /// <reference path="app/manage/edit-post.controller.js" />
 /// <reference path="app/manage/manage-commanders.controller.js" />
