@@ -105,15 +105,6 @@ input, select, textarea {
     margin-bottom: 15px;
 }
 
-.jumbotron {
-    margin-top: 50px;
-    position: relative;
-    z-index: 10;
-    background: rgba(30,30,30,0.6);
-    color: #fff;
-    text-shadow: 1px 2px #000;
-}
-
 .under-jumbo {
     margin-top: 125px;
 }
@@ -233,6 +224,66 @@ ol ol > li {
     background-color: #333;
     color: #ddd;
     padding: 20px 0px;
+}
+
+.white-bg {
+    background-color: #fff;
+    position: absolute;
+    width: 100%;
+    height: 1750px;
+    /*margin-top: -35px;*/
+    left: 0;
+}
+
+.bg-vid {
+    position: absolute;
+    z-index: -20;
+    width: 100%;
+    height: 100%;
+    top: -43%;
+}
+
+@media (max-width: 992px) {
+    .bg-vid {
+        width: 140%;
+        height: 140%;
+        top: -61%;
+    }
+}
+.jumbotron {
+    margin-top: 50px;
+    position: relative;
+    z-index: 10;
+    background: rgba(30,30,30,0.6);
+    color: #fff;
+    text-shadow: 1px 2px #000;
+}
+
+.photo {
+    border-radius: 60px;
+    height: 159px;
+    width: 115px;
+}
+
+.header-bar {
+    background-color: #eee;
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 2px 0px #ccc;
+}
+
+.header-bar h2 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: #555;
+    text-shadow: 2px 2px 1px #ccc;
+}
+
+@media (max-width: 600px) {
+    .vertical-align {
+        display: inline-block;
+    }
 }
 
 /*
