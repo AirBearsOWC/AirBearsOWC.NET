@@ -29,7 +29,7 @@ namespace AirBears.Web.Models
             return !total.Except(applied).Any();
         }
 
-        public static void EnsureSeedData(this AppDbContext context)
+        public static void EnsureSeedData(this AppDbContext context, bool isDevEnv = false)
         {
             if (context.AllMigrationsApplied())
             {
@@ -38,6 +38,11 @@ namespace AirBears.Web.Models
                 context.SeedTeeShirtSizes();
                 context.SeedPayloads();
                 context.SeedFlightTimes();
+
+                if (isDevEnv)
+                {
+                    context.SeedUsers();
+                }
 
                 //PilotSeeder.SeedPilots(context);
             }
@@ -50,6 +55,114 @@ namespace AirBears.Web.Models
         //        PilotSeeder.InvitePilots(context, mailer);
         //    }
         //}
+
+        private static void SeedUsers(this AppDbContext context)
+        {            
+            var userStore = new UserStore<User>(context);
+            var hasher = new PasswordHasher<User>();
+            var geocodeService = new GeocodeService();
+            var mnState = context.States.Where(s => s.Abbr.ToLower() == "mn").FirstOrDefault();
+            var largeShirt = context.TeeShirtSizes.Where(s => s.Name.ToLower() == "l").FirstOrDefault();
+
+            var adminEmail = "admin@airbears.org";
+            if (!context.Users.Any(u => u.Email == adminEmail))
+            {
+                var adminUser = new User
+                {
+                    FirstName = "Admin",
+                    LastName = "Jones",
+                    Street1 = "123 Hope Ave.",
+                    Bio = "This is an admin development user.",
+                    City = "St. Paul",
+                    StateId = mnState.Id,
+                    Zip = "55105",
+                    PhoneNumber = "651-999-9999",
+                    DateRegistered = DateTime.UtcNow,
+                    TeeShirtMailedDate = DateTime.UtcNow,
+                    Email = adminEmail,
+                    NormalizedEmail = adminEmail.ToUpper(),
+                    UserName = adminEmail,
+                    NormalizedUserName = adminEmail.ToUpper(),
+                    TeeShirtSizeId = largeShirt.Id,
+                    AllowsPilotSearch = true,
+                    HasAgreedToTerms = true,
+                    SubscribesToUpdates = true,
+                    HasInternationalAddress = false
+                };
+                adminUser.PasswordHash = hasher.HashPassword(adminUser, "password");
+
+                UpdatePilotCoordinates(adminUser, mnState.Abbr, geocodeService);
+                userStore.CreateAsync(adminUser).Wait();
+                //adminUser = context.Users.First(u => u.Email == adminEmail);
+                userStore.AddToRoleAsync(adminUser, Roles.Admin).Wait();
+            }
+
+            var authorityEmail = "authority@airbears.org";
+            if (!context.Users.Any(u => u.Email == authorityEmail))
+            {
+                var authorityUser = new User
+                {
+                    FirstName = "Authority",
+                    LastName = "Smith",
+                    Street1 = "222 Main St.",
+                    Bio = "This is an approved authority development user.",
+                    City = "Minneapolis",
+                    StateId = mnState.Id,
+                    Zip = "55112",
+                    PhoneNumber = "651-888-8888",
+                    DateRegistered = DateTime.UtcNow,
+                    TeeShirtMailedDate = DateTime.UtcNow,
+                    Email = authorityEmail,
+                    NormalizedEmail = authorityEmail.ToUpper(),
+                    UserName = authorityEmail,
+                    NormalizedUserName = authorityEmail.ToUpper(),
+                    TeeShirtSizeId = largeShirt.Id,
+                    AllowsPilotSearch = true,
+                    HasAgreedToTerms = true,
+                    SubscribesToUpdates = true,
+                    HasInternationalAddress = false,
+                    IsAuthorityAccount = true
+                };
+                authorityUser.PasswordHash = hasher.HashPassword(authorityUser, "password");              
+
+                UpdatePilotCoordinates(authorityUser, mnState.Abbr, geocodeService);
+                userStore.CreateAsync(authorityUser).Wait();
+                //authorityUser = context.Users.First(u => u.Email == adminEmail);
+                userStore.AddToRoleAsync(authorityUser, Roles.Authority).Wait(); // Autority role signifies a confirmed authority account.
+            }
+
+            var unapprovedAuthorityEmail = "unapproved-authority@airbears.org";
+            if (!context.Users.Any(u => u.Email == unapprovedAuthorityEmail))
+            {
+                var unapprovedAuthority = new User
+                {
+                    FirstName = "UnapprovedAuthority",
+                    LastName = "Johnson",
+                    Street1 = "515 1st Ave.",
+                    Bio = "This is an unapproved authority development user.",
+                    City = "St. Paul",
+                    StateId = mnState.Id,
+                    Zip = "55112",
+                    PhoneNumber = "651-888-9999",
+                    DateRegistered = DateTime.UtcNow,
+                    TeeShirtMailedDate = DateTime.UtcNow,
+                    Email = unapprovedAuthorityEmail,
+                    NormalizedEmail = unapprovedAuthorityEmail.ToUpper(),
+                    UserName = unapprovedAuthorityEmail,
+                    NormalizedUserName = unapprovedAuthorityEmail.ToUpper(),
+                    TeeShirtSizeId = largeShirt.Id,
+                    AllowsPilotSearch = true,
+                    HasAgreedToTerms = true,
+                    SubscribesToUpdates = true,
+                    HasInternationalAddress = false,
+                    IsAuthorityAccount = true
+                };
+                unapprovedAuthority.PasswordHash = hasher.HashPassword(unapprovedAuthority, "password");
+
+                UpdatePilotCoordinates(unapprovedAuthority, mnState.Abbr, geocodeService);
+                userStore.CreateAsync(unapprovedAuthority).Wait();
+            }
+        }
 
         private static void SeedPayloads(this AppDbContext context)
         {
@@ -184,5 +297,20 @@ namespace AirBears.Web.Models
                 context.SaveChanges();
             }
         }
+
+        private static void UpdatePilotCoordinates(User pilot, string state, GeocodeService geocodeService)
+        {
+            var coords = geocodeService.GetCoordsForAddress(pilot.GetAddress(state)).Result;
+
+            if (coords.Status != GeocodeResponseStatus.OK)
+            {
+                return;
+            }
+
+            pilot.Longitude = coords.Longitude;
+            pilot.Latitude = coords.Latitude;
+            pilot.GeocodeAddress = coords.GeocodeAddress;
+        }
+
     }
 }

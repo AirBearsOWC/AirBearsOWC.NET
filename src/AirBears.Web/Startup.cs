@@ -136,7 +136,7 @@ namespace AirBears.Web
             using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope())
             {
                 serviceScope.ServiceProvider.GetService<AppDbContext>().Database.Migrate();
-                serviceScope.ServiceProvider.GetService<AppDbContext>().EnsureSeedData();
+                serviceScope.ServiceProvider.GetService<AppDbContext>().EnsureSeedData(env.IsDevelopment());
                 //serviceScope.ServiceProvider.GetService<AppDbContext>().InviteMigratedUsers(serviceScope.ServiceProvider.GetService<IMailer>());
             }
 
