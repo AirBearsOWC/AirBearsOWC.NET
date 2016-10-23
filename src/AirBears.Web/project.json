@@ -1,5 +1,6 @@
 {
   "userSecretsId": "aspnet5-AirBears.Web-00b6f79e-5882-41ca-872a-bc30219df1ec",
+  "webroot": "wwwroot",
   "version": "1.0.0-*",
   "compilationOptions": {
     "emitEntryPoint": true
