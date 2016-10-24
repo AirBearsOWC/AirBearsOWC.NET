@@ -13,8 +13,7 @@
 
         $stateProvider
             .state("root", {
-                templateUrl: "app/layout/shell.html",
-                controller: "ShellController as vm",
+                template: "<shell></shell>",
                 abstract: true
             })
             .state("root.home", {
@@ -75,8 +74,7 @@
             })
             .state("root.guidelines", {
                 url: "/guidelines",
-                templateUrl: "app/guidelines/guidelines.html",
-                controller: "GuidelinesController as vm"
+                template: "<guidelines></guidelines>",
             })
             .state("root.resources", {
                 url: "/resources",

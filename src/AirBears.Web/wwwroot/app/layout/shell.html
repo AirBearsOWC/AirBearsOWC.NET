@@ -19,7 +19,7 @@
                 <li ui-sref-active="active"><a ui-sref="root.guidelines">Operational Guidelines</a></li>
                 <li ui-sref-active="active"><a ui-sref="root.post-archive">Posts</a></li>
                 <li ui-sref-active="active"><a ui-sref="root.contact">Contact</a></li>               
-                <li class="dropdown" ng-show="vm.user && vm.user.isAdmin" ng-class="{active:vm.isActive('root.manage')}">
+                <li class="dropdown" ng-show="$ctrl.user && $ctrl.user.isAdmin" ng-class="{active:$ctrl.isActive('root.manage')}">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         Manage <span class="caret"></span>
                     </a>
@@ -31,18 +31,18 @@
                     </ul>
                 </li>
             </ul>            
-            <ul class="nav navbar-nav navbar-right" ng-hide="vm.user">
-                <li><a ng-click="vm.openRegistationOptions()">Register</a></li>
-                <li><a ng-click="vm.openLogin()">Login</a></li>
+            <ul class="nav navbar-nav navbar-right" ng-hide="$ctrl.user">
+                <li><a ng-click="$ctrl.openRegistationOptions()">Register</a></li>
+                <li><a ng-click="$ctrl.openLogin()">Login</a></li>
             </ul>
-            <ul class="nav navbar-nav navbar-right" ng-show="vm.user">
+            <ul class="nav navbar-nav navbar-right" ng-show="$ctrl.user">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        {{ vm.user.firstName }} {{ vm.user.lastName }} <span class="caret"></span>
+                        {{ $ctrl.user.firstName }} {{ $ctrl.user.lastName }} <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li><a ui-sref="root.edit-profile" ng-show="!vm.user.isAuthorityAccount">My Profile</a></li>
-                        <li><a href="#" ng-click="vm.logout()"><span class="glyphicon glyphicon-lock"></span>&nbsp; Log Out</a></li>
+                        <li><a ui-sref="root.edit-profile" ng-show="!$ctrl.user.isAuthorityAccount">My Profile</a></li>
+                        <li><a href="#" ng-click="$ctrl.logout()"><span class="glyphicon glyphicon-lock"></span>&nbsp; Log Out</a></li>
                     </ul>
                 </li>
             </ul>
@@ -84,7 +84,7 @@
             <div class="col-sm-4">
                 <h3>News and Updates</h3>
                 <ul class="list-unstyled">
-                    <li ng-repeat="post in vm.latestPosts">
+                    <li ng-repeat="post in $ctrl.latestPosts">
                         <a ui-sref="root.post({slug: post.slug})">{{ post.title }}</a>
                         <div class="date">{{ post.datePublished | date:'longDate' }}</div>
                     </li>

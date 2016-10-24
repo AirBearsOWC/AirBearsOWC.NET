@@ -3,17 +3,19 @@
 
     angular
         .module("app")
-        .controller("GuidelinesController", GuidelinesController);
+        .component("guidelines", {
+            templateUrl: "app/guidelines/guidelines.html",
+            bindings: {
 
-    GuidelinesController.$inject = [];
+            },
+            controller: function () {
+                var vm = this;
 
-    function GuidelinesController() {
-        var vm = this;
-        
-        activate();
+                activate();
 
-        function activate() {
-           
-        }
-    }
+                function activate() {
+
+                }
+            }
+        });
 })();
