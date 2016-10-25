@@ -3,17 +3,19 @@
 
     angular
         .module("app")
-        .controller("TermsOfServiceController", TermsOfServiceController);
+        .component("terms", {
+            templateUrl: "app/legal/terms.html",
+            bindings: {
 
-    TermsOfServiceController.$inject = [];
+            },
+            controller: function () {
+                var vm = this;
 
-    function TermsOfServiceController() {
-        var vm = this;
+                activate();
 
-        activate();
+                function activate() {
 
-        function activate() {
-           
-        }
-    }
+                }
+            }
+        });
 })();

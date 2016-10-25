@@ -56,13 +56,11 @@
             })
             .state("root.privacy-policy", {
                 url: "/privacy",
-                templateUrl: "app/legal/privacy.html",
-                controller: "PrivacyPolicyController as vm"
+                template: "<privacy></privacy>",
             })
             .state("root.terms-of-service", {
                  url: "/terms",
-                 templateUrl: "app/legal/terms.html",
-                 controller: "TermsOfServiceController as vm"
+                 template: "<terms></terms>",
             })
             .state("root.refund-policy", {
                 url: "/refund",

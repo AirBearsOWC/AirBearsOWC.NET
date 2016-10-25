@@ -3,17 +3,19 @@
 
     angular
         .module("app")
-        .controller("PrivacyPolicyController", PrivacyPolicyController);
+        .component("privacy", {
+            templateUrl: "app/legal/privacy.html",
+            bindings: {
 
-    PrivacyPolicyController.$inject = [];
+            },
+            controller: function () {
+                var vm = this;
 
-    function PrivacyPolicyController() {
-        var vm = this;
+                activate();
 
-        activate();
+                function activate() {
 
-        function activate() {
-           
-        }
-    }
+                }
+            }
+        });
 })();
