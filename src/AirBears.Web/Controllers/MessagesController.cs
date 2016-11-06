@@ -2,9 +2,9 @@ using AirBears.Web.Models;
 using AirBears.Web.Services;
 using AirBears.Web.Settings;
 using AirBears.Web.ViewModels;
-using Microsoft.AspNet.Http.Features;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace AirBears.Web.Controllers
@@ -29,7 +29,7 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var remoteIpAddress = HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString();
@@ -37,7 +37,7 @@ namespace AirBears.Web.Controllers
             if (!await _captchaService.IsValid(model.CaptchaResponse, remoteIpAddress))
             {
                 ModelState.AddModelError(string.Empty, "Failed to verify CAPTCHA. Please try again.");
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             await SendContactMessageEmail(model);

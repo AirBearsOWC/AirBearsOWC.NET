@@ -2,10 +2,10 @@ using AirBears.Web.Models;
 using AirBears.Web.Services;
 using AirBears.Web.ViewModels;
 using AutoMapper;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,7 +49,7 @@ namespace AirBears.Web.Controllers
                 .Include(u => u.State)
                 .Include(u => u.FlightTime)
                 .Include(u => u.Payload)
-                .FirstOrDefaultAsync(u => u.Id == User.GetUserId());
+                .FirstOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
 
             if (user.IsAuthorityAccount)
             {
@@ -73,11 +73,11 @@ namespace AirBears.Web.Controllers
         [HttpPost("/api/me/password", Name = "Change Password")]
         public async Task<IActionResult> ChangePassword([FromBody]ChangePasswordViewModel model)
         {
-            var user = await _userManager.FindByIdAsync(User.GetUserId());
+            var user = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
 
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
@@ -88,7 +88,7 @@ namespace AirBears.Web.Controllers
                 {
                     ModelState.AddModelError("", error.Description);
                 }
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             await UpdateLastPasswordChangeDate(user);
@@ -106,7 +106,7 @@ namespace AirBears.Web.Controllers
 
             if (user == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             return Ok(_mapper.Map<UserViewModel>(user));
@@ -125,7 +125,7 @@ namespace AirBears.Web.Controllers
         private async Task UpdateLastPasswordChangeDate(User user)
         {
             user.LastPasswordChangeDate = DateTime.UtcNow;
-            _context.Users.Update(user, GraphBehavior.SingleObject);
+            _context.Users.Update(user);
 
             await _context.SaveChangesAsync();
         }

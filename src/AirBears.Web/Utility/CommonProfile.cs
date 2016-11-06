@@ -42,17 +42,15 @@ namespace AirBears.Web.Profiles
             CreateMap<User, PilotSearchResultViewModel>()
                 .ForMember(dest => dest.Distance, mapper => mapper.Ignore());
 
-            CreateMap<PilotRegistrationViewModel, User>()
+            CreateMap<PilotRegistrationViewModel, User>(MemberList.Source)
                 .ForMember(dest => dest.UserName, mapper => mapper.MapFrom(src => src.Email))
-                .ForMember(dest => dest.IsAuthorityAccount, mapper => mapper.UseValue(false))
-                .IgnoreAllNonExisting();
+                .ForMember(dest => dest.IsAuthorityAccount, mapper => mapper.UseValue(false));
 
-            CreateMap<AuthorityRegistrationViewModel, User>()
+            CreateMap<AuthorityRegistrationViewModel, User>(MemberList.Source)
                 .ForMember(dest => dest.UserName, mapper => mapper.MapFrom(src => src.Email))
-                .ForMember(dest => dest.IsAuthorityAccount, mapper => mapper.UseValue(true))
-                .IgnoreAllNonExisting();
+                .ForMember(dest => dest.IsAuthorityAccount, mapper => mapper.UseValue(true));
 
-            CreateMap<PilotViewModel, User>()
+            CreateMap<PilotViewModel, User>(MemberList.Source)
                 //Map all foreign keys
                 .ForMember(dest => dest.StateId, mapper => mapper.MapFrom(s => s.State.Id))
                 .ForMember(dest => dest.FlightTimeId, mapper => mapper.MapFrom(s => s.FlightTime.Id))
@@ -62,8 +60,7 @@ namespace AirBears.Web.Profiles
                 .ForMember(dest => dest.State, mapper => mapper.UseValue<State>(null))
                 .ForMember(dest => dest.FlightTime, mapper => mapper.UseValue<FlightTime>(null))
                 .ForMember(dest => dest.Payload, mapper => mapper.UseValue<Payload>(null))
-                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.UseValue<TeeShirtSize>(null))
-                .IgnoreAllNonExisting();
+                .ForMember(dest => dest.TeeShirtSize, mapper => mapper.UseValue<TeeShirtSize>(null));
         }
     }
 }

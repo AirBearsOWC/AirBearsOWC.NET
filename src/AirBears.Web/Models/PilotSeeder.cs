@@ -1,6 +1,6 @@
 ﻿using AirBears.Web.Services;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,7 +73,7 @@ namespace AirBears.Web.Models
 
             foreach (var user in PilotsToBeSeeded)
             {
-                if (!context.Users.Any(u => u.UserName.Equals(user.UserName, StringComparison.InvariantCultureIgnoreCase)))
+                if (!context.Users.Any(u => u.UserName.Equals(user.UserName, StringComparison.CurrentCultureIgnoreCase)))
                 {
                     var newUser = MapProperties(user, states, shirts, hasher);
                     UpdatePilotCoordinates(newUser, user.State, geocodeService);

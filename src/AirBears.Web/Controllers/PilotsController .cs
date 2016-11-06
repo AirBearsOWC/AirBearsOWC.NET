@@ -1,17 +1,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Mvc;
+
 using AirBears.Web.Models;
 using AirBears.Web.ViewModels;
 using AutoMapper;
-using Microsoft.AspNet.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using System;
 using AirBears.Web.Services;
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 
 namespace AirBears.Web.Controllers
 {
@@ -41,7 +42,7 @@ namespace AirBears.Web.Controllers
 
             if (pilot == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             return Ok(_mapper.Map<PilotViewModel>(pilot));
@@ -97,16 +98,16 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
-            var currentUser = await _userManager.FindByIdAsync(User.GetUserId());
+            var currentUser = await _userManager.FindByIdAsync(_userManager.GetUserId(User));
 
             if(currentUser.IsAuthorityAccount && !User.IsInRole(Roles.Authority))
             {
                 // Non-approved authority accounts cannot use pilot search.
                 ModelState.AddModelError("", "Authority accounts must be verified before they can use the pilot finder.");
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
 
@@ -122,7 +123,7 @@ namespace AirBears.Web.Controllers
             if (coords.Status != GeocodeResponseStatus.OK)
             {
                 ModelState.AddModelError("", coords.Status.ToString());
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             return Ok(await FindPilotsWithinRadius(model.Distance, coords.Latitude, coords.Longitude, !IsApprovedAuthority(currentUser)));
@@ -137,11 +138,11 @@ namespace AirBears.Web.Controllers
 
             if (user == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             user.TeeShirtMailedDate = teeShirtMailed ? DateTime.UtcNow : default(DateTime?);
-            _context.Users.Update(user, GraphBehavior.SingleObject);
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
 
             return Ok(_mapper.Map<PilotViewModel>(user));
@@ -154,10 +155,10 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
-            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == User.GetUserId());
+            var user = await _context.Users.SingleOrDefaultAsync(u => u.Id == _userManager.GetUserId(User));
             var addressHasChanged = AddressHasChanged(user, model);
 
             user = _mapper.Map(model, user);
@@ -171,7 +172,7 @@ namespace AirBears.Web.Controllers
                 if (status != GeocodeResponseStatus.OK)
                 {
                     ModelState.AddModelError(string.Empty, status.ToString());
-                    return HttpBadRequest(ModelState);
+                    return BadRequest(ModelState);
                 }
             }
 

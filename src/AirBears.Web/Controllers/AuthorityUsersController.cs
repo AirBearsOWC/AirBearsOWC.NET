@@ -2,13 +2,12 @@ using AirBears.Web.Models;
 using AirBears.Web.Services;
 using AirBears.Web.ViewModels;
 using AutoMapper;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace AirBears.Web.Controllers
@@ -39,7 +38,7 @@ namespace AirBears.Web.Controllers
 
             if (user == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             var resp = _mapper.Map<AuthorityIdentityViewModel>(user);
@@ -106,12 +105,12 @@ namespace AirBears.Web.Controllers
 
             if (user == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             if (await _userManager.IsInRoleAsync(user, Roles.Authority))
             {
-                return HttpBadRequest($"{user.UserName} already has the {Roles.Authority} role!");
+                return BadRequest($"{user.UserName} already has the {Roles.Authority} role!");
             }
 
             await _userManager.AddToRoleAsync(user, Roles.Authority);

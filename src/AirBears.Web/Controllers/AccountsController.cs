@@ -3,11 +3,11 @@ using AirBears.Web.Services;
 using AirBears.Web.ViewModels;
 using AutoMapper;
 using Braintree;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Http.Features;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.WebEncoders;
 using System;
 using System.Threading.Tasks;
@@ -44,7 +44,7 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var response = await RegisterPilotInner(model, true);
@@ -58,7 +58,7 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var response = await RegisterPilotInner(model, false);
@@ -73,7 +73,7 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var remoteIpAddress = HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString();
@@ -81,7 +81,7 @@ namespace AirBears.Web.Controllers
             if (!await _captchaService.IsValid(model.CaptchaResponse, remoteIpAddress))
             {
                 ModelState.AddModelError(string.Empty, "Failed to verify CAPTCHA. Please try again.");
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var user = _mapper.Map<User>(model);
@@ -91,7 +91,7 @@ namespace AirBears.Web.Controllers
             if (!result.Succeeded)
             {
                 AddErrors(result);
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             await SendAuthorityWelcomeEmail(user);
@@ -107,7 +107,7 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var remoteIpAddress = HttpContext.Features.Get<IHttpConnectionFeature>()?.RemoteIpAddress?.ToString();
@@ -115,7 +115,7 @@ namespace AirBears.Web.Controllers
             if (!await _captchaService.IsValid(model.CaptchaResponse, remoteIpAddress))
             {
                 ModelState.AddModelError(string.Empty, "Failed to verify CAPTCHA. Please try again.");
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var user = await _userManager.FindByNameAsync(model.Email);
@@ -137,20 +137,20 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var user = await _userManager.FindByNameAsync(model.Email);
             if (user == null)
             {
-                return HttpBadRequest();
+                return BadRequest();
             }
 
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.NewPassword);
             if (!result.Succeeded)
             {
                 AddErrors(result);
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             await SendResetPasswordEmail(user);
@@ -169,7 +169,7 @@ namespace AirBears.Web.Controllers
                 if (state == null)
                 {
                     ModelState.AddModelError("StateId", "A state with that ID does not exist.");
-                    return HttpBadRequest(ModelState);
+                    return BadRequest(ModelState);
                 }
 
                 stateName = state.Name;
@@ -180,7 +180,7 @@ namespace AirBears.Web.Controllers
             if (coords.Status != GeocodeResponseStatus.OK)
             {
                 ModelState.AddModelError(string.Empty, coords.Status.ToString());
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             if (submitPayment)
@@ -202,7 +202,7 @@ namespace AirBears.Web.Controllers
                     foreach (var error in transactionResult.Errors.All())
                     {
                         ModelState.AddModelError(string.Empty, error.Message);
-                        return HttpBadRequest(ModelState);
+                        return BadRequest(ModelState);
                     }
                 }
             }
@@ -220,7 +220,7 @@ namespace AirBears.Web.Controllers
             if (!result.Succeeded)
             {
                 AddErrors(result);
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             await SendPilotWelcomeEmail(user);

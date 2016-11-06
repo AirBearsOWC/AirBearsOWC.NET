@@ -5,21 +5,22 @@ using AirBears.Web.Services;
 using AirBears.Web.Settings;
 using AutoMapper;
 using Braintree;
-using Microsoft.AspNet.Authentication.JwtBearer;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Builder;
-using Microsoft.AspNet.Diagnostics;
-using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Http;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System;
-using System.IdentityModel.Tokens;
+using System.IO;
 using System.Security.Cryptography;
 
 namespace AirBears.Web
@@ -36,13 +37,17 @@ namespace AirBears.Web
         {
             // Set up configuration sources.
             var builder = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+                .SetBasePath(env.ContentRootPath)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
                 // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
                 builder.AddUserSecrets();
+
+                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
+                builder.AddApplicationInsightsSettings(developerMode: true);
             }
 
             builder.AddEnvironmentVariables();
@@ -53,8 +58,9 @@ namespace AirBears.Web
             MapperConfiguration = new MapperConfiguration(cfg =>
             {
                 cfg.AddProfile(new CommonProfile());
-                Mapper.AssertConfigurationIsValid();
             });
+
+            //Mapper.AssertConfigurationIsValid();
         }
 
         public IConfigurationRoot Configuration { get; set; }
@@ -63,10 +69,8 @@ namespace AirBears.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<AppDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+            services.AddDbContext<AppDbContext>(options => 
+                options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
 
             // Enable the use of an [Authorize("Bearer")] attribute on methods and classes to protect.
             services.AddAuthorization(auth =>
@@ -82,7 +86,7 @@ namespace AirBears.Web
                 i.Password.RequireDigit = true;
                 i.Password.RequireLowercase = true;
                 i.Password.RequireUppercase = true;
-                i.Password.RequireNonLetterOrDigit = false;
+                i.Password.RequireNonAlphanumeric = false;
                 i.Password.RequiredLength = 6;
             })
             .AddEntityFrameworkStores<AppDbContext>()
@@ -103,8 +107,8 @@ namespace AirBears.Web
             services.Configure<RecaptchaSettings>(Configuration.GetSection("Authentication:Recaptcha"));
 
             services.AddSingleton(sp => MapperConfiguration.CreateMapper());
-            services.AddInstance(GetBraintreeGateway());
-            services.AddInstance(GetTokenAuthOptions());
+            services.AddSingleton(GetBraintreeGateway());
+            services.AddSingleton(GetTokenAuthOptions());
 
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
@@ -139,8 +143,6 @@ namespace AirBears.Web
                 serviceScope.ServiceProvider.GetService<AppDbContext>().EnsureSeedData(env.IsDevelopment());
                 //serviceScope.ServiceProvider.GetService<AppDbContext>().InviteMigratedUsers(serviceScope.ServiceProvider.GetService<IMailer>());
             }
-
-            app.UseIISPlatformHandler(options => options.AuthenticationDescriptions.Clear());
 
             // Register a simple error handler to catch token expiries and change them to a 401, 
             // and return all other errors as a 500. This should almost certainly be improved for
@@ -179,24 +181,32 @@ namespace AirBears.Web
                 });
             });
 
-            app.UseJwtBearerAuthentication(options =>
+            var tokenValidationParameters = new TokenValidationParameters
             {
-                // Basic settings - signing key to validate with, audience and issuer.
-                options.TokenValidationParameters.IssuerSigningKey = AuthKey;
-                options.TokenValidationParameters.ValidAudience = TokenAudience;
-                options.TokenValidationParameters.ValidIssuer = TokenIssuer;
+                // The signing key must match!
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = AuthKey,
 
-                // When receiving a token, check that we've signed it.
-                options.TokenValidationParameters.ValidateSignature = true;
+                // Validate the JWT Issuer (iss) claim
+                ValidateIssuer = true,
+                ValidIssuer = TokenIssuer,
 
-                // When receiving a token, check that it is still valid.
-                options.TokenValidationParameters.ValidateLifetime = true;
+                // Validate the JWT Audience (aud) claim
+                ValidateAudience = true,
+                ValidAudience = TokenAudience,
 
-                // This defines the maximum allowable clock skew - i.e. provides a tolerance on the token expiry time 
-                // when validating the lifetime. As we're creating the tokens locally and validating them on the same 
-                // machines which should have synchronised time, this can be set to zero. Where external tokens are
-                // used, some leeway here could be useful.
-                options.TokenValidationParameters.ClockSkew = TimeSpan.FromMinutes(0);
+                // Validate the token expiry
+                ValidateLifetime = true,
+
+                // If you want to allow a certain amount of clock drift, set that here:
+                ClockSkew = TimeSpan.Zero
+            };
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                TokenValidationParameters = tokenValidationParameters
             });
 
             app.UseDefaultFiles();
@@ -222,7 +232,7 @@ namespace AirBears.Web
         {
             return new BraintreeGateway
             {
-                Environment = Configuration["Authentication:Braintree:Environment"].Equals("production", StringComparison.InvariantCultureIgnoreCase)
+                Environment = Configuration["Authentication:Braintree:Environment"].Equals("production", StringComparison.CurrentCultureIgnoreCase)
                                     ? Braintree.Environment.PRODUCTION : Braintree.Environment.SANDBOX,
                 MerchantId = Configuration["Authentication:Braintree:MerchantId"],
                 PublicKey = Configuration["Authentication:Braintree:PublicKey"],
@@ -231,7 +241,17 @@ namespace AirBears.Web
         }
 
         // Entry point for the application.
-        public static void Main(string[] args) => WebApplication.Run<Startup>(args);
+        public static void Main(string[] args)
+        {
+            var host = new WebHostBuilder()
+                .UseKestrel()
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseIISIntegration()
+                .UseStartup<Startup>()
+                .Build();
+
+            host.Run();
+        }
     }
 
     public class TokenAuthOptions

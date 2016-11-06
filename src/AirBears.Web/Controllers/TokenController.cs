@@ -1,13 +1,13 @@
 using System.Threading.Tasks;
-using Microsoft.AspNet.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using AirBears.Web.Models;
-using Microsoft.AspNet.Identity;
+using Microsoft.AspNetCore.Identity;
 using AirBears.Web.ViewModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System;
 using Braintree;
-using Microsoft.Data.Entity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AirBears.Web.Controllers
 {
@@ -38,7 +38,7 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var user = await _userManager.FindByNameAsync(model.Email);
@@ -53,7 +53,7 @@ namespace AirBears.Web.Controllers
                 return Ok(new { authenticated = true, token = token, tokenExpires = expires });
             }
 
-            return HttpBadRequest("Invalid login attempt.");
+            return BadRequest("Invalid login attempt.");
         }
 
         [HttpGet("/api/payment-token", Name = "Get Payment Token")]
@@ -67,7 +67,7 @@ namespace AirBears.Web.Controllers
         private async Task UpdateLastLoginDate(User user)
         {
             user.LastLoginDate = DateTime.UtcNow;
-            _context.Users.Update(user, GraphBehavior.SingleObject);
+            _context.Users.Update(user);
 
            await  _context.SaveChangesAsync();
         }
@@ -87,13 +87,14 @@ namespace AirBears.Web.Controllers
             identity.AddClaim(new Claim(ClaimTypes.GivenName, user.FirstName));
             identity.AddClaim(new Claim(ClaimTypes.Surname, user.LastName));
 
-            var securityToken = handler.CreateToken(
-                issuer: _tokenOptions.Issuer,
-                audience: _tokenOptions.Audience,
-                signingCredentials: _tokenOptions.SigningCredentials,
-                subject: identity,
-                expires: expires
-                );
+            var securityToken = handler.CreateToken(new SecurityTokenDescriptor
+            {
+                Issuer = _tokenOptions.Issuer,
+                Audience = _tokenOptions.Audience,
+                SigningCredentials = _tokenOptions.SigningCredentials,
+                Subject = identity,
+                Expires = expires
+            });
 
             return handler.WriteToken(securityToken);
         }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
@@ -91,6 +91,8 @@ namespace AirBears.Web.Models
         public bool ThermalVisionCapable { get; set; }
 
         public bool FemaIcsCertified { get; set; }
+
+        //public bool FaaPart107Certified { get; set; }
 
         public bool HamRadioLicensed { get; set; }
 

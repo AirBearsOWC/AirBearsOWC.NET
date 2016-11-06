@@ -1,6 +1,6 @@
 ﻿using AirBears.Web.Settings;
 using MailKit.Net.Smtp;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Threading.Tasks;
 

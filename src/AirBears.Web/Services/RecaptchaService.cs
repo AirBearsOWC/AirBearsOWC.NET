@@ -1,6 +1,6 @@
 ﻿using AirBears.Web.Models;
 using AirBears.Web.Settings;
-using Microsoft.Extensions.OptionsModel;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;

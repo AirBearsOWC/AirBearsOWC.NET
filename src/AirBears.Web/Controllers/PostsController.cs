@@ -1,9 +1,9 @@
 using AirBears.Web.Models;
 using AirBears.Web.ViewModels;
 using AutoMapper;
-using Microsoft.AspNet.Authorization;
-using Microsoft.AspNet.Mvc;
-using Microsoft.Data.Entity;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +34,7 @@ namespace AirBears.Web.Controllers
 
             if (post == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             return Ok(_mapper.Map<PostViewModel>(post));
@@ -47,7 +47,7 @@ namespace AirBears.Web.Controllers
 
             if (post == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             return Ok(_mapper.Map<PostViewModel>(post));
@@ -63,7 +63,7 @@ namespace AirBears.Web.Controllers
             if (includeDrafts && !User.IsInRole(Roles.Admin))
             {
                 // If they've requested drafts, they must be administrators. Send 403 if they're not.
-                return new HttpStatusCodeResult((int)HttpStatusCode.Forbidden);
+                return new StatusCodeResult((int)HttpStatusCode.Forbidden);
             }
 
             var posts = (includeDrafts)
@@ -86,7 +86,7 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             model.Id = Guid.NewGuid();
@@ -107,14 +107,14 @@ namespace AirBears.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return HttpBadRequest(ModelState);
+                return BadRequest(ModelState);
             }
 
             var post = await _context.Posts.Where(p => p.Id == model.Id).SingleOrDefaultAsync();
 
             if(post == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             model.Slug = model.Slug.ToLower();
@@ -136,7 +136,7 @@ namespace AirBears.Web.Controllers
 
             if (post == null)
             {
-                return HttpNotFound();
+                return NotFound();
             }
 
             _context.Posts.Remove(post);

@@ -1,6 +1,5 @@
 ﻿using AirBears.Web.Models;
-using AutoMapper;
-using Microsoft.Data.Entity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,23 +66,6 @@ namespace AirBears.Web
         {
             var now = DateTime.UtcNow;
             return posts.Where(p => p.DatePublished.HasValue && p.DatePublished <= now); // published date must be earlier than today.
-        }
-
-        /// <summary>
-        /// Ignores fields that exist on the destination type but not on the source type.
-        /// </summary>
-        /// <typeparam name="TSource"></typeparam>
-        /// <typeparam name="TDestination"></typeparam>
-        /// <param name="expression"></param>
-        /// <returns></returns>
-        public static IMappingExpression<TSource, TDestination> IgnoreAllNonExisting<TSource, TDestination>(this IMappingExpression<TSource, TDestination> expression)
-        {
-            foreach (var property in expression.TypeMap.GetUnmappedPropertyNames())
-            {
-                expression.ForMember(property, opt => opt.Ignore());
-            }
-
-            return expression;
         }
     }
 }
