@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -69,8 +70,8 @@ namespace AirBears.Web
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddDbContext<AppDbContext>(options => 
-                options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             // Enable the use of an [Authorize("Bearer")] attribute on methods and classes to protect.
             services.AddAuthorization(auth =>
@@ -106,6 +107,11 @@ namespace AirBears.Web
             services.Configure<SmtpSettings>(Configuration.GetSection("Authentication:GmailPrimary"));
             services.Configure<RecaptchaSettings>(Configuration.GetSection("Authentication:Recaptcha"));
 
+            //services.Configure<ForwardedHeadersOptions>(options =>
+            //{
+            //    options.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
+            //});
+
             services.AddSingleton(sp => MapperConfiguration.CreateMapper());
             services.AddSingleton(GetBraintreeGateway());
             services.AddSingleton(GetTokenAuthOptions());
@@ -132,8 +138,8 @@ namespace AirBears.Web
             }
             else
             {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
+                //app.UseDeveloperExceptionPage();
+                //app.UseDatabaseErrorPage();
                 //app.UseExceptionHandler("/Home/Error");
             }
 
@@ -209,8 +215,35 @@ namespace AirBears.Web
                 TokenValidationParameters = tokenValidationParameters
             });
 
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
+            // Route all unknown requests to app root
+            app.Use(async (context, next) =>
+            {
+                await next();
+
+                // If there's no available file and the request doesn't contain an extension, we're probably trying to access a page.
+                // Rewrite request to use app root
+                if (!context.Request.Path.StartsWithSegments("/api/") && context.Response.StatusCode == 404 && !Path.HasExtension(context.Request.Path.Value))
+                {
+                    context.Request.Path = "/index.html"; // Put your Angular root page here 
+                    context.Response.StatusCode = 200; // Make sure we update the status code, otherwise it returns 404
+                    await next();
+                }
+            });
+
+            if (!env.IsDevelopment())
+            {
+                app.Use(async (httpContext, next) =>
+                {
+                    if (!httpContext.Request.IsHttps)
+                    {
+                        httpContext.Response.Redirect("https://www.airbears.org" + (httpContext.Request.Path.HasValue ? httpContext.Request.Path.Value : string.Empty), true);
+                        return;
+                    }
+                    await next();
+                });
+            }
+
+            app.UseFileServer();
             app.UseIdentity();
 
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
@@ -244,6 +277,8 @@ namespace AirBears.Web
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
+                .CaptureStartupErrors(true)
+                .UseSetting("detailedErrors", "true")
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()

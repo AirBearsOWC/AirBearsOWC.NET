@@ -134,7 +134,7 @@ namespace AirBears.Web.Controllers
         [Authorize(AuthPolicies.Bearer, Roles = Roles.Admin)]
         public async Task<IActionResult> MarkTeeShirtMailed([FromRoute] string id, [FromBody] bool teeShirtMailed)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = await _context.Users.AsPilots().SingleOrDefaultAsync(u => u.Id == id);
 
             if (user == null)
             {

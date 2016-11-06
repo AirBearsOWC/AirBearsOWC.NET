@@ -7,7 +7,7 @@ namespace AirBears.Web.Profiles
 {
     public class CommonProfile : Profile
     {
-        protected override void Configure()
+        public CommonProfile()
         {
             CreateMap<Post, PostViewModel>()
                 .ForMember(dest => dest.Status, mapper => mapper.Ignore())
