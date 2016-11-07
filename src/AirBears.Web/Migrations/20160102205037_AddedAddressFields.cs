@@ -7,12 +7,6 @@ namespace AirBears.Web.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(name: "FK_IdentityRoleClaim<string>_IdentityRole_RoleId", table: "AspNetRoleClaims");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityUserClaim<string>_ApplicationUser_UserId", table: "AspNetUserClaims");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityUserLogin<string>_ApplicationUser_UserId", table: "AspNetUserLogins");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityUserRole<string>_IdentityRole_RoleId", table: "AspNetUserRoles");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityUserRole<string>_ApplicationUser_UserId", table: "AspNetUserRoles");
-            migrationBuilder.DropPrimaryKey(name: "PK_ApplicationUser", table: "AspNetUsers");
             migrationBuilder.CreateTable(
                 name: "State",
                 columns: table => new
@@ -151,11 +145,11 @@ namespace AirBears.Web.Migrations
         {
             migrationBuilder.DropForeignKey(name: "FK_User_State_StateId", table: "AspNetUsers");
             migrationBuilder.DropForeignKey(name: "FK_User_TeeShirtSize_TeeShirtSizeId", table: "AspNetUsers");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityRoleClaim<string>_IdentityRole_RoleId", table: "AspNetRoleClaims");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityUserClaim<string>_User_UserId", table: "AspNetUserClaims");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityUserLogin<string>_User_UserId", table: "AspNetUserLogins");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityUserRole<string>_IdentityRole_RoleId", table: "AspNetUserRoles");
-            migrationBuilder.DropForeignKey(name: "FK_IdentityUserRole<string>_User_UserId", table: "AspNetUserRoles");
+            //migrationBuilder.DropForeignKey(name: "FK_IdentityRoleClaim<string>_IdentityRole_RoleId", table: "AspNetRoleClaims");
+            //migrationBuilder.DropForeignKey(name: "FK_IdentityUserClaim<string>_User_UserId", table: "AspNetUserClaims");
+            //migrationBuilder.DropForeignKey(name: "FK_IdentityUserLogin<string>_User_UserId", table: "AspNetUserLogins");
+            //migrationBuilder.DropForeignKey(name: "FK_IdentityUserRole<string>_IdentityRole_RoleId", table: "AspNetUserRoles");
+            //migrationBuilder.DropForeignKey(name: "FK_IdentityUserRole<string>_User_UserId", table: "AspNetUserRoles");
             migrationBuilder.DropPrimaryKey(name: "PK_User", table: "AspNetUsers");
             migrationBuilder.DropColumn(name: "City", table: "AspNetUsers");
             migrationBuilder.DropColumn(name: "FirstName", table: "AspNetUsers");
@@ -184,41 +178,41 @@ namespace AirBears.Web.Migrations
                 name: "PK_ApplicationUser",
                 table: "AspNetUsers",
                 column: "Id");
-            migrationBuilder.AddForeignKey(
-                name: "FK_IdentityRoleClaim<string>_IdentityRole_RoleId",
-                table: "AspNetRoleClaims",
-                column: "RoleId",
-                principalTable: "AspNetRoles",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-            migrationBuilder.AddForeignKey(
-                name: "FK_IdentityUserClaim<string>_ApplicationUser_UserId",
-                table: "AspNetUserClaims",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-            migrationBuilder.AddForeignKey(
-                name: "FK_IdentityUserLogin<string>_ApplicationUser_UserId",
-                table: "AspNetUserLogins",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-            migrationBuilder.AddForeignKey(
-                name: "FK_IdentityUserRole<string>_IdentityRole_RoleId",
-                table: "AspNetUserRoles",
-                column: "RoleId",
-                principalTable: "AspNetRoles",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
-            migrationBuilder.AddForeignKey(
-                name: "FK_IdentityUserRole<string>_ApplicationUser_UserId",
-                table: "AspNetUserRoles",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_IdentityRoleClaim<string>_IdentityRole_RoleId",
+            //    table: "AspNetRoleClaims",
+            //    column: "RoleId",
+            //    principalTable: "AspNetRoles",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_IdentityUserClaim<string>_ApplicationUser_UserId",
+            //    table: "AspNetUserClaims",
+            //    column: "UserId",
+            //    principalTable: "AspNetUsers",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_IdentityUserLogin<string>_ApplicationUser_UserId",
+            //    table: "AspNetUserLogins",
+            //    column: "UserId",
+            //    principalTable: "AspNetUsers",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_IdentityUserRole<string>_IdentityRole_RoleId",
+            //    table: "AspNetUserRoles",
+            //    column: "RoleId",
+            //    principalTable: "AspNetRoles",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Restrict);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_IdentityUserRole<string>_ApplicationUser_UserId",
+            //    table: "AspNetUserRoles",
+            //    column: "UserId",
+            //    principalTable: "AspNetUsers",
+            //    principalColumn: "Id",
+            //    onDelete: ReferentialAction.Restrict);
         }
     }
 }

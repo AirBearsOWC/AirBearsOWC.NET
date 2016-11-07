@@ -25,6 +25,7 @@
         vm.choosePayload = updatePlatformCapabilities;
         vm.toggleFemaIcsCertified = updateCertifications;
         vm.toggleHamRadioLicensed = updateCertifications;
+        vm.toggleFaaPart107Certified = updateCertifications;
 
         activate();
 

@@ -60,14 +60,14 @@ namespace AirBears.Web.Migrations
                 column: "FlightTimeId",
                 principalTable: "FlightTime",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+                onDelete: ReferentialAction.SetDefault);
             migrationBuilder.AddForeignKey(
                 name: "FK_User_Payload_PayloadId",
                 table: "AspNetUsers",
                 column: "PayloadId",
                 principalTable: "Payload",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);          
+                onDelete: ReferentialAction.SetDefault);          
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

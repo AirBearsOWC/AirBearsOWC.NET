@@ -97,6 +97,8 @@ namespace AirBears.Web.ViewModels
 
         public bool HamRadioLicensed { get; set; }
 
+        public bool FaaPart107Certified { get; set; }
+
         public Payload Payload { get; set; }
 
         public FlightTime FlightTime { get; set; }
