@@ -19,7 +19,7 @@
 
         function getClientToken() {
             return $http.get("/api/payment-token").then(function(resp){
-                return resp.data;
+                return resp.data.token;
             });
         }
 

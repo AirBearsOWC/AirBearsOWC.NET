@@ -61,7 +61,7 @@ namespace AirBears.Web.Controllers
         {
             var clientToken = await Task.Run(() => _gateway.ClientToken.generate());
 
-            return Ok(clientToken);
+            return Ok(new { token = clientToken });
         }
 
         private async Task UpdateLastLoginDate(User user)

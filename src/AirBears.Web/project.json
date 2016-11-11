@@ -8,7 +8,7 @@
       "type": "platform"
     },
     "AutoMapper": "5.1.1",
-    "Braintree": "3.0.1",
+    "Braintree": "3.1.0",
     "Microsoft.ApplicationInsights.AspNetCore": "1.0.2",
     "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics": "1.0.0",
