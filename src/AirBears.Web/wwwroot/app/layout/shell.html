@@ -16,7 +16,7 @@
             <ul class="nav navbar-nav">
                 <li ui-sref-active="active"><a ui-sref="root.pilot-search">Pilot Search</a></li>
                 <li ui-sref-active="active"><a ui-sref="root.resources">Resources</a></li>
-                <li ui-sref-active="active"><a ui-sref="root.guidelines">Operational Guidelines</a></li>
+                <li ui-sref-active="active"><a ui-sref="root.guidelines"><span class="hidden-md midden-sm">Operational</span><span>Guidelines</span></a></li>
                 <li ui-sref-active="active"><a ui-sref="root.post-archive">Posts</a></li>
                 <li ui-sref-active="active"><a ui-sref="root.contact">Contact</a></li>               
                 <li class="dropdown" ng-show="$ctrl.user && $ctrl.user.isAdmin" ng-class="{active:$ctrl.isActive('root.manage')}">
@@ -38,7 +38,7 @@
             <ul class="nav navbar-nav navbar-right" ng-show="$ctrl.user">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                        {{ $ctrl.user.firstName }} {{ $ctrl.user.lastName }} <span class="caret"></span>
+                        {{ $ctrl.user.firstName }} <span class="hidden-sm">{{ $ctrl.user.lastName }}</span> <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a ui-sref="root.edit-profile" ng-show="!$ctrl.user.isAuthorityAccount">My Profile</a></li>
@@ -46,7 +46,7 @@
                     </ul>
                 </li>
             </ul>
-            <div class="nav navbar-nav navbar-right md-hidden" style="margin-right: 25px;">
+            <div class="nav navbar-nav navbar-right hidden-md hidden-sm" style="margin-right: 25px;">
                 <a href="https://www.facebook.com/Air-Bears-830111767019340/" class="social-icon" target="_blank" title="View Air Bears on Facebook">
                     <img src="../../images/facebook-icon.png" />
                 </a>
