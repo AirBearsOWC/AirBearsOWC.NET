@@ -47,7 +47,7 @@ namespace AirBears.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var response = await RegisterPilotInner(model, true);
+            var response = await SavePilotRegistration(model, true);
 
             return response;
         }
@@ -61,7 +61,7 @@ namespace AirBears.Web.Controllers
                 return BadRequest(ModelState);
             }
 
-            var response = await RegisterPilotInner(model, false);
+            var response = await SavePilotRegistration(model, false);
 
             return response;
         }
@@ -158,7 +158,7 @@ namespace AirBears.Web.Controllers
             return Ok();
         }
 
-        private async Task<IActionResult> RegisterPilotInner(PilotRegistrationViewModel model, bool submitPayment)
+        private async Task<IActionResult> SavePilotRegistration(PilotRegistrationViewModel model, bool submitPayment)
         {
             var stateName = string.Empty;
 
