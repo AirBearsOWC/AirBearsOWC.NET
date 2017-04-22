@@ -40,7 +40,8 @@
       "type": "build"
     },
     "MailKit": "1.10.0",
-    "Microsoft.AspNetCore.StaticFiles": "1.0.0"
+    "Microsoft.AspNetCore.StaticFiles": "1.0.0",
+    "Swashbuckle.AspNetCore": "1.0.0"
   },
 
   "tools": {

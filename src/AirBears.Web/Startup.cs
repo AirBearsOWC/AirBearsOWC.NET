@@ -20,6 +20,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.IO;
 using System.Security.Cryptography;
@@ -99,6 +100,11 @@ namespace AirBears.Web
             }).AddMvcOptions(options =>
             {
                 options.Filters.Add(new NoCacheHeaderFilter());
+            });
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "Air Bears API", Version = "v1" });
             });
 
             // Add functionality to inject IOptions<T>
@@ -185,6 +191,12 @@ namespace AirBears.Web
                     // handler handle.
                     else await next();
                 });
+            });
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Air Bears API V1");
             });
 
             var tokenValidationParameters = new TokenValidationParameters
